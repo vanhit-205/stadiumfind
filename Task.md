@@ -15,9 +15,9 @@
   - [x] **Backend (AI):** Gen các class `@Entity` (JPA) và interface `Repository`.
   - [x] **Frontend:** Tạo cấu trúc thư mục (core, features/auth, features/stadium, v.v.).
   - [x] **Frontend:** Cấu hình Hilt `AppModule`, `NetworkModule`.
-- [ ] **Ngày 3 (Thứ 4): Xây dựng Core Network**
-  - [ ] **Frontend:** Viết `BaseResponse`, `Resource` (Sealed class) quản lý state.
-  - [ ] **Frontend:** Setup `Retrofit` và `OkHttpClient` kèm Logging Interceptor.
+- [x] **Ngày 3 (Thứ 4): Xây dựng Core Network**
+  - [x] **Frontend:** Viết `BaseResponse`, `Resource` (Sealed class) quản lý state.
+  - [x] **Frontend:** Setup `Retrofit` và `OkHttpClient` kèm Logging Interceptor.
 - [ ] **Ngày 5 (Thứ 5): Base UI & Navigation**
   - [ ] **Frontend:** Thiết lập Theme, Colors, Typography.
   - [ ] **Frontend:** Tạo các Custom Views dùng chung: PrimaryButton, AppTextField, LoadingDialog.
