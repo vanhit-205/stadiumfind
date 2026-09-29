@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Primary: Xanh lá sân cỏ -->
+    <color name="primary_300">#66BB6A</color>
+    <color name="primary_400">#43A047</color>
+    <color name="primary_500">#2E7D32</color>
+    <color name="primary_600">#1B5E20</color>
+
+    <!-- Surface / Background -->
+    <color name="surface_dark">#0F1012</color>
+    <color name="surface_elevated">#1A1C1F</color>
+    <color name="surface_card">#1E2124</color>
+    <color name="surface_input">#252830</color>
+    <color name="surface_overlay">#28262626</color>
+
+    <!-- Text -->
+    <color name="text_primary">#F5F5F5</color>
+    <color name="text_secondary">#AAAAAA</color>
+    <color name="text_hint">#666666</color>
+    <color name="text_on_primary">#FFFFFF</color>
+
+    <!-- Accent / Semantic -->
+    <color name="accent_yellow">#FFC107</color>
+    <color name="accent_orange">#FF7043</color>
+    <color name="error_red">#EF5350</color>
+    <color name="success_green">#4CAF50</color>
+    <color name="warning_amber">#FFB300</color>
+
+    <!-- Stroke / Divider -->
+    <color name="stroke_default">#2A2D32</color>
+    <color name="stroke_focused">#43A047</color>
+
+    <!-- Legacy (keep for compatibility) -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

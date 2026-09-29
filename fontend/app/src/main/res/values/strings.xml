@@ -1,3 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">fontend</string>
+    <string name="app_name">StadiumFind</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Trang Chủ</string>
+    <string name="nav_search">Tìm Kiếm</string>
+    <string name="nav_booking">Đặt Sân</string>
+    <string name="nav_profile">Hồ Sơ</string>
+
+    <!-- Common Actions -->
+    <string name="action_confirm">Xác Nhận</string>
+    <string name="action_cancel">Hủy</string>
+    <string name="action_retry">Thử Lại</string>
+    <string name="action_back">Quay Lại</string>
+    <string name="action_save">Lưu</string>
+    <string name="action_edit">Chỉnh Sửa</string>
+    <string name="action_delete">Xóa</string>
+    <string name="action_search">Tìm Kiếm</string>
+    <string name="action_filter">Lọc</string>
+    <string name="action_view_all">Xem Tất Cả</string>
+
+    <!-- Auth -->
+    <string name="label_email">Email</string>
+    <string name="label_password">Mật khẩu</string>
+    <string name="label_confirm_password">Xác nhận mật khẩu</string>
+    <string name="label_full_name">Họ và tên</string>
+    <string name="label_phone">Số điện thoại</string>
+    <string name="btn_login">Đăng Nhập</string>
+    <string name="btn_register">Đăng Ký</string>
+    <string name="hint_email">Nhập email của bạn</string>
+    <string name="hint_password">Nhập mật khẩu</string>
+    <string name="text_have_account">Đã có tài khoản?</string>
+    <string name="text_no_account">Chưa có tài khoản?</string>
+    <string name="link_login">Đăng nhập</string>
+    <string name="link_register">Đăng ký ngay</string>
+    <string name="text_forgot_password">Quên mật khẩu?</string>
+
+    <!-- Error Messages -->
+    <string name="error_email_empty">Vui lòng nhập email</string>
+    <string name="error_email_invalid">Email không hợp lệ</string>
+    <string name="error_password_empty">Vui lòng nhập mật khẩu</string>
+    <string name="error_password_short">Mật khẩu phải có ít nhất 6 ký tự</string>
+    <string name="error_network">Lỗi kết nối. Vui lòng thử lại.</string>
+    <string name="error_server">Lỗi máy chủ. Vui lòng thử lại sau.</string>
+    <string name="error_unknown">Đã có lỗi xảy ra. Vui lòng thử lại.</string>
+
+    <!-- Loading -->
+    <string name="loading_default">Đang tải...</string>
+    <string name="loading_login">Đang đăng nhập...</string>
+    <string name="loading_register">Đang đăng ký...</string>
+
+    <!-- Screens -->
+    <string name="screen_home">Trang Chủ</string>
+    <string name="screen_search">Tìm Kiếm Sân</string>
+    <string name="screen_booking">Đặt Sân</string>
+    <string name="screen_profile">Hồ Sơ</string>
 </resources>

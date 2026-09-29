@@ -18,10 +18,10 @@
 - [x] **Ngày 3 (Thứ 4): Xây dựng Core Network**
   - [x] **Frontend:** Viết `BaseResponse`, `Resource` (Sealed class) quản lý state.
   - [x] **Frontend:** Setup `Retrofit` và `OkHttpClient` kèm Logging Interceptor.
-- [ ] **Ngày 5 (Thứ 5): Base UI & Navigation**
-  - [ ] **Frontend:** Thiết lập Theme, Colors, Typography.
-  - [ ] **Frontend:** Tạo các Custom Views dùng chung: PrimaryButton, AppTextField, LoadingDialog.
-  - [ ] **Frontend:** Thiết lập Navigation Graph (Bottom Navigation).
+- [x] **Ngày 5 (Thứ 5): Base UI & Navigation**
+  - [x] **Frontend:** Thiết lập Theme, Colors, Typography.
+  - [x] **Frontend:** Tạo các Custom Views dùng chung: PrimaryButton, AppTextField, LoadingDialog.
+  - [x] **Frontend:** Thiết lập Navigation Graph (Bottom Navigation).
 - [ ] **Ngày 6 (Thứ 6): Xác thực (Backend)**
   - [ ] **Backend (AI):** Gen cấu hình Spring Security + JWT. 
   - [ ] **Backend (AI):** Viết và test API `/api/auth/register` và `/api/auth/login` trên Postman.

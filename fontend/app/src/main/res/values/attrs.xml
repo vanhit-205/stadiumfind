@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PrimaryButton">
+        <attr name="android:text" />
+        <attr name="isLoading" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="AppTextField">
+        <attr name="android:hint" />
+        <attr name="fieldLabel" format="string" />
+        <attr name="leadingIcon" format="reference" />
+        <attr name="trailingIcon" format="reference" />
+        <attr name="android:inputType" />
+        <attr name="isPassword" format="boolean" />
+    </declare-styleable>
+</resources>

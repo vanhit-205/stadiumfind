@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <!-- Bottom Nav Destinations -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.stadiumfind.features.home.HomeFragment"
+        android:label="@string/nav_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.stadiumfind.features.search.SearchFragment"
+        android:label="@string/nav_search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/bookingFragment"
+        android:name="com.example.stadiumfind.features.booking.BookingFragment"
+        android:label="@string/nav_booking"
+        tools:layout="@layout/fragment_booking" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.stadiumfind.features.profile.ProfileFragment"
+        android:label="@string/nav_profile"
+        tools:layout="@layout/fragment_profile" />
+
+</navigation>
