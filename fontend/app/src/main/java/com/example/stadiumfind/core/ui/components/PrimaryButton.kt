@@ -35,25 +35,23 @@ class PrimaryButton @JvmOverloads constructor(
         private set
 
     init {
-        // Đọc custom attribute từ XML nếu có
-        context.theme.obtainStyledAttributes(
+        // Đọc custom attributes từ XML
+        val typedArray = context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.PrimaryButton,
             defStyleAttr,
             0
-        ).apply {
-            try {
-                text = getString(R.styleable.PrimaryButton_android_text) ?: ""
-                if (getBoolean(R.styleable.PrimaryButton_isLoading, false)) {
-                    setLoading(true)
-                }
-            } finally {
-                recycle()
-            }
-        }
+        )
+        try {
+            val labelText = typedArray.getString(R.styleable.PrimaryButton_buttonText)
+            if (!labelText.isNullOrEmpty()) text = labelText
 
-        // Forward click to inner button
-        binding.btnContent.setOnClickListener(null)
+            if (typedArray.getBoolean(R.styleable.PrimaryButton_isLoading, false)) {
+                setLoading(true)
+            }
+        } finally {
+            typedArray.recycle()
+        }
     }
 
     /**
