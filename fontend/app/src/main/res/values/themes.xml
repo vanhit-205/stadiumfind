@@ -1,21 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme -->
+
+    <!-- ====================== BASE THEME ====================== -->
     <style name="Base.Theme.StadiumFind" parent="Theme.Material3.Dark.NoActionBar">
-        <!-- Primary colors -->
+        <!-- Primary -->
         <item name="colorPrimary">@color/primary_400</item>
         <item name="colorOnPrimary">@color/text_on_primary</item>
         <item name="colorPrimaryContainer">@color/primary_600</item>
         <item name="colorOnPrimaryContainer">@color/primary_300</item>
 
-        <!-- Surface / Background -->
+        <!-- Surface -->
         <item name="colorSurface">@color/surface_dark</item>
         <item name="colorOnSurface">@color/text_primary</item>
         <item name="colorSurfaceVariant">@color/surface_card</item>
         <item name="colorOnSurfaceVariant">@color/text_secondary</item>
-        <item name="colorBackground">@color/surface_dark</item>
-        <item name="colorOnBackground">@color/text_primary</item>
 
-        <!-- Outline / Divider -->
+        <!-- Outline -->
         <item name="colorOutline">@color/stroke_default</item>
         <item name="colorOutlineVariant">@color/stroke_default</item>
 
@@ -23,7 +22,8 @@
         <item name="colorError">@color/error_red</item>
         <item name="colorOnError">@color/white</item>
 
-        <!-- Window -->
+        <!-- Window / Status bar -->
+        <item name="android:colorBackground">@color/surface_dark</item>
         <item name="android:windowBackground">@color/surface_dark</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@color/surface_elevated</item>
@@ -32,16 +32,7 @@
 
     <style name="Theme.StadiumFind" parent="Base.Theme.StadiumFind" />
 
-    <!-- Bottom Navigation Bar -->
-    <style name="Widget.StadiumFind.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
-        <item name="android:background">@color/surface_elevated</item>
-        <item name="itemIconTint">@color/bottom_nav_color</item>
-        <item name="itemTextColor">@color/bottom_nav_color</item>
-        <item name="itemActiveIndicatorColor">@color/primary_600</item>
-        <item name="itemPaddingBottom">8dp</item>
-    </style>
-
-    <!-- Card style -->
+    <!-- ====================== CARD ====================== -->
     <style name="Widget.StadiumFind.Card" parent="Widget.Material3.CardView.Elevated">
         <item name="cardBackgroundColor">@color/surface_card</item>
         <item name="cardCornerRadius">@dimen/radius_lg</item>
@@ -50,10 +41,9 @@
         <item name="strokeWidth">1dp</item>
     </style>
 
-    <!-- Text Input style -->
+    <!-- ====================== TEXT INPUT ====================== -->
     <style name="Widget.StadiumFind.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="boxBackgroundColor">@color/surface_input</item>
-        <item name="boxStrokeColor">@color/text_field_stroke_color</item>
         <item name="boxCornerRadiusTopStart">@dimen/radius_md</item>
         <item name="boxCornerRadiusTopEnd">@dimen/radius_md</item>
         <item name="boxCornerRadiusBottomStart">@dimen/radius_md</item>
@@ -62,17 +52,15 @@
         <item name="android:textColorHint">@color/text_hint</item>
     </style>
 
-    <!-- Button style -->
+    <!-- ====================== BUTTON ====================== -->
     <style name="Widget.StadiumFind.Button" parent="Widget.Material3.Button">
         <item name="backgroundTint">@color/primary_400</item>
         <item name="android:textColor">@color/white</item>
         <item name="cornerRadius">@dimen/radius_md</item>
         <item name="android:minHeight">@dimen/btn_height</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:letterSpacing">0.02</item>
     </style>
 
-    <!-- Button Outlined style -->
     <style name="Widget.StadiumFind.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
         <item name="strokeColor">@color/primary_400</item>
         <item name="android:textColor">@color/primary_400</item>
@@ -80,41 +68,44 @@
         <item name="android:minHeight">@dimen/btn_height</item>
     </style>
 
-    <!-- Text Appearances -->
-    <style name="TextAppearance.StadiumFind.Headline1">
+    <!-- ====================== TEXT APPEARANCES ====================== -->
+    <!-- Base (required so that sub-styles có parent tường minh) -->
+    <style name="TextAppearance.StadiumFind" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="TextAppearance.StadiumFind.Headline1" parent="TextAppearance.Material3.HeadlineLarge">
         <item name="android:textSize">28sp</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:letterSpacing">-0.02</item>
     </style>
 
-    <style name="TextAppearance.StadiumFind.Headline2">
+    <style name="TextAppearance.StadiumFind.Headline2" parent="TextAppearance.Material3.HeadlineMedium">
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextAppearance.StadiumFind.Title">
+    <style name="TextAppearance.StadiumFind.Title" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextAppearance.StadiumFind.Body">
+    <style name="TextAppearance.StadiumFind.Body" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/text_secondary</item>
-        <item name="android:lineSpacingMultiplier">1.4</item>
     </style>
 
-    <style name="TextAppearance.StadiumFind.Caption">
+    <style name="TextAppearance.StadiumFind.Caption" parent="TextAppearance.Material3.LabelMedium">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/text_hint</item>
     </style>
 
-    <style name="TextAppearance.StadiumFind.Label">
+    <style name="TextAppearance.StadiumFind.Label" parent="TextAppearance.Material3.LabelLarge">
         <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:letterSpacing">0.04</item>
     </style>
+
 </resources>
