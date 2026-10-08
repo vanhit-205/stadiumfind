@@ -2,8 +2,10 @@ package com.VuVietAnh.stadium_booking_api.dto.response;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,6 +25,9 @@ public class StadiumResponse {
     private LocalTime closingTime;
     private String imageUrl;
     private Double rating;
+    private BigDecimal minPricePerHour;
+    private Integer totalCourts;
+    private List<String> sportTypes;
     private Long ownerId;
     private String ownerName;
     private LocalDateTime createdAt;

@@ -39,9 +39,9 @@
 - [x] **Ngày 10 (Thứ 4): Ghép API Auth & ViewModel**
   - [x] **Frontend:** Code `AuthViewModel` với `StateFlow`.
   - [x] **Frontend:** Gọi API Login, xử lý loading/success/error. Điều hướng vào màn Home.
-- [ ] **Ngày 11 (Thứ 5): API Sân Bóng (Backend)**
-  - [ ] **Backend (AI):** Gen API `/api/stadiums` có hỗ trợ phân trang (Pageable).
-  - [ ] **Backend (AI):** Viết script SQL insert 15-20 sân bóng giả lập để test.
+- [x] **Ngày 11 (Thứ 5): API Sân Bóng (Backend)**
+  - [x] **Backend (AI):** Gen API `/api/stadiums` có hỗ trợ phân trang (Pageable).
+  - [x] **Backend (AI):** Viết script SQL insert 15-20 sân bóng giả lập để test.
 - [ ] **Ngày 12 (Thứ 6): UI Màn Hình Home**
   - [ ] **Frontend:** Thiết kế layout item sân bóng (CardView, Rating, Giá).
   - [ ] **Frontend:** Tích hợp thư viện `Coil` để load ảnh sân từ URL.

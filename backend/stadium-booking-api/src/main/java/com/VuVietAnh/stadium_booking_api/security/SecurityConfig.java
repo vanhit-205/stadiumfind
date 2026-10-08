@@ -3,6 +3,7 @@ package com.VuVietAnh.stadium_booking_api.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -40,8 +41,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/stadiums/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/stadiums/**").hasAnyRole("STADIUM_OWNER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/stadiums/**").hasAnyRole("STADIUM_OWNER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/stadiums/**").hasAnyRole("STADIUM_OWNER", "ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .anyRequest().permitAll() // Hoặc authenticated() theo mong muốn của controller sau này
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
