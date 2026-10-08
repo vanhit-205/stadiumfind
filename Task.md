@@ -25,7 +25,7 @@
 - [x] **Ngày 6 (Thứ 6): Xác thực (Backend)**
   - [x] **Backend (AI):** Gen cấu hình Spring Security + JWT. 
   - [x] **Backend (AI):** Viết và test API `/api/auth/register` và `/api/auth/login` trên Postman.
-- [ ] **Ngày 7 (Chủ nhật): 💤 Nghỉ ngơi**
+- [x] **Ngày 7 (Chủ nhật): 💤 Nghỉ ngơi**
 
 ---
 
