@@ -71,4 +71,28 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
 }
+
+// Tự động chạy adb reverse mỗi khi bấm Run/Build app
+abstract class AdbReverseTask : DefaultTask() {
+    @get:Input
+    abstract val adbPath: Property<String>
+
+    @TaskAction
+    fun execute() {
+        try {
+            ProcessBuilder(adbPath.get(), "reverse", "tcp:8080", "tcp:8080").start()
+        } catch (_: Exception) {}
+    }
+}
+
+tasks.register<AdbReverseTask>("adbReverse") {
+    adbPath.set(android.adbExecutable.absolutePath)
+}
+tasks.named("preBuild") {
+    dependsOn("adbReverse")
+}
+

@@ -6,6 +6,7 @@ import com.VuVietAnh.stadium_booking_api.dto.request.UserRegisterRequest;
 import com.VuVietAnh.stadium_booking_api.dto.response.AuthResponse;
 import com.VuVietAnh.stadium_booking_api.dto.response.UserResponse;
 import com.VuVietAnh.stadium_booking_api.entity.User;
+import com.VuVietAnh.stadium_booking_api.enums.Role;
 import com.VuVietAnh.stadium_booking_api.exception.BadRequestException;
 import com.VuVietAnh.stadium_booking_api.exception.DuplicateResourceException;
 import com.VuVietAnh.stadium_booking_api.exception.ResourceNotFoundException;
@@ -46,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
                 .email(request.getEmail())
                 .fullName(request.getFullName())
                 .phoneNumber(request.getPhoneNumber())
-                .role(request.getRole())
+                .role(Role.USER)
                 .avatarUrl(request.getAvatarUrl())
                 .isActive(true)
                 .build();

@@ -108,4 +108,27 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- ====================== BOTTOM NAVIGATION ====================== -->
+    <style name="Widget.StadiumFind.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@color/surface_elevated</item>
+        <item name="itemIconSize">@dimen/bottom_nav_icon_size</item>
+        <item name="itemIconTint">@color/bottom_nav_color</item>
+        <item name="itemTextColor">@color/bottom_nav_color</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.StadiumFind.BottomNav.Active</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.StadiumFind.BottomNav.Inactive</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="itemPaddingTop">@dimen/bottom_nav_padding_top</item>
+        <item name="itemPaddingBottom">@dimen/bottom_nav_padding_bottom</item>
+    </style>
+
+    <style name="TextAppearance.StadiumFind.BottomNav.Active" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">@dimen/bottom_nav_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.StadiumFind.BottomNav.Inactive" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">@dimen/bottom_nav_text_size</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
 </resources>

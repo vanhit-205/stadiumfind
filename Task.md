@@ -22,23 +22,23 @@
   - [x] **Frontend:** Thiết lập Theme, Colors, Typography.
   - [x] **Frontend:** Tạo các Custom Views dùng chung: PrimaryButton, AppTextField, LoadingDialog.
   - [x] **Frontend:** Thiết lập Navigation Graph (Bottom Navigation).
-- [ ] **Ngày 6 (Thứ 6): Xác thực (Backend)**
-  - [ ] **Backend (AI):** Gen cấu hình Spring Security + JWT. 
-  - [ ] **Backend (AI):** Viết và test API `/api/auth/register` và `/api/auth/login` trên Postman.
+- [x] **Ngày 6 (Thứ 6): Xác thực (Backend)**
+  - [x] **Backend (AI):** Gen cấu hình Spring Security + JWT. 
+  - [x] **Backend (AI):** Viết và test API `/api/auth/register` và `/api/auth/login` trên Postman.
 - [ ] **Ngày 7 (Chủ nhật): 💤 Nghỉ ngơi**
 
 ---
 
 ## Tuần 2: Module Auth & Hiển Thị Sân Bóng (Paging)
-- [ ] **Ngày 8 (Thứ 2): UI Đăng nhập & Đăng ký**
-  - [ ] **Frontend:** Code màn hình Login và Register.
-  - [ ] **Frontend:** Xử lý validate dữ liệu nhập (email format, password length).
-- [ ] **Ngày 9 (Thứ 3): Logic Xác thực (Clean Architecture)**
-  - [ ] **Frontend:** Viết `AuthApiService`, `AuthRepository`, `LoginUseCase`.
-  - [ ] **Frontend:** Tích hợp `DataStore` để lưu JWT Token. Viết `AuthInterceptor`.
-- [ ] **Ngày 10 (Thứ 4): Ghép API Auth & ViewModel**
-  - [ ] **Frontend:** Code `AuthViewModel` với `StateFlow`.
-  - [ ] **Frontend:** Gọi API Login, xử lý loading/success/error. Điều hướng vào màn Home.
+- [x] **Ngày 8 (Thứ 2): UI Đăng nhập & Đăng ký**
+  - [x] **Frontend:** Code màn hình Login và Register.
+  - [x] **Frontend:** Xử lý validate dữ liệu nhập (email format, password length).
+- [x] **Ngày 9 (Thứ 3): Logic Xác thực (Clean Architecture)**
+  - [x] **Frontend:** Viết `AuthApiService`, `AuthRepository`, `LoginUseCase`.
+  - [x] **Frontend:** Tích hợp `DataStore` để lưu JWT Token. Viết `AuthInterceptor`.
+- [x] **Ngày 10 (Thứ 4): Ghép API Auth & ViewModel**
+  - [x] **Frontend:** Code `AuthViewModel` với `StateFlow`.
+  - [x] **Frontend:** Gọi API Login, xử lý loading/success/error. Điều hướng vào màn Home.
 - [ ] **Ngày 11 (Thứ 5): API Sân Bóng (Backend)**
   - [ ] **Backend (AI):** Gen API `/api/stadiums` có hỗ trợ phân trang (Pageable).
   - [ ] **Backend (AI):** Viết script SQL insert 15-20 sân bóng giả lập để test.

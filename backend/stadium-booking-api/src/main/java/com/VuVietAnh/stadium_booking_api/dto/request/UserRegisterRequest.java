@@ -33,8 +33,5 @@ public class UserRegisterRequest {
     @Pattern(regexp = "^(0|\\+84)[0-9]{9}$", message = "Invalid phone number format")
     private String phoneNumber;
 
-    @NotNull(message = "Role is required")
-    private Role role;
-
     private String avatarUrl;
 }

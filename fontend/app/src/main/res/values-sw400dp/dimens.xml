@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Bottom Navigation cho thiết bị màn hình lớn / hiện đại (sw >= 400dp) -->
+    <dimen name="bottom_nav_icon_size">24dp</dimen>
+    <dimen name="bottom_nav_padding_top">6dp</dimen>
+    <dimen name="bottom_nav_padding_bottom">6dp</dimen>
+    <dimen name="bottom_nav_text_size">12sp</dimen>
+</resources>

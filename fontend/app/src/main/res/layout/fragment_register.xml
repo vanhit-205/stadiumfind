@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/surface_dark"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingHorizontal="28dp"
+        android:paddingTop="56dp"
+        android:paddingBottom="40dp">
+
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="start"
+            android:layout_marginBottom="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_back"
+            android:contentDescription="Quay lại"
+            android:tint="@color/text_primary" />
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Tạo tài khoản"
+            android:textAppearance="@style/TextAppearance.StadiumFind.Headline2"
+            android:textColor="@color/text_primary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="Đăng ký để bắt đầu tìm sân và kết nối cùng đồng đội"
+            android:textAppearance="@style/TextAppearance.StadiumFind.Body"
+            android:textColor="@color/text_secondary" />
+
+        <!-- Username Field -->
+        <com.example.stadiumfind.core.ui.components.AppTextField
+            android:id="@+id/tf_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Tên đăng nhập"
+            android:inputType="text"
+            app:fieldLabel="Tên đăng nhập"
+            app:leadingIcon="@drawable/ic_person" />
+
+        <!-- Email Field -->
+        <com.example.stadiumfind.core.ui.components.AppTextField
+            android:id="@+id/tf_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Địa chỉ email"
+            android:inputType="textEmailAddress"
+            app:fieldLabel="Email"
+            app:leadingIcon="@drawable/ic_email" />
+
+        <!-- Password Field -->
+        <com.example.stadiumfind.core.ui.components.AppTextField
+            android:id="@+id/tf_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Mật khẩu (tối thiểu 6 ký tự)"
+            app:fieldLabel="Mật khẩu"
+            app:isPassword="true"
+            app:leadingIcon="@drawable/ic_lock" />
+
+        <!-- Confirm Password Field -->
+        <com.example.stadiumfind.core.ui.components.AppTextField
+            android:id="@+id/tf_confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:hint="Nhập lại mật khẩu"
+            app:fieldLabel="Xác nhận mật khẩu"
+            app:isPassword="true"
+            app:leadingIcon="@drawable/ic_lock" />
+
+        <!-- Register Button -->
+        <com.example.stadiumfind.core.ui.components.PrimaryButton
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:buttonText="Tạo tài khoản" />
+
+        <!-- Navigate to Login -->
+        <TextView
+            android:id="@+id/tv_go_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Đã có tài khoản? Đăng nhập"
+            android:textAppearance="@style/TextAppearance.StadiumFind.Body"
+            android:textColor="@color/primary_400"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+</ScrollView>

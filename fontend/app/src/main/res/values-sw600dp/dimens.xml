@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Bottom Navigation cho máy tính bảng / tablet / màn hình gập (sw >= 600dp) -->
+    <dimen name="bottom_nav_icon_size">26dp</dimen>
+    <dimen name="bottom_nav_padding_top">8dp</dimen>
+    <dimen name="bottom_nav_padding_bottom">8dp</dimen>
+    <dimen name="bottom_nav_text_size">13sp</dimen>
+</resources>

@@ -1,6 +1,7 @@
 package com.example.stadiumfind.di
 
 import com.example.stadiumfind.core.common.Constants
+import com.example.stadiumfind.core.network.AuthInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -35,10 +36,12 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        loggingInterceptor: HttpLoggingInterceptor
+        loggingInterceptor: HttpLoggingInterceptor,
+        authInterceptor: AuthInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
+            .addInterceptor(authInterceptor)      // Đính JWT trước
+            .addInterceptor(loggingInterceptor)   // Log sau để thấy header
             .connectTimeout(Constants.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(Constants.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(Constants.NETWORK_TIMEOUT, TimeUnit.SECONDS)

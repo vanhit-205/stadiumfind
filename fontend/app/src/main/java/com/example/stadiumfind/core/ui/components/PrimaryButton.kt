@@ -24,7 +24,7 @@ class PrimaryButton @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private val binding = ViewPrimaryButtonBinding.inflate(
-        LayoutInflater.from(context), this, true
+        LayoutInflater.from(context), this
     )
 
     var text: String

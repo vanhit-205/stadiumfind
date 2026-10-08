@@ -109,12 +109,8 @@ class LoadingDialog : DialogFragment() {
  *   loadingDialog.show(childFragmentManager)
  *   loadingDialog.safeDismiss()
  */
-fun LoadingDialog.show(fragmentManager: FragmentManager, message: String? = null) {
-    if (!isAdded) {
-        if (message != null) {
-            LoadingDialog.newInstance(message).show(fragmentManager, "LoadingDialog")
-        } else {
-            show(fragmentManager, "LoadingDialog")
-        }
+fun LoadingDialog.show(fragmentManager: FragmentManager) {
+    if (!isAdded && fragmentManager.findFragmentByTag("LoadingDialog") == null) {
+        show(fragmentManager, "LoadingDialog")
     }
 }

@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
                 .email(request.getEmail())
                 .fullName(request.getFullName())
                 .phoneNumber(request.getPhoneNumber())
-                .role(request.getRole())
+                .role(Role.USER)
                 .avatarUrl(request.getAvatarUrl())
                 .isActive(true)
                 .build();

@@ -23,6 +23,12 @@
     <dimen name="bottom_nav_height">64dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
 
+    <!-- Bottom Navigation Responsive Dimens (Default / Base) -->
+    <dimen name="bottom_nav_icon_size">22dp</dimen>
+    <dimen name="bottom_nav_padding_top">5dp</dimen>
+    <dimen name="bottom_nav_padding_bottom">5dp</dimen>
+    <dimen name="bottom_nav_text_size">11sp</dimen>
+
     <!-- Icons -->
     <dimen name="icon_sm">20dp</dimen>
     <dimen name="icon_md">24dp</dimen>

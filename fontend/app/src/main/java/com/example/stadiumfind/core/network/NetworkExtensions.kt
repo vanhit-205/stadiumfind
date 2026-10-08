@@ -1,7 +1,9 @@
 package com.example.stadiumfind.core.network
 
+import org.json.JSONObject
 import retrofit2.Response
 import java.io.IOException
+import java.net.SocketTimeoutException
 
 /**
  * Hàm extension bọc một Retrofit API call trong try/catch,
@@ -44,7 +46,9 @@ suspend fun <T> safeApiCall(
             }
         } else {
             // Server trả về HTTP error (4xx, 5xx)
-            val errorMessage = when (response.code()) {
+            // Ưu tiên message từ server (ErrorResponse.message), nếu không có dùng message mặc định
+            val serverMessage = parseServerMessage(response)
+            val errorMessage = serverMessage ?: when (response.code()) {
                 400 -> "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại."
                 401 -> "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại."
                 403 -> "Bạn không có quyền thực hiện thao tác này."
@@ -57,11 +61,24 @@ suspend fun <T> safeApiCall(
             }
             Resource.Error(message = errorMessage, code = response.code())
         }
+    } catch (e: SocketTimeoutException) {
+        Resource.Error(message = "Máy chủ phản hồi quá chậm. Vui lòng thử lại.")
     } catch (e: IOException) {
-        // Mất mạng, timeout, DNS fail
+        // Mất mạng, DNS fail, không kết nối được server
         Resource.Error(message = "Không có kết nối mạng. Vui lòng kiểm tra lại.")
     } catch (e: Exception) {
         // Lỗi parse JSON hoặc lỗi không mong muốn khác
         Resource.Error(message = e.localizedMessage ?: "Có lỗi không xác định xảy ra.")
+    }
+}
+
+/** Đọc field "message" từ errorBody JSON của backend; trả null nếu không parse được. */
+private fun parseServerMessage(response: Response<*>): String? {
+    return try {
+        val raw = response.errorBody()?.string()
+        if (raw.isNullOrBlank()) null
+        else JSONObject(raw).optString("message").takeIf { it.isNotBlank() }
+    } catch (e: Exception) {
+        null
     }
 }

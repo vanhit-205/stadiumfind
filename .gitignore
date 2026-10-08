@@ -21,7 +21,7 @@ logs/
 .gradle/
 local.properties
 captures/
-
+.kotlin/
 **/build/
 
 #########################################
