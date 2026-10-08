@@ -42,9 +42,9 @@
 - [x] **Ngày 11 (Thứ 5): API Sân Bóng (Backend)**
   - [x] **Backend (AI):** Gen API `/api/stadiums` có hỗ trợ phân trang (Pageable).
   - [x] **Backend (AI):** Viết script SQL insert 15-20 sân bóng giả lập để test.
-- [ ] **Ngày 12 (Thứ 6): UI Màn Hình Home**
-  - [ ] **Frontend:** Thiết kế layout item sân bóng (CardView, Rating, Giá).
-  - [ ] **Frontend:** Tích hợp thư viện `Coil` để load ảnh sân từ URL.
+- [x] **Ngày 12 (Thứ 6): UI Màn Hình Home**
+  - [x] **Frontend:** Thiết kế layout item sân bóng (CardView, Rating, Giá).
+  - [x] **Frontend:** Tích hợp thư viện `Coil` để load ảnh sân từ URL.
 - [ ] **Ngày 13 (Thứ 7): Paging 3 & Danh sách sân**
   - [ ] **Frontend:** Viết `StadiumPagingSource` và `GetStadiumsUseCase`.
   - [ ] **Frontend:** Dùng `PagingDataAdapter` hiển thị danh sách sân lên RecyclerView/LazyColumn.

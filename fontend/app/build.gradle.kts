@@ -74,6 +74,9 @@ dependencies {
 
     // DataStore
     implementation(libs.androidx.datastore.preferences)
+
+    // Coil Image Loading
+    implementation(libs.coil)
 }
 
 // Tự động chạy adb reverse mỗi khi bấm Run/Build app
