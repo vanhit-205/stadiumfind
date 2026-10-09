@@ -77,6 +77,12 @@ dependencies {
 
     // Coil Image Loading
     implementation(libs.coil)
+
+    // Paging 3
+    implementation(libs.androidx.paging.runtime)
+
+    // SwipeRefreshLayout
+    implementation(libs.androidx.swiperefreshlayout)
 }
 
 // Tự động chạy adb reverse mỗi khi bấm Run/Build app

@@ -45,9 +45,9 @@
 - [x] **Ngày 12 (Thứ 6): UI Màn Hình Home**
   - [x] **Frontend:** Thiết kế layout item sân bóng (CardView, Rating, Giá).
   - [x] **Frontend:** Tích hợp thư viện `Coil` để load ảnh sân từ URL.
-- [ ] **Ngày 13 (Thứ 7): Paging 3 & Danh sách sân**
-  - [ ] **Frontend:** Viết `StadiumPagingSource` và `GetStadiumsUseCase`.
-  - [ ] **Frontend:** Dùng `PagingDataAdapter` hiển thị danh sách sân lên RecyclerView/LazyColumn.
+- [x] **Ngày 13 (Thứ 7): Paging 3 & Danh sách sân**
+  - [x] **Frontend:** Viết `StadiumPagingSource` và `GetStadiumsUseCase`.
+  - [x] **Frontend:** Dùng `PagingDataAdapter` hiển thị danh sách sân lên RecyclerView/LazyColumn.
 - [ ] **Ngày 14 (Chủ nhật): 💤 Nghỉ ngơi**
 
 ---

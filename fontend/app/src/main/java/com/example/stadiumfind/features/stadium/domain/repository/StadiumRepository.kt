@@ -1,0 +1,19 @@
+package com.example.stadiumfind.features.stadium.domain.repository
+
+import androidx.paging.PagingData
+import com.example.stadiumfind.features.stadium.domain.model.StadiumItem
+import kotlinx.coroutines.flow.Flow
+
+/**
+ * Interface Repository quản lý dữ liệu sân bóng theo kiến trúc Clean Architecture.
+ */
+interface StadiumRepository {
+
+    /**
+     * Lấy luồng phân trang PagingData cho danh sách sân bóng.
+     */
+    fun getStadiumsStream(
+        keyword: String? = null,
+        provinceCity: String? = null
+    ): Flow<PagingData<StadiumItem>>
+}

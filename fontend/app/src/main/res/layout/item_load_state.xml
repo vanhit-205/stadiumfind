@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Loading Spinner khi tải trang tiếp theo -->
+    <ProgressBar
+        android:id="@+id/progressBarLoadState"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:indeterminateTint="@color/primary_400" />
+
+    <!-- Thông báo lỗi -->
+    <TextView
+        android:id="@+id/tvLoadStateError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Không thể tải thêm sân bóng"
+        android:textAlignment="center"
+        android:textColor="@color/error_red"
+        android:textSize="13sp"
+        android:visibility="gone" />
+
+    <!-- Nút thử lại -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLoadStateRetry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/surface_card"
+        android:text="Thử lại"
+        android:textColor="@color/primary_300"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:cornerRadius="20dp"
+        app:strokeColor="@color/stroke_default"
+        app:strokeWidth="1dp" />
+
+</LinearLayout>
