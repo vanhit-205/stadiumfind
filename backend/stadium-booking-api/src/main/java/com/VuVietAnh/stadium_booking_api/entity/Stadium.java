@@ -39,6 +39,12 @@ public class Stadium extends BaseEntity {
     @Column(name = "district", nullable = false, length = 100)
     private String district;
 
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
     @Pattern(regexp = "^(0|\\+84)[0-9]{9}$", message = "Invalid phone number format")
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;

@@ -22,7 +22,9 @@ data class StadiumItem(
     val reviewCount: Int = 0,
     val minPricePerHour: Double = 0.0,
     val totalCourts: Int = 1,
-    val sportTypes: List<String> = listOf("Bóng đá")
+    val sportTypes: List<String> = listOf("Bóng đá"),
+    val latitude: Double = 0.0,
+    val longitude: Double = 0.0
 ) {
     val formattedPrice: String
         get() {

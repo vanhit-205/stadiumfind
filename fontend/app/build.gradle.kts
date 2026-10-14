@@ -83,6 +83,12 @@ dependencies {
 
     // SwipeRefreshLayout
     implementation(libs.androidx.swiperefreshlayout)
+
+    // OpenStreetMap (osmdroid)
+    implementation(libs.osmdroid)
+
+    // Google Play Services Location (lấy tọa độ thiết bị)
+    implementation(libs.play.services.location)
 }
 
 // Tự động chạy adb reverse mỗi khi bấm Run/Build app

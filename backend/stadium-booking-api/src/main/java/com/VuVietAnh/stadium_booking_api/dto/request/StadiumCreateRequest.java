@@ -39,4 +39,8 @@ public class StadiumCreateRequest {
     private LocalTime closingTime;
 
     private String imageUrl;
+
+    private Double latitude;
+
+    private Double longitude;
 }

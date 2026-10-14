@@ -52,15 +52,16 @@
 
 ---
 
-## Tuần 3: Bản Đồ (Google Maps) & Chi Tiết Sân
-- [ ] **Ngày 15 (Thứ 2): Setup Google Maps**
-  - [ ] **Frontend:** Đăng ký API Key trên Google Cloud. Tích hợp Maps SDK.
-  - [ ] **Frontend:** Xin quyền vị trí (Runtime Permissions) & Code lấy tọa độ hiện tại (Fused Location).
-- [ ] **Ngày 16 (Thứ 3): Rải Marker Sân Bóng**
+## Tuần 3: Bản Đồ (OpenStreetMap) & Chi Tiết Sân
+- [x] **Ngày 15 (Thứ 2): Setup OpenStreetMap (osmdroid)**
+  - [x] **Frontend:** Tích hợp thư viện osmdroid. Cấu hình tile source & cache.
+  - [x] **Frontend:** Viết lại SearchFragment dùng MapView (osmdroid) thay Google Maps.
+  - [x] **Frontend:** Xin quyền vị trí (Runtime Permissions) & Code lấy tọa độ hiện tại (Fused Location).
+- [ ] **Ngày 16 (Thứ 3): Rải Marker Sân Bóng (osmdroid)**
   - [ ] **Backend (AI):** Gen API trả về tọa độ các sân gần nhất.
-  - [ ] **Frontend:** Gọi API, hiển thị Custom Marker lên bản đồ.
-- [ ] **Ngày 17 (Thứ 4): Tương tác Bản Đồ**
-  - [ ] **Frontend:** Xử lý sự kiện click vào Marker hiện BottomSheet (Tóm tắt thông tin sân).
+  - [ ] **Frontend:** Gọi API, dùng osmdroid Marker/Overlay hiển thị sân lên bản đồ.
+- [ ] **Ngày 17 (Thứ 4): Tương tác Bản Đồ (osmdroid)**
+  - [ ] **Frontend:** Xử lý sự kiện click Marker (osmdroid ItemizedOverlay) hiện BottomSheet thông tin sân.
   - [ ] **Frontend:** Nút bấm từ BottomSheet điều hướng sang màn Chi tiết.
 - [ ] **Ngày 18 (Thứ 5): UI Chi Tiết Sân**
   - [ ] **Frontend:** Code UI màn hình Detail (Image Slider, Tiện ích sân: Wifi, Nước uống).

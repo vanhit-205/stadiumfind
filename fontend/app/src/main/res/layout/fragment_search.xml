@@ -1,24 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:background="@color/surface_dark">
+    android:background="@color/surface_dark"
+    tools:context=".features.search.SearchFragment">
 
-    <TextView
+    <!-- OpenStreetMap MapView (full screen) -->
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Floating Search Bar -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/searchBarCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_md"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="@dimen/spacing_md"
+        app:cardBackgroundColor="@color/surface_card"
+        app:cardCornerRadius="@dimen/radius_md"
+        app:cardElevation="8dp"
+        app:strokeColor="@color/stroke_default"
+        app:strokeWidth="@dimen/stroke_width">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/spacing_md">
+
+            <ImageView
+                android:layout_width="@dimen/icon_sm"
+                android:layout_height="@dimen/icon_sm"
+                android:src="@drawable/ic_search"
+                android:importantForAccessibility="no"
+                app:tint="@color/text_hint" />
+
+            <EditText
+                android:id="@+id/etSearchMap"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/spacing_sm"
+                android:background="@android:color/transparent"
+                android:hint="Tìm sân bóng quanh đây..."
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint"
+                android:textSize="@dimen/text_md"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- FAB - Vị trí của tôi -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabMyLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="🔍 Tìm Kiếm"
-        android:textColor="@color/text_primary"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/spacing_md"
+        android:layout_marginBottom="88dp"
+        android:contentDescription="Vị trí của tôi"
+        android:src="@drawable/ic_my_location"
+        app:backgroundTint="@color/surface_card"
+        app:tint="@color/primary_400"
+        app:elevation="6dp"
+        app:borderWidth="0dp"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Permission denied overlay (ẩn mặc định) -->
+    <LinearLayout
+        android:id="@+id/layoutPermissionDenied"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Coming soon — Ngày 13"
-        android:textColor="@color/text_hint"
-        android:textSize="13sp" />
-</LinearLayout>
+        android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/spacing_md"
+        android:layout_marginEnd="@dimen/spacing_md"
+        android:layout_marginBottom="88dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="@dimen/spacing_md"
+        android:background="@drawable/bg_permission_banner"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📍 Bật vị trí để tìm sân gần bạn"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_md"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:text="Cấp quyền vị trí để xem bản đồ các sân bóng xung quanh."
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_sm" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGrantPermission"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:text="Cấp quyền"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/primary_500"
+            app:cornerRadius="@dimen/radius_sm" />
+    </LinearLayout>
+
+</FrameLayout>

@@ -22,6 +22,8 @@ fun StadiumDto.toDomain(): StadiumItem {
         reviewCount = 0,
         minPricePerHour = minPricePerHour ?: 0.0,
         totalCourts = totalCourts ?: 1,
-        sportTypes = if (!sportTypes.isNullOrEmpty()) sportTypes else listOf("Bóng đá")
+        sportTypes = if (!sportTypes.isNullOrEmpty()) sportTypes else listOf("Bóng đá"),
+        latitude = latitude ?: 0.0,
+        longitude = longitude ?: 0.0
     )
 }

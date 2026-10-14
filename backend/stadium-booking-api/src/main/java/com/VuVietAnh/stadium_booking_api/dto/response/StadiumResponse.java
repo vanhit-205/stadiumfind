@@ -19,6 +19,8 @@ public class StadiumResponse {
     private String address;
     private String provinceCity;
     private String district;
+    private Double latitude;
+    private Double longitude;
     private String phoneNumber;
     private String description;
     private LocalTime openingTime;
