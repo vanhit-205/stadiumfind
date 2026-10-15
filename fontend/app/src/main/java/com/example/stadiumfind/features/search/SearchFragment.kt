@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.stadiumfind.core.util.LocationHelper
+import com.example.stadiumfind.core.util.OsmTileSources
 import com.example.stadiumfind.databinding.FragmentSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -90,11 +91,12 @@ class SearchFragment : Fragment() {
 
     private fun setupMap() {
         binding.mapView.apply {
-            setTileSource(TileSourceFactory.MAPNIK)
+            // Nguồn OpenStreetMap độc lập (miễn phí 100%, không cần API key, không bị 403)
+            setTileSource(OsmTileSources.OSM_PUBLIC)
             setMultiTouchControls(true)
             zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
 
-            // Áp dụng dark filter phù hợp giao diện nền tối của app
+            // Áp dụng bộ lọc Dark Theme đồng bộ giao diện ứng dụng
             applyDarkMapStyle()
 
             // Thiết lập vị trí mặc định ban đầu
