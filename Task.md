@@ -57,9 +57,9 @@
   - [x] **Frontend:** Tích hợp thư viện osmdroid. Cấu hình tile source & cache.
   - [x] **Frontend:** Viết lại SearchFragment dùng MapView (osmdroid) thay Google Maps.
   - [x] **Frontend:** Xin quyền vị trí (Runtime Permissions) & Code lấy tọa độ hiện tại (Fused Location).
-- [ ] **Ngày 16 (Thứ 3): Rải Marker Sân Bóng (osmdroid)**
-  - [ ] **Backend (AI):** Gen API trả về tọa độ các sân gần nhất.
-  - [ ] **Frontend:** Gọi API, dùng osmdroid Marker/Overlay hiển thị sân lên bản đồ.
+- [x] **Ngày 16 (Thứ 3): Rải Marker Sân Bóng (osmdroid)**
+  - [x] **Backend (AI):** Gen API trả về tọa độ các sân gần nhất.
+  - [x] **Frontend:** Gọi API, dùng osmdroid Marker/Overlay hiển thị sân lên bản đồ.
 - [ ] **Ngày 17 (Thứ 4): Tương tác Bản Đồ (osmdroid)**
   - [ ] **Frontend:** Xử lý sự kiện click Marker (osmdroid ItemizedOverlay) hiện BottomSheet thông tin sân.
   - [ ] **Frontend:** Nút bấm từ BottomSheet điều hướng sang màn Chi tiết.

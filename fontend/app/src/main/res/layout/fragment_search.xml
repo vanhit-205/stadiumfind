@@ -58,6 +58,19 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
+    <!-- Loading indicator khi fetch danh sách sân bóng -->
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressLoadingMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:layout_marginStart="@dimen/spacing_lg"
+        android:layout_marginEnd="@dimen/spacing_lg"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:indicatorColor="@color/primary_400"
+        app:trackColor="@android:color/transparent" />
+
     <!-- FAB - Vị trí của tôi -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabMyLocation"

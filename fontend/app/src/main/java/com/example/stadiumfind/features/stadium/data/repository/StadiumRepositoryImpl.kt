@@ -3,6 +3,9 @@ package com.example.stadiumfind.features.stadium.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.example.stadiumfind.core.network.Resource
+import com.example.stadiumfind.core.network.safeApiCall
+import com.example.stadiumfind.features.stadium.data.mapper.toDomain
 import com.example.stadiumfind.features.stadium.data.paging.StadiumPagingSource
 import com.example.stadiumfind.features.stadium.data.remote.StadiumApiService
 import com.example.stadiumfind.features.stadium.domain.model.StadiumItem
@@ -35,5 +38,23 @@ class StadiumRepositoryImpl @Inject constructor(
                 )
             }
         ).flow
+    }
+
+    override suspend fun getNearbyStadiums(
+        latitude: Double,
+        longitude: Double,
+        radiusKm: Double
+    ): Resource<List<StadiumItem>> {
+        val result = safeApiCall {
+            apiService.getNearbyStadiums(latitude, longitude, radiusKm)
+        }
+        return when (result) {
+            is Resource.Success -> {
+                val items = result.data.map { it.toDomain() }
+                Resource.Success(items)
+            }
+            is Resource.Error -> Resource.Error(result.message, result.code)
+            is Resource.Loading -> Resource.Loading
+        }
     }
 }

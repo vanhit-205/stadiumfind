@@ -44,6 +44,20 @@ public class StadiumController {
     }
 
     /**
+     * Lấy danh sách sân bóng gần vị trí hiện tại (tính khoảng cách bằng công thức Haversine).
+     * Ví dụ: GET /api/stadiums/nearby?latitude=21.0285&longitude=105.8542&radiusKm=20.0
+     */
+    @GetMapping("/nearby")
+    public ResponseEntity<ApiResponse<java.util.List<StadiumResponse>>> getNearbyStadiums(
+            @RequestParam Double latitude,
+            @RequestParam Double longitude,
+            @RequestParam(required = false, defaultValue = "20.0") Double radiusKm
+    ) {
+        java.util.List<StadiumResponse> list = stadiumService.getNearbyStadiums(latitude, longitude, radiusKm);
+        return ResponseEntity.ok(ApiResponse.ok("Get nearby stadiums successfully", list));
+    }
+
+    /**
      * Lấy thông tin chi tiết một sân bóng theo ID.
      */
     @GetMapping("/{id}")

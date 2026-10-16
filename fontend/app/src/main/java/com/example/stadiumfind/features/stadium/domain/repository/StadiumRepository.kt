@@ -16,4 +16,13 @@ interface StadiumRepository {
         keyword: String? = null,
         provinceCity: String? = null
     ): Flow<PagingData<StadiumItem>>
+
+    /**
+     * Lấy danh sách sân bóng gần vị trí hiện tại theo bán kính (km).
+     */
+    suspend fun getNearbyStadiums(
+        latitude: Double,
+        longitude: Double,
+        radiusKm: Double = 20.0
+    ): com.example.stadiumfind.core.network.Resource<List<StadiumItem>>
 }

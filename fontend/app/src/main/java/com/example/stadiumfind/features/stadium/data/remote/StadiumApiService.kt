@@ -16,4 +16,11 @@ interface StadiumApiService {
         @Query("keyword") keyword: String? = null,
         @Query("provinceCity") provinceCity: String? = null
     ): Response<BaseResponse<PageResponse<StadiumDto>>>
+
+    @GET("stadiums/nearby")
+    suspend fun getNearbyStadiums(
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double,
+        @Query("radiusKm") radiusKm: Double = 20.0
+    ): Response<BaseResponse<List<StadiumDto>>>
 }

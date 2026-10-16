@@ -2,24 +2,36 @@ package com.example.stadiumfind.features.search
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.example.stadiumfind.R
 import com.example.stadiumfind.core.util.LocationHelper
 import com.example.stadiumfind.core.util.OsmTileSources
 import com.example.stadiumfind.databinding.FragmentSearchBinding
+import com.example.stadiumfind.features.stadium.domain.model.StadiumItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
+import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import javax.inject.Inject
@@ -30,8 +42,7 @@ import javax.inject.Inject
  * - Floating search bar
  * - FAB "Vị trí của tôi"
  * - Dark map filter phù hợp dark theme của ứng dụng
- *
- * Ngày 16 sẽ bổ sung: rải Marker sân bóng, BottomSheet thông tin sân.
+ * - Rải Marker các cụm sân bóng lân cận từ API backend
  */
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -39,7 +50,10 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
+    private val viewModel: SearchViewModel by viewModels()
+
     private var locationOverlay: MyLocationNewOverlay? = null
+    private val stadiumMarkers = mutableListOf<Marker>()
 
     @Inject
     lateinit var locationHelper: LocationHelper
@@ -79,8 +93,15 @@ class SearchFragment : Fragment() {
 
         setupMap()
         setupListeners()
+        observeViewModel()
 
-        // Kiểm tra quyền và điều hướng vị trí
+        // 1. Tải ngay danh sách sân bóng ban đầu (dùng tọa độ trung tâm) để luôn có Marker xuất hiện ngay lập tức
+        viewModel.loadNearbyStadiums(
+            latitude = LocationHelper.DEFAULT_LOCATION.latitude,
+            longitude = LocationHelper.DEFAULT_LOCATION.longitude
+        )
+
+        // 2. Kiểm tra quyền vị trí và animate nếu có
         if (locationHelper.hasLocationPermission()) {
             onLocationPermissionGranted()
         } else {
@@ -106,10 +127,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        // FAB: Quay về vị trí hiện tại
+        // FAB: Quay về vị trí hiện tại và tải lại sân lân cận
         binding.fabMyLocation.setOnClickListener {
             if (locationHelper.hasLocationPermission()) {
-                animateToCurrentLocation()
+                animateToCurrentLocation(forceRefreshNearby = true)
             } else {
                 requestLocationPermission()
             }
@@ -119,6 +140,120 @@ class SearchFragment : Fragment() {
         binding.btnGrantPermission.setOnClickListener {
             requestLocationPermission()
         }
+
+        // Tìm kiếm khi nhấn phím Enter trên Search Bar
+        binding.etSearchMap.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val query = v.text.toString().trim()
+                if (query.isNotEmpty()) {
+                    searchStadiumOnMap(query)
+                }
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    when (state) {
+                        is SearchUiState.Idle -> {
+                            binding.progressLoadingMap.visibility = View.GONE
+                        }
+                        is SearchUiState.Loading -> {
+                            binding.progressLoadingMap.visibility = View.VISIBLE
+                        }
+                        is SearchUiState.Success -> {
+                            binding.progressLoadingMap.visibility = View.GONE
+                            Log.d(TAG, "Đã nhận được ${state.stadiums.size} sân bóng từ API")
+                            renderStadiumMarkers(state.stadiums)
+                        }
+                        is SearchUiState.Error -> {
+                            binding.progressLoadingMap.visibility = View.GONE
+                            Log.e(TAG, "Lỗi tải sân bóng: ${state.message}")
+                            Toast.makeText(requireContext(), "Lỗi tải sân: ${state.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Chuyển Vector Drawable thành BitmapDrawable để osmdroid vẽ Marker chuẩn xác và không bị lỗi bounds.
+     */
+    private fun createMarkerIcon(): BitmapDrawable {
+        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_map_stadium_pin)
+        val density = resources.displayMetrics.density
+        val width = (36 * density).toInt().coerceAtLeast(48)
+        val height = (44 * density).toInt().coerceAtLeast(58)
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        drawable?.setBounds(0, 0, width, height)
+        drawable?.draw(canvas)
+        return BitmapDrawable(resources, bitmap)
+    }
+
+    /**
+     * Rải các Marker sân bóng trực tiếp lên bản đồ osmdroid.
+     */
+    private fun renderStadiumMarkers(stadiums: List<StadiumItem>) {
+        val mapView = binding.mapView
+
+        // 1. Xóa các marker sân bóng cũ khỏi overlays
+        stadiumMarkers.forEach { mapView.overlays.remove(it) }
+        stadiumMarkers.clear()
+
+        // 2. Tạo icon BitmapDrawable chuẩn
+        val pinBitmapDrawable = createMarkerIcon()
+
+        // 3. Tạo Marker cho từng sân
+        var validCount = 0
+        stadiums.forEach { stadium ->
+            if (stadium.latitude != 0.0 && stadium.longitude != 0.0) {
+                val marker = Marker(mapView).apply {
+                    id = "stadium_${stadium.id}"
+                    position = GeoPoint(stadium.latitude, stadium.longitude)
+                    icon = pinBitmapDrawable
+                    setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                    title = stadium.name
+                    snippet = buildString {
+                        if (stadium.formattedDistance.isNotBlank()) {
+                            append("📍 ${stadium.formattedDistance} • ")
+                        }
+                        append(stadium.formattedPrice)
+                    }
+                    setOnMarkerClickListener { m, _ ->
+                        m.showInfoWindow()
+                        mapView.controller.animateTo(m.position)
+                        true
+                    }
+                }
+                mapView.overlays.add(marker)
+                stadiumMarkers.add(marker)
+                validCount++
+            }
+        }
+
+        Log.d(TAG, "Đã thêm $validCount markers vào bản đồ. Tổng overlays: ${mapView.overlays.size}")
+        mapView.invalidate()
+    }
+
+    /**
+     * Tìm nhanh vị trí sân theo tên trong danh sách Marker hiện tại.
+     */
+    private fun searchStadiumOnMap(query: String) {
+        for (item in stadiumMarkers) {
+            if (item.title?.contains(query, ignoreCase = true) == true) {
+                binding.mapView.controller.animateTo(item.position, 16.0, 800L)
+                item.showInfoWindow()
+                return
+            }
+        }
+        Toast.makeText(requireContext(), "Không tìm thấy sân: $query", Toast.LENGTH_SHORT).show()
     }
 
     /**
@@ -177,7 +312,7 @@ class SearchFragment : Fragment() {
             locationOverlay?.enableMyLocation()
         }
         binding.mapView.invalidate()
-        animateToCurrentLocation()
+        animateToCurrentLocation(forceRefreshNearby = false)
     }
 
     /**
@@ -189,9 +324,9 @@ class SearchFragment : Fragment() {
     }
 
     /**
-     * Di chuyển mượt (animate) tới vị trí hiện tại của user.
+     * Di chuyển mượt (animate) tới vị trí hiện tại của user và tải các sân lân cận.
      */
-    private fun animateToCurrentLocation() {
+    private fun animateToCurrentLocation(forceRefreshNearby: Boolean = false) {
         viewLifecycleOwner.lifecycleScope.launch {
             val currentLocation = locationHelper.getCurrentLocation()
             val targetGeoPoint = currentLocation ?: LocationHelper.DEFAULT_LOCATION
@@ -200,6 +335,13 @@ class SearchFragment : Fragment() {
                 targetGeoPoint,
                 LocationHelper.DEFAULT_ZOOM,
                 800L
+            )
+
+            // Cập nhật danh sách sân bóng lân cận theo vị trí thực tế
+            viewModel.loadNearbyStadiums(
+                latitude = targetGeoPoint.latitude,
+                longitude = targetGeoPoint.longitude,
+                forceRefresh = forceRefreshNearby
             )
         }
     }
@@ -224,6 +366,8 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         locationOverlay?.disableMyLocation()
+        stadiumMarkers.forEach { binding.mapView.overlays.remove(it) }
+        stadiumMarkers.clear()
         binding.mapView.onDetach()
         super.onDestroyView()
         _binding = null

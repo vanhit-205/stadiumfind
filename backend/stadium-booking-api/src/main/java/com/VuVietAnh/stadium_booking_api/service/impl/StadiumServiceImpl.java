@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -85,6 +86,57 @@ public class StadiumServiceImpl implements StadiumService {
         String cleanKeyword = (keyword != null && !keyword.trim().isEmpty()) ? keyword.trim() : null;
         String cleanProvince = (provinceCity != null && !provinceCity.trim().isEmpty()) ? provinceCity.trim() : null;
         return stadiumRepository.searchStadiums(cleanProvince, cleanKeyword, pageable).map(this::mapToResponse);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<StadiumResponse> getNearbyStadiums(Double latitude, Double longitude, Double radiusKm) {
+        if (latitude == null || longitude == null) {
+            return Collections.emptyList();
+        }
+
+        double radius = (radiusKm != null && radiusKm > 0) ? radiusKm : 20.0;
+
+        // 1 độ vĩ độ ~ 111 km
+        double latDelta = radius / 111.0;
+        double minLat = latitude - latDelta;
+        double maxLat = latitude + latDelta;
+
+        // 1 độ kinh độ ~ 111 * cos(rad(lat)) km
+        double cosLat = Math.cos(Math.toRadians(latitude));
+        double lonDelta = (cosLat > 0.0001) ? (radius / (111.0 * cosLat)) : latDelta;
+        double minLng = longitude - lonDelta;
+        double maxLng = longitude + lonDelta;
+
+        List<Stadium> stadiums = stadiumRepository.findStadiumsInBoundingBox(minLat, maxLat, minLng, maxLng);
+
+        // Fallback: nếu trong bán kính bounding box chưa có sân (ví dụ emulator đặt tọa độ ở vị trí khác),
+        // lấy danh sách tất cả sân có tọa độ để bản đồ luôn có dữ liệu hiển thị mượt mà
+        if (stadiums.isEmpty()) {
+            stadiums = stadiumRepository.findAllWithCoordinates();
+        }
+
+        return stadiums.stream()
+                .map(stadium -> {
+                    double dist = calculateHaversineDistance(latitude, longitude, stadium.getLatitude(), stadium.getLongitude());
+                    StadiumResponse response = mapToResponse(stadium);
+                    response.setDistance(dist);
+                    return response;
+                })
+                .sorted(Comparator.comparing(StadiumResponse::getDistance))
+                .toList();
+    }
+
+    private double calculateHaversineDistance(double lat1, double lon1, double lat2, double lon2) {
+        double earthRadius = 6371.0; // km
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                   Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                   Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = earthRadius * c;
+        return Math.round(distance * 10.0) / 10.0; // làm tròn 1 chữ số thập phân
     }
 
     @Override

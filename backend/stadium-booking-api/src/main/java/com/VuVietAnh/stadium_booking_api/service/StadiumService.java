@@ -11,6 +11,7 @@ public interface StadiumService {
     Page<StadiumResponse> getAllStadiums(Pageable pageable);
     Page<StadiumResponse> getStadiumsByOwner(Long ownerId, Pageable pageable);
     Page<StadiumResponse> searchStadiums(String provinceCity, String keyword, Pageable pageable);
+    java.util.List<StadiumResponse> getNearbyStadiums(Double latitude, Double longitude, Double radiusKm);
     StadiumResponse updateStadium(Long id, StadiumCreateRequest request);
     void deleteStadium(Long id);
 }

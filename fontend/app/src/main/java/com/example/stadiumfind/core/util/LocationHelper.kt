@@ -60,21 +60,29 @@ class LocationHelper @Inject constructor(
     suspend fun getCurrentLocation(): GeoPoint? {
         if (!hasLocationPermission()) return null
 
-        return suspendCancellableCoroutine { cont ->
-            // Thử lastLocation trước (nhanh, không tốn pin)
-            fusedClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        cont.resume(GeoPoint(location.latitude, location.longitude))
-                    } else {
-                        // Fallback: request location 1 lần
-                        requestSingleUpdate(cont)
-                    }
+        return try {
+            kotlinx.coroutines.withTimeoutOrNull(3500L) {
+                suspendCancellableCoroutine { cont ->
+                    // Thử lastLocation trước (nhanh, không tốn pin)
+                    fusedClient.lastLocation
+                        .addOnSuccessListener { location: Location? ->
+                            if (location != null && cont.isActive) {
+                                cont.resume(GeoPoint(location.latitude, location.longitude))
+                            } else if (cont.isActive) {
+                                // Fallback: request location 1 lần
+                                requestSingleUpdate(cont)
+                            }
+                        }
+                        .addOnFailureListener {
+                            if (cont.isActive) {
+                                // Fallback
+                                requestSingleUpdate(cont)
+                            }
+                        }
                 }
-                .addOnFailureListener {
-                    // Fallback
-                    requestSingleUpdate(cont)
-                }
+            }
+        } catch (e: Exception) {
+            null
         }
     }
 

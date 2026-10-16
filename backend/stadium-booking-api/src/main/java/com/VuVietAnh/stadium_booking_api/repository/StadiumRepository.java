@@ -30,4 +30,18 @@ public interface StadiumRepository extends JpaRepository<Stadium, Long> {
     Page<Stadium> searchStadiums(@Param("provinceCity") String provinceCity,
                                  @Param("keyword") String keyword,
                                  Pageable pageable);
+
+    // Tìm các sân có tọa độ nằm trong Bounding Box (cho tìm kiếm lân cận)
+    @Query("SELECT s FROM Stadium s WHERE " +
+           "s.latitude IS NOT NULL AND s.longitude IS NOT NULL AND " +
+           "s.latitude BETWEEN :minLat AND :maxLat AND " +
+           "s.longitude BETWEEN :minLng AND :maxLng")
+    java.util.List<Stadium> findStadiumsInBoundingBox(@Param("minLat") Double minLat,
+                                                     @Param("maxLat") Double maxLat,
+                                                     @Param("minLng") Double minLng,
+                                                     @Param("maxLng") Double maxLng);
+
+    // Lấy tất cả các sân có tọa độ hợp lệ
+    @Query("SELECT s FROM Stadium s WHERE s.latitude IS NOT NULL AND s.longitude IS NOT NULL")
+    java.util.List<Stadium> findAllWithCoordinates();
 }

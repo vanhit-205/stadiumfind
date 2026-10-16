@@ -24,8 +24,18 @@ data class StadiumItem(
     val totalCourts: Int = 1,
     val sportTypes: List<String> = listOf("Bóng đá"),
     val latitude: Double = 0.0,
-    val longitude: Double = 0.0
+    val longitude: Double = 0.0,
+    val distance: Double? = null
 ) {
+    val formattedDistance: String
+        get() {
+            if (distance == null || distance <= 0.0) return ""
+            return if (distance < 1.0) {
+                "${(distance * 1000).toInt()} m"
+            } else {
+                "${String.format(Locale.US, "%.1f", distance)} km"
+            }
+        }
     val formattedPrice: String
         get() {
             if (minPricePerHour <= 0) return "Liên hệ"

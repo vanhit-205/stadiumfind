@@ -54,6 +54,9 @@ data class StadiumDto(
     @SerializedName("longitude")
     val longitude: Double?,
 
+    @SerializedName("distance")
+    val distance: Double?,
+
     @SerializedName("ownerId")
     val ownerId: Long?,
 
