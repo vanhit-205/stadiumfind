@@ -47,13 +47,31 @@
         android:id="@+id/homeFragment"
         android:name="com.example.stadiumfind.features.home.HomeFragment"
         android:label="@string/nav_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_homeFragment_to_stadiumDetailFragment"
+            app:destination="@id/stadiumDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.stadiumfind.features.search.SearchFragment"
         android:label="@string/nav_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search">
+
+        <action
+            android:id="@+id/action_searchFragment_to_stadiumDetailFragment"
+            app:destination="@id/stadiumDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/bookingFragment"
@@ -66,6 +84,18 @@
         android:name="com.example.stadiumfind.features.profile.ProfileFragment"
         android:label="@string/nav_profile"
         tools:layout="@layout/fragment_profile" />
+
+    <!-- ===== STADIUM DETAIL FLOW ===== -->
+    <fragment
+        android:id="@+id/stadiumDetailFragment"
+        android:name="com.example.stadiumfind.features.stadium.presentation.detail.StadiumDetailFragment"
+        android:label="Chi tiết sân"
+        tools:layout="@layout/fragment_stadium_detail">
+        <argument
+            android:name="stadiumId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
 
     <!-- Logout: quay về Login, xóa toàn bộ back stack -->
     <action

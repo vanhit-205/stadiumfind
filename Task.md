@@ -60,11 +60,11 @@
 - [x] **Ngày 16 (Thứ 3): Rải Marker Sân Bóng (osmdroid)**
   - [x] **Backend (AI):** Gen API trả về tọa độ các sân gần nhất.
   - [x] **Frontend:** Gọi API, dùng osmdroid Marker/Overlay hiển thị sân lên bản đồ.
-- [ ] **Ngày 17 (Thứ 4): Tương tác Bản Đồ (osmdroid)**
-  - [ ] **Frontend:** Xử lý sự kiện click Marker (osmdroid ItemizedOverlay) hiện BottomSheet thông tin sân.
-  - [ ] **Frontend:** Nút bấm từ BottomSheet điều hướng sang màn Chi tiết.
-- [ ] **Ngày 18 (Thứ 5): UI Chi Tiết Sân**
-  - [ ] **Frontend:** Code UI màn hình Detail (Image Slider, Tiện ích sân: Wifi, Nước uống).
+- [x] **Ngày 17 (Thứ 4): Tương tác Bản Đồ (osmdroid)**
+  - [x] **Frontend:** Xử lý sự kiện click Marker (osmdroid ItemizedOverlay) hiện BottomSheet thông tin sân.
+  - [x] **Frontend:** Nút bấm từ BottomSheet điều hướng sang màn Chi tiết.
+- [x] **Ngày 18 (Thứ 5): UI Chi Tiết Sân**
+  - [x] **Frontend:** Code UI màn hình Detail (Image Slider, Tiện ích sân: Wifi, Nước uống).
 - [ ] **Ngày 19 (Thứ 6): Custom Calendar & TimePicker**
   - [ ] **Frontend:** Tự code UI chọn Ngày (dạng lịch ngang) và chọn Giờ (Grid các khung giờ).
 - [ ] **Ngày 20 (Thứ 7): Logic Chọn Giờ Trống**

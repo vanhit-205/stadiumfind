@@ -25,4 +25,9 @@ interface StadiumRepository {
         longitude: Double,
         radiusKm: Double = 20.0
     ): com.example.stadiumfind.core.network.Resource<List<StadiumItem>>
+
+    /**
+     * Lấy thông tin chi tiết một sân bóng theo ID.
+     */
+    suspend fun getStadiumDetail(id: Long): com.example.stadiumfind.core.network.Resource<StadiumItem>
 }

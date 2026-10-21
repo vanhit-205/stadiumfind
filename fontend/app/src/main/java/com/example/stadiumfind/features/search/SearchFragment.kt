@@ -22,11 +22,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.example.stadiumfind.R
 import com.example.stadiumfind.core.util.LocationHelper
 import com.example.stadiumfind.core.util.OsmTileSources
 import com.example.stadiumfind.databinding.FragmentSearchBinding
 import com.example.stadiumfind.features.stadium.domain.model.StadiumItem
+import com.example.stadiumfind.features.stadium.presentation.bottomsheet.StadiumPreviewBottomSheet
+import com.example.stadiumfind.features.stadium.presentation.detail.StadiumDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.osmdroid.util.GeoPoint
@@ -220,15 +224,15 @@ class SearchFragment : Fragment() {
                     icon = pinBitmapDrawable
                     setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                     title = stadium.name
+                    relatedObject = stadium
                     snippet = buildString {
                         if (stadium.formattedDistance.isNotBlank()) {
                             append("📍 ${stadium.formattedDistance} • ")
                         }
                         append(stadium.formattedPrice)
                     }
-                    setOnMarkerClickListener { m, _ ->
-                        m.showInfoWindow()
-                        mapView.controller.animateTo(m.position)
+                    setOnMarkerClickListener { _, _ ->
+                        showStadiumBottomSheet(stadium)
                         true
                     }
                 }
@@ -243,13 +247,40 @@ class SearchFragment : Fragment() {
     }
 
     /**
+     * Hiển thị BottomSheet xem nhanh thông tin sân khi click Marker và căn chỉnh camera offset mượt mà.
+     */
+    private fun showStadiumBottomSheet(stadium: StadiumItem) {
+        // Tối ưu UX Camera: Dịch tâm bản đồ xuống phía Nam một chút để Marker nằm ở nửa trên màn hình,
+        // không bị che khuất bởi chiều cao của BottomSheet khi bật lên
+        val offsetLatitude = stadium.latitude - 0.0035
+        val cameraFocusPoint = GeoPoint(offsetLatitude, stadium.longitude)
+        binding.mapView.controller.animateTo(cameraFocusPoint, 15.5, 600L)
+
+        // Đóng BottomSheet cũ nếu còn hiển thị
+        val existingDialog = childFragmentManager.findFragmentByTag(StadiumPreviewBottomSheet.TAG) as? StadiumPreviewBottomSheet
+        existingDialog?.dismiss()
+
+        // Mở BottomSheet mới kèm callback điều hướng sang chi tiết sân
+        val bottomSheet = StadiumPreviewBottomSheet.newInstance(stadium) { stadiumId ->
+            val bundle = bundleOf(StadiumDetailFragment.ARG_STADIUM_ID to stadiumId)
+            findNavController().navigate(R.id.action_searchFragment_to_stadiumDetailFragment, bundle)
+        }
+        bottomSheet.show(childFragmentManager, StadiumPreviewBottomSheet.TAG)
+    }
+
+    /**
      * Tìm nhanh vị trí sân theo tên trong danh sách Marker hiện tại.
      */
     private fun searchStadiumOnMap(query: String) {
         for (item in stadiumMarkers) {
             if (item.title?.contains(query, ignoreCase = true) == true) {
-                binding.mapView.controller.animateTo(item.position, 16.0, 800L)
-                item.showInfoWindow()
+                val stadium = item.relatedObject as? StadiumItem
+                if (stadium != null) {
+                    showStadiumBottomSheet(stadium)
+                } else {
+                    binding.mapView.controller.animateTo(item.position, 16.0, 800L)
+                    item.showInfoWindow()
+                }
                 return
             }
         }

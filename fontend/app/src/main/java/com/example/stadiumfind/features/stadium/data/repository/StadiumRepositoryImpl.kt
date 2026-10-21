@@ -57,4 +57,18 @@ class StadiumRepositoryImpl @Inject constructor(
             is Resource.Loading -> Resource.Loading
         }
     }
+
+    override suspend fun getStadiumDetail(id: Long): Resource<StadiumItem> {
+        val result = safeApiCall {
+            apiService.getStadiumById(id)
+        }
+        return when (result) {
+            is Resource.Success -> {
+                val item = result.data.toDomain()
+                Resource.Success(item)
+            }
+            is Resource.Error -> Resource.Error(result.message, result.code)
+            is Resource.Loading -> Resource.Loading
+        }
+    }
 }

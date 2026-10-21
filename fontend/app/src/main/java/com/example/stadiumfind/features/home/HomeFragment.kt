@@ -17,6 +17,9 @@ import com.example.stadiumfind.R
 import com.example.stadiumfind.databinding.FragmentHomeBinding
 import com.example.stadiumfind.features.stadium.presentation.adapter.StadiumAdapter
 import com.example.stadiumfind.features.stadium.presentation.adapter.StadiumLoadStateAdapter
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
+import com.example.stadiumfind.features.stadium.presentation.detail.StadiumDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -49,10 +52,12 @@ class HomeFragment : Fragment() {
     private fun setupRecyclerView() {
         stadiumAdapter = StadiumAdapter(
             onItemClick = { stadium ->
-                Toast.makeText(requireContext(), "Xem chi tiết: ${stadium.name}", Toast.LENGTH_SHORT).show()
+                val bundle = bundleOf(StadiumDetailFragment.ARG_STADIUM_ID to stadium.id)
+                findNavController().navigate(R.id.action_homeFragment_to_stadiumDetailFragment, bundle)
             },
             onBookClick = { stadium ->
-                Toast.makeText(requireContext(), "Đặt sân: ${stadium.name}", Toast.LENGTH_SHORT).show()
+                val bundle = bundleOf(StadiumDetailFragment.ARG_STADIUM_ID to stadium.id)
+                findNavController().navigate(R.id.action_homeFragment_to_stadiumDetailFragment, bundle)
             }
         )
 

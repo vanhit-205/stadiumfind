@@ -5,6 +5,7 @@ import com.example.stadiumfind.core.network.PageResponse
 import com.example.stadiumfind.features.stadium.data.remote.dto.StadiumDto
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface StadiumApiService {
@@ -23,4 +24,9 @@ interface StadiumApiService {
         @Query("longitude") longitude: Double,
         @Query("radiusKm") radiusKm: Double = 20.0
     ): Response<BaseResponse<List<StadiumDto>>>
+
+    @GET("stadiums/{id}")
+    suspend fun getStadiumById(
+        @Path("id") id: Long
+    ): Response<BaseResponse<StadiumDto>>
 }
