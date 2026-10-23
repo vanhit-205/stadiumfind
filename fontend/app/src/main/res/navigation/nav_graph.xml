@@ -77,7 +77,20 @@
         android:id="@+id/bookingFragment"
         android:name="com.example.stadiumfind.features.booking.BookingFragment"
         android:label="@string/nav_booking"
-        tools:layout="@layout/fragment_booking" />
+        tools:layout="@layout/fragment_booking">
+        <argument
+            android:name="stadiumId"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="stadiumName"
+            app:argType="string"
+            android:defaultValue="Sân bóng đá" />
+        <argument
+            android:name="pricePerHour"
+            app:argType="float"
+            android:defaultValue="200000.0f" />
+    </fragment>
 
     <fragment
         android:id="@+id/profileFragment"
@@ -95,6 +108,14 @@
             android:name="stadiumId"
             app:argType="long"
             android:defaultValue="0L" />
+
+        <action
+            android:id="@+id/action_stadiumDetailFragment_to_bookingFragment"
+            app:destination="@id/bookingFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- Logout: quay về Login, xóa toàn bộ back stack -->

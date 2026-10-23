@@ -49,11 +49,12 @@ class MainActivity : AppCompatActivity() {
         // Gắn Bottom Navigation với NavController
         binding.bottomNav.setupWithNavController(navController)
 
-        // Ẩn Bottom Nav khi ở màn Auth hoặc Chi tiết sân
+        // Ẩn Bottom Nav khi ở màn Auth, Chi tiết sân hoặc Đặt sân (chọn lịch)
         val hideBottomNavDestinations = setOf(
             R.id.loginFragment,
             R.id.registerFragment,
-            R.id.stadiumDetailFragment
+            R.id.stadiumDetailFragment,
+            R.id.bookingFragment
         )
 
         navController.addOnDestinationChangedListener { _, destination, _ ->

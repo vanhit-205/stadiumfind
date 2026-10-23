@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardCalendarDay"
+    android:layout_width="66dp"
+    android:layout_height="86dp"
+    android:layout_marginHorizontal="5dp"
+    android:layout_marginVertical="4dp"
+    android:background="@drawable/bg_calendar_day_unselected"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <!-- Thứ (Th 2, Th 3, Hôm nay) -->
+    <TextView
+        android:id="@+id/tvDayOfWeek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Th 6"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <!-- Ngày số to (22, 23) -->
+    <TextView
+        android:id="@+id/tvDayOfMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="23"
+        android:textColor="@color/text_primary"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- Tháng (T10) -->
+    <TextView
+        android:id="@+id/tvMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="T10"
+        android:textColor="@color/text_hint"
+        android:textSize="11sp" />
+
+</LinearLayout>

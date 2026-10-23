@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardTimeSlot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:background="@drawable/bg_time_slot_available"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center"
+    android:minHeight="72dp"
+    android:orientation="vertical"
+    android:paddingHorizontal="6dp"
+    android:paddingVertical="8dp">
+
+    <!-- Icon check nhỏ khi được chọn -->
+    <ImageView
+        android:id="@+id/ivCheckSelected"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginBottom="2dp"
+        android:contentDescription="Đã chọn"
+        android:src="@drawable/ic_check"
+        android:visibility="gone" />
+
+    <!-- Khung giờ: ví dụ 17:30 - 19:00 -->
+    <TextView
+        android:id="@+id/tvTimeRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="17:30 - 19:00"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <!-- Giá tiền hoặc Trạng thái (Quá giờ / Đã đặt) -->
+    <TextView
+        android:id="@+id/tvSlotPriceOrStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="300.000đ"
+        android:textColor="@color/primary_300"
+        android:textSize="11sp" />
+
+</LinearLayout>

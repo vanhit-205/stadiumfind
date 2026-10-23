@@ -65,8 +65,8 @@
   - [x] **Frontend:** Nút bấm từ BottomSheet điều hướng sang màn Chi tiết.
 - [x] **Ngày 18 (Thứ 5): UI Chi Tiết Sân**
   - [x] **Frontend:** Code UI màn hình Detail (Image Slider, Tiện ích sân: Wifi, Nước uống).
-- [ ] **Ngày 19 (Thứ 6): Custom Calendar & TimePicker**
-  - [ ] **Frontend:** Tự code UI chọn Ngày (dạng lịch ngang) và chọn Giờ (Grid các khung giờ).
+- [x] **Ngày 19 (Thứ 6): Custom Calendar & TimePicker**
+  - [x] **Frontend:** Tự code UI chọn Ngày (dạng lịch ngang) và chọn Giờ (Grid các khung giờ, hỗ trợ toggle ca 60p/90p).
 - [ ] **Ngày 20 (Thứ 7): Logic Chọn Giờ Trống**
   - [ ] **Backend (AI):** Gen API kiểm tra danh sách giờ đã có người đặt trong một ngày cụ thể.
   - [ ] **Frontend:** Disable (Làm mờ/Khóa) các khung giờ đã có người đặt trên UI.

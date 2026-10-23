@@ -121,12 +121,19 @@ class StadiumDetailFragment : Fragment() {
         // Nút Đặt sân ngay
         binding.btnBookNowDetail.setOnClickListener {
             val stadium = currentStadium
-            val msg = if (stadium != null) {
-                "Đặt sân tại: ${stadium.name}"
+            if (stadium != null) {
+                val bundle = Bundle().apply {
+                    putLong(com.example.stadiumfind.features.booking.BookingFragment.ARG_STADIUM_ID, stadium.id)
+                    putString(com.example.stadiumfind.features.booking.BookingFragment.ARG_STADIUM_NAME, stadium.name)
+                    putDouble(com.example.stadiumfind.features.booking.BookingFragment.ARG_PRICE_PER_HOUR, stadium.minPricePerHour)
+                }
+                findNavController().navigate(
+                    R.id.action_stadiumDetailFragment_to_bookingFragment,
+                    bundle
+                )
             } else {
-                "Đang tải thông tin sân..."
+                Toast.makeText(requireContext(), "Đang tải thông tin sân...", Toast.LENGTH_SHORT).show()
             }
-            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
         }
     }
 
