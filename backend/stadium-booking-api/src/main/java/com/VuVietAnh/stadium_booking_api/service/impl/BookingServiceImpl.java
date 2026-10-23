@@ -2,6 +2,7 @@ package com.VuVietAnh.stadium_booking_api.service.impl;
 
 import com.VuVietAnh.stadium_booking_api.dto.request.BookingCreateRequest;
 import com.VuVietAnh.stadium_booking_api.dto.response.BookingResponse;
+import com.VuVietAnh.stadium_booking_api.dto.response.OccupiedSlotResponse;
 import com.VuVietAnh.stadium_booking_api.entity.Booking;
 import com.VuVietAnh.stadium_booking_api.entity.Court;
 import com.VuVietAnh.stadium_booking_api.entity.User;
@@ -110,6 +111,21 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingResponse> getBookingsByCourtAndDate(Long courtId, LocalDate date) {
         return bookingRepository.findByCourtIdAndBookingDate(courtId, date).stream()
                 .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OccupiedSlotResponse> getOccupiedSlots(Long courtId, LocalDate date) {
+        return bookingRepository.findByCourtIdAndBookingDate(courtId, date).stream()
+                .filter(b -> b.getStatus() != BookingStatus.CANCELLED)
+                .map(b -> OccupiedSlotResponse.builder()
+                        .courtId(b.getCourt().getId())
+                        .bookingDate(b.getBookingDate())
+                        .startTime(b.getStartTime())
+                        .endTime(b.getEndTime())
+                        .status(b.getStatus())
+                        .build())
                 .collect(Collectors.toList());
     }
 

@@ -22,5 +22,8 @@ enum class SlotDuration(
         durationHours = 1.5,
         displayName = "Ca 90 phút (Tiêu chuẩn)",
         shortLabel = "90p"
-    )
+    );
+
+    val durationMinutes: Int
+        get() = minutes
 }

@@ -78,12 +78,105 @@
             android:paddingTop="16dp"
             android:paddingBottom="24dp">
 
-            <!-- SECTION 1: CHỌN SÂN CON -->
+            <!-- SECTION 1: CỤM SÂN BÓNG -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvLabelStadium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1. Cụm sân bóng"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnChangeStadium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_duration_tab_container"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:text="🔄 Đổi cụm sân"
+                    android:textColor="@color/primary_300"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Card hiển thị Cụm sân đang chọn -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSelectedStadium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/surface_card"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/stroke_default"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:id="@+id/tvSelectedStadiumName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="Sân bóng Thượng Đình"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvSelectedStadiumAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="129 Đ. Nguyễn Trãi, Thanh Xuân, Hà Nội"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tvSelectedStadiumPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Giá gốc: 250.000đ / giờ"
+                        android:textColor="@color/primary_300"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="16dp"
+                android:background="@color/stroke_default" />
+
+            <!-- SECTION 2: CHỌN SÂN CON -->
             <TextView
                 android:id="@+id/tvLabelCourts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1. Chọn sân con"
+                android:text="2. Chọn sân con"
                 android:textColor="@color/text_primary"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -104,7 +197,7 @@
                 android:layout_marginVertical="16dp"
                 android:background="@color/stroke_default" />
 
-            <!-- SECTION 2: CHỌN NGÀY (LỊCH NGANG) -->
+            <!-- SECTION 3: CHỌN NGÀY (LỊCH NGANG) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,7 +209,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="2. Chọn ngày đá"
+                    android:text="3. Chọn ngày đá"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -170,7 +263,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="3. Chọn thời lượng ca"
+                    android:text="4. Thời lượng ca"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -234,7 +327,7 @@
                 android:layout_marginVertical="16dp"
                 android:background="@color/stroke_default" />
 
-            <!-- SECTION 4: CHỌN KHUNG GIỜ -->
+            <!-- SECTION 5: CHỌN KHUNG GIỜ (MULTI-SELECT) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -246,7 +339,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="4. Chọn khung giờ"
+                    android:text="5. Chọn khung giờ (chọn được nhiều ca)"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -287,7 +380,22 @@
                         android:textColor="@color/primary_300"
                         android:textSize="11sp" />
 
-                    <!-- Đã khóa/Quá giờ -->
+                    <!-- Đã đặt -->
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_dot_booked" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="Đã đặt"
+                        android:textColor="@color/accent_orange"
+                        android:textSize="11sp" />
+
+                    <!-- Quá giờ -->
                     <View
                         android:layout_width="8dp"
                         android:layout_height="8dp"
@@ -298,24 +406,37 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:text="Khóa"
+                        android:text="Quá giờ"
                         android:textColor="@color/text_hint"
                         android:textSize="11sp" />
                 </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Lưới Time Slots (3 cột) -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvTimeSlots"
+            <!-- Lưới Time Slots (3 cột) kèm Loading Indicator -->
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="3"
-                tools:itemCount="9"
-                tools:listitem="@layout/item_time_slot" />
+                android:layout_marginTop="10dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvTimeSlots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3"
+                    tools:itemCount="9"
+                    tools:listitem="@layout/item_time_slot" />
+
+                <ProgressBar
+                    android:id="@+id/pbLoadingSlots"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="@color/primary_300"
+                    android:visibility="gone" />
+            </FrameLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -323,12 +444,12 @@
                 android:layout_marginVertical="16dp"
                 android:background="@color/stroke_default" />
 
-            <!-- SECTION 5: GHI CHÚ ĐẶT SÂN -->
+            <!-- SECTION 6: GHI CHÚ ĐẶT SÂN -->
             <TextView
                 android:id="@+id/tvLabelNote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5. Ghi chú thêm (Tùy chọn)"
+                android:text="6. Ghi chú thêm (Tùy chọn)"
                 android:textColor="@color/text_primary"
                 android:textSize="15sp"
                 android:textStyle="bold" />

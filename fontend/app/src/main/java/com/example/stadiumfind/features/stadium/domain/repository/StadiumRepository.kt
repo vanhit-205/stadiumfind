@@ -30,4 +30,9 @@ interface StadiumRepository {
      * Lấy thông tin chi tiết một sân bóng theo ID.
      */
     suspend fun getStadiumDetail(id: Long): com.example.stadiumfind.core.network.Resource<StadiumItem>
+
+    /**
+     * Lấy danh sách các cụm sân bóng (hỗ trợ tìm kiếm theo từ khóa).
+     */
+    suspend fun getStadiumsList(keyword: String? = null): com.example.stadiumfind.core.network.Resource<List<StadiumItem>>
 }

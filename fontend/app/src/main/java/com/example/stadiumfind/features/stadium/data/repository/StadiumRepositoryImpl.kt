@@ -71,4 +71,18 @@ class StadiumRepositoryImpl @Inject constructor(
             is Resource.Loading -> Resource.Loading
         }
     }
+
+    override suspend fun getStadiumsList(keyword: String?): Resource<List<StadiumItem>> {
+        val result = safeApiCall {
+            apiService.getStadiums(page = 0, size = 50, keyword = keyword)
+        }
+        return when (result) {
+            is Resource.Success -> {
+                val items = result.data.content.map { it.toDomain() }
+                Resource.Success(items)
+            }
+            is Resource.Error -> Resource.Error(result.message, result.code)
+            is Resource.Loading -> Resource.Loading
+        }
+    }
 }

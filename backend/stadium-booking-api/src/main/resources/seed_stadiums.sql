@@ -192,4 +192,15 @@ ON DUPLICATE KEY UPDATE
     sport_type = VALUES(sport_type), 
     price_per_hour = VALUES(price_per_hour);
 
+-- 4. Tạo các đơn đặt sân mẫu (Sample Bookings) để test kiểm tra ca đã đặt
+INSERT INTO bookings (id, booking_date, start_time, end_time, total_price, status, payment_status, note, user_id, court_id, created_at, updated_at)
+VALUES
+(501, CURRENT_DATE, '17:30:00', '19:00:00', 525000.00, 'CONFIRMED', 'PAID', 'Trận đấu giao lưu nội bộ FC IT', 1001, 101, NOW(), NOW()),
+(502, CURRENT_DATE, '20:30:00', '22:00:00', 525000.00, 'CONFIRMED', 'PAID', 'Đá cúp phong trào tuần', 1002, 101, NOW(), NOW()),
+(503, DATE_ADD(CURRENT_DATE, INTERVAL 1 DAY), '19:00:00', '20:30:00', 525000.00, 'CONFIRMED', 'PAID', 'Kèo giao hữu thứ 7', 1001, 101, NOW(), NOW()),
+(504, CURRENT_DATE, '16:00:00', '17:30:00', 525000.00, 'CONFIRMED', 'PAID', 'Tập luyện thể lực ca chiều', 1002, 102, NOW(), NOW())
+ON DUPLICATE KEY UPDATE 
+    status = VALUES(status),
+    payment_status = VALUES(payment_status);
+
 SET FOREIGN_KEY_CHECKS = 1;
