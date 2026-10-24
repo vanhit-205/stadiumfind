@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @Builder
 public class BookingCreateRequest {
 
-    @NotNull(message = "User ID is required")
+    // Optional trong body, nếu null sẽ tự động lấy từ JWT authenticated user
     private Long userId;
 
     @NotNull(message = "Court ID is required")

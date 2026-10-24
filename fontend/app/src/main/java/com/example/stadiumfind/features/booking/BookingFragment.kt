@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.stadiumfind.R
+import com.example.stadiumfind.databinding.BottomSheetConfirmBookingBinding
 import com.example.stadiumfind.databinding.BottomSheetSelectStadiumBinding
 import com.example.stadiumfind.databinding.FragmentBookingBinding
 import com.example.stadiumfind.features.booking.domain.model.SlotDuration
@@ -23,6 +24,7 @@ import com.example.stadiumfind.features.booking.presentation.adapter.CourtChipAd
 import com.example.stadiumfind.features.booking.presentation.adapter.StadiumPickerAdapter
 import com.example.stadiumfind.features.booking.presentation.adapter.TimeSlotAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -41,6 +43,9 @@ class BookingFragment : Fragment() {
     private lateinit var courtChipAdapter: CourtChipAdapter
     private lateinit var calendarDayAdapter: CalendarDayAdapter
     private lateinit var timeSlotAdapter: TimeSlotAdapter
+
+    private var confirmBottomSheet: BottomSheetDialog? = null
+    private var confirmSheetBinding: BottomSheetConfirmBookingBinding? = null
 
     companion object {
         const val ARG_STADIUM_ID = "stadiumId"
@@ -123,20 +128,58 @@ class BookingFragment : Fragment() {
 
         // Nút Xác nhận & Tiếp tục đặt sân (hỗ trợ nhiều ca đá)
         binding.btnConfirmBooking.setOnClickListener {
-            val state = viewModel.uiState.value
-            val stadium = state.stadiumName
-            val court = state.selectedCourt?.name ?: "Sân con"
-            val date = state.selectedDate?.fullDisplayString ?: ""
-            val count = state.selectedSlotsCount
-            val price = state.formattedEstimatedPrice
-
-            val slotDetails = state.selectedTimeSlots.joinToString("\n") {
-                "  • ${it.displayRange} (${it.formattedPrice})"
-            }
-
-            val message = "✅ Đã chọn cụm: $stadium\n🏟️ Sân: $court\n📅 $date\n⏰ Số ca đã chọn: $count ca:\n$slotDetails\n💰 Tổng tạm tính: $price"
-            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+            showConfirmBookingBottomSheet()
         }
+    }
+
+    /**
+     * Mở BottomSheet xác nhận đơn đặt sân trước khi gửi API (Ngày 22 - Booking Flow).
+     */
+    private fun showConfirmBookingBottomSheet() {
+        val state = viewModel.uiState.value
+        if (state.selectedTimeSlots.isEmpty()) {
+            Toast.makeText(requireContext(), "Vui lòng chọn khung giờ trước khi đặt", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val bottomSheet = BottomSheetDialog(requireContext())
+        val sheetBinding = BottomSheetConfirmBookingBinding.inflate(layoutInflater)
+        bottomSheet.setContentView(sheetBinding.root)
+        confirmBottomSheet = bottomSheet
+        confirmSheetBinding = sheetBinding
+
+        // Điền dữ liệu tóm tắt
+        sheetBinding.tvConfirmStadiumName.text = state.stadiumName
+        sheetBinding.tvConfirmCourtName.text = state.selectedCourt?.name ?: "Sân con"
+        sheetBinding.tvConfirmDate.text = state.selectedDate?.fullDisplayString ?: ""
+
+        val slotRanges = state.selectedTimeSlots.joinToString("\n") {
+            "• ${it.displayRange} (${it.formattedPrice})"
+        }
+        sheetBinding.tvConfirmTimeSlots.text = slotRanges
+        sheetBinding.tvConfirmTotalPrice.text = state.formattedEstimatedPrice
+
+        if (state.note.isNotBlank()) {
+            sheetBinding.layoutConfirmNote.visibility = View.VISIBLE
+            sheetBinding.tvConfirmNote.text = state.note
+        } else {
+            sheetBinding.layoutConfirmNote.visibility = View.GONE
+        }
+
+        sheetBinding.btnSubmitBookingNow.setOnClickListener {
+            viewModel.submitBooking()
+        }
+
+        sheetBinding.btnCancelConfirm.setOnClickListener {
+            bottomSheet.dismiss()
+        }
+
+        bottomSheet.setOnDismissListener {
+            confirmBottomSheet = null
+            confirmSheetBinding = null
+        }
+
+        bottomSheet.show()
     }
 
     /**
@@ -185,8 +228,79 @@ class BookingFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
                     renderUiState(state)
+                    handleBookingProgress(state)
+                    handleBookingResult(state)
                 }
             }
+        }
+    }
+
+    private fun handleBookingProgress(state: com.example.stadiumfind.features.booking.presentation.BookingUiState) {
+        confirmSheetBinding?.let { sheetBinding ->
+            if (state.isBookingInProgress) {
+                sheetBinding.btnSubmitBookingNow.isEnabled = false
+                sheetBinding.btnSubmitBookingNow.text = ""
+                sheetBinding.pbConfirmLoading.visibility = View.VISIBLE
+                sheetBinding.btnCancelConfirm.isEnabled = false
+            } else {
+                sheetBinding.btnSubmitBookingNow.isEnabled = true
+                sheetBinding.btnSubmitBookingNow.text = "Xác Nhận Đặt Sân Ngay"
+                sheetBinding.pbConfirmLoading.visibility = View.GONE
+                sheetBinding.btnCancelConfirm.isEnabled = true
+            }
+        }
+    }
+
+    private fun handleBookingResult(state: com.example.stadiumfind.features.booking.presentation.BookingUiState) {
+        // Xử lý khi đặt sân thành công
+        state.bookingSuccessResult?.let { result ->
+            confirmBottomSheet?.dismiss()
+            confirmBottomSheet = null
+
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("🎉 Đặt Sân Thành Công!")
+                .setMessage(
+                    "Mã đặt sân: #${result.id}\n" +
+                    "Cụm sân: ${result.stadiumName}\n" +
+                    "Sân con: ${result.courtName}\n" +
+                    "Ngày đá: ${result.bookingDate}\n" +
+                    "Khung giờ: ${result.displayTimeRange}\n" +
+                    "Tổng tiền: ${result.formattedTotalPrice}\n\n" +
+                    "Đơn đặt của bạn đã được ghi nhận trên hệ thống!"
+                )
+                .setPositiveButton("Xem Vé / Mã QR") { dialog, _ ->
+                    dialog.dismiss()
+                    // Sẵn sàng chuyển tiếp sang màn hình Mã QR ở Ngày 23
+                    Toast.makeText(
+                        requireContext(),
+                        "Vé #${result.id} đã sẵn sàng cho Ngày 23 (Mã QR)",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                .setNegativeButton("Đóng") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setCancelable(false)
+                .show()
+
+            viewModel.clearBookingSuccess()
+        }
+
+        // Xử lý khi có thông báo lỗi từ server (Ví dụ: trùng lịch 409)
+        state.bookingErrorMessage?.let { errorMsg ->
+            confirmBottomSheet?.dismiss()
+            confirmBottomSheet = null
+
+            val title = if (state.isConflictError) "⚠️ Trùng Lịch Đặt Sân" else "❌ Đặt Sân Thất Bại"
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(title)
+                .setMessage(errorMsg)
+                .setPositiveButton("Đã hiểu") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+
+            viewModel.clearBookingError()
         }
     }
 
@@ -261,6 +375,9 @@ class BookingFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        confirmBottomSheet?.dismiss()
+        confirmBottomSheet = null
+        confirmSheetBinding = null
         _binding = null
         super.onDestroyView()
     }

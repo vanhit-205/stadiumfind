@@ -44,7 +44,13 @@ data class BookingUiState(
     val note: String = "",
     val estimatedPrice: Double = 0.0,
     val isConfirmEnabled: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+
+    // Trạng thái tiến trình Đặt Sân (Ngày 22)
+    val isBookingInProgress: Boolean = false,
+    val bookingSuccessResult: com.example.stadiumfind.features.booking.domain.model.BookingResult? = null,
+    val bookingErrorMessage: String? = null,
+    val isConflictError: Boolean = false
 ) {
     /**
      * Khung giờ đầu tiên được chọn (hỗ trợ tương thích ngược).

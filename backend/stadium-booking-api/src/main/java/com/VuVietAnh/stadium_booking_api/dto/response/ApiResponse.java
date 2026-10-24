@@ -22,4 +22,8 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> ok(String message, T data) {
         return new ApiResponse<>(true, message, data);
     }
+
+    public static <T> ApiResponse<T> created(String message, T data) {
+        return new ApiResponse<>(true, message, data);
+    }
 }

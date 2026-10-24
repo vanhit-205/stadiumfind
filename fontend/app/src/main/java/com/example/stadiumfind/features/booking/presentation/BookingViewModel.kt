@@ -2,13 +2,16 @@ package com.example.stadiumfind.features.booking.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.stadiumfind.core.data.UserPreferencesDataStore
 import com.example.stadiumfind.core.network.Resource
+import com.example.stadiumfind.features.booking.domain.model.BookingResult
 import com.example.stadiumfind.features.booking.domain.model.CalendarDay
 import com.example.stadiumfind.features.booking.domain.model.CourtItem
 import com.example.stadiumfind.features.booking.domain.model.OccupiedSlot
 import com.example.stadiumfind.features.booking.domain.model.SlotDuration
 import com.example.stadiumfind.features.booking.domain.model.TimeSlot
 import com.example.stadiumfind.features.booking.domain.model.TimeSlotStatus
+import com.example.stadiumfind.features.booking.domain.usecase.CreateBookingUseCase
 import com.example.stadiumfind.features.booking.domain.usecase.GetCourtsUseCase
 import com.example.stadiumfind.features.booking.domain.usecase.GetOccupiedSlotsUseCase
 import com.example.stadiumfind.features.stadium.domain.model.StadiumItem
@@ -17,6 +20,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -29,7 +33,9 @@ import javax.inject.Inject
 class BookingViewModel @Inject constructor(
     private val getStadiumsListUseCase: GetStadiumsListUseCase,
     private val getCourtsUseCase: GetCourtsUseCase,
-    private val getOccupiedSlotsUseCase: GetOccupiedSlotsUseCase
+    private val getOccupiedSlotsUseCase: GetOccupiedSlotsUseCase,
+    private val createBookingUseCase: CreateBookingUseCase,
+    private val userPreferencesDataStore: UserPreferencesDataStore
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(BookingUiState())
@@ -373,6 +379,120 @@ class BookingViewModel @Inject constructor(
      */
     fun updateNote(note: String) {
         _uiState.update { it.copy(note = note) }
+    }
+
+    /**
+     * Gửi yêu cầu đặt sân lên server (Booking Flow - Ngày 22).
+     */
+    fun submitBooking() {
+        val currentState = _uiState.value
+        if (currentState.isBookingInProgress) return
+
+        val court = currentState.selectedCourt
+        if (court == null) {
+            _uiState.update { it.copy(bookingErrorMessage = "Vui lòng chọn sân con trước khi đặt") }
+            return
+        }
+
+        val date = currentState.selectedDate
+        if (date == null) {
+            _uiState.update { it.copy(bookingErrorMessage = "Vui lòng chọn ngày đặt sân") }
+            return
+        }
+
+        val selectedSlots = currentState.selectedTimeSlots
+        if (selectedSlots.isEmpty()) {
+            _uiState.update { it.copy(bookingErrorMessage = "Vui lòng chọn ít nhất một khung giờ trống") }
+            return
+        }
+
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isBookingInProgress = true,
+                    bookingErrorMessage = null,
+                    isConflictError = false
+                )
+            }
+
+            val userId = userPreferencesDataStore.userId.firstOrNull()
+            var lastSuccessResult: BookingResult? = null
+            var hasConflict = false
+            var failureMessage: String? = null
+
+            // Thực hiện đặt từng ca đã chọn
+            for (slot in selectedSlots) {
+                when (val result = createBookingUseCase(
+                    courtId = court.id,
+                    bookingDate = date.apiDateString,
+                    startTime = slot.startTime,
+                    endTime = slot.endTime,
+                    note = currentState.note,
+                    userId = userId
+                )) {
+                    is Resource.Success -> {
+                        lastSuccessResult = result.data
+                    }
+                    is Resource.Error -> {
+                        if (result.code == 409 || result.message.contains("booked", ignoreCase = true) || result.message.contains("trùng", ignoreCase = true)) {
+                            hasConflict = true
+                            failureMessage = "Khung giờ ${slot.displayRange} vừa có người khác đặt trước. Vui lòng chọn ca khác!"
+                        } else {
+                            failureMessage = result.message
+                        }
+                        break
+                    }
+                    is Resource.Loading -> Unit
+                }
+            }
+
+            if (failureMessage != null) {
+                // Tự động tải lại occupied slots để cập nhật lại các khung giờ đã bị trùng trên UI
+                loadOccupiedSlots(court.id, date.apiDateString)
+
+                _uiState.update {
+                    it.copy(
+                        isBookingInProgress = false,
+                        bookingErrorMessage = failureMessage,
+                        isConflictError = hasConflict
+                    )
+                }
+            } else if (lastSuccessResult != null) {
+                // Đặt thành công: Tải lại occupied slots và cập nhật kết quả thành công
+                loadOccupiedSlots(court.id, date.apiDateString)
+
+                _uiState.update {
+                    it.copy(
+                        isBookingInProgress = false,
+                        bookingSuccessResult = lastSuccessResult,
+                        selectedTimeSlots = emptyList(),
+                        estimatedPrice = 0.0,
+                        isConfirmEnabled = false
+                    )
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        isBookingInProgress = false,
+                        bookingErrorMessage = "Có lỗi xảy ra khi gửi yêu cầu đặt sân"
+                    )
+                }
+            }
+        }
+    }
+
+    /**
+     * Xóa thông báo lỗi đặt sân sau khi đã hiển thị cho người dùng.
+     */
+    fun clearBookingError() {
+        _uiState.update { it.copy(bookingErrorMessage = null, isConflictError = false) }
+    }
+
+    /**
+     * Xóa kết quả thành công sau khi Fragment đã tiêu thụ event.
+     */
+    fun clearBookingSuccess() {
+        _uiState.update { it.copy(bookingSuccessResult = null) }
     }
 
     // ==========================================

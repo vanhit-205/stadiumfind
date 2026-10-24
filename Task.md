@@ -70,7 +70,7 @@
 - [x] **Ngày 20 (Thứ 7): Logic Chọn Giờ Trống**
   - [x] **Backend (AI):** Gen API kiểm tra danh sách giờ đã có người đặt trong một ngày cụ thể.
   - [x] **Frontend:** Disable (Làm mờ/Khóa) các khung giờ đã có người đặt trên UI.
-- [ ] **Ngày 21 (Chủ nhật): 💤 Nghỉ ngơi**
+- [x] **Ngày 21 (Chủ nhật): 💤 Nghỉ ngơi**
 
 ---
 

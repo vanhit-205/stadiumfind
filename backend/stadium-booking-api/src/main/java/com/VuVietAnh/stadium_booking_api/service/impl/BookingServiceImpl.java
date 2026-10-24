@@ -43,6 +43,10 @@ public class BookingServiceImpl implements BookingService {
             throw new BadRequestException("End time must be after start time");
         }
 
+        if (request.getUserId() == null) {
+            throw new BadRequestException("User ID is required");
+        }
+
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + request.getUserId()));
 
