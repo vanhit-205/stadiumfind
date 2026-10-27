@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final com.VuVietAnh.stadium_booking_api.repository.BookingRepository bookingRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -118,6 +119,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserResponse mapToResponse(User user) {
+        long totalBookings = bookingRepository.countByUserId(user.getId());
         return UserResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())
@@ -127,6 +129,7 @@ public class UserServiceImpl implements UserService {
                 .role(user.getRole())
                 .avatarUrl(user.getAvatarUrl())
                 .isActive(user.getIsActive())
+                .totalBookings(totalBookings)
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .build();

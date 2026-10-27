@@ -38,6 +38,12 @@ interface BookingApiService {
     ): Response<BaseResponse<com.example.stadiumfind.features.booking.data.remote.dto.BookingResponseDto>>
 
     /**
+     * Lấy danh sách tất cả các vé đặt sân của người dùng đang đăng nhập (Ngày 24 - My Bookings).
+     */
+    @GET("bookings/my-bookings")
+    suspend fun getMyBookings(): Response<BaseResponse<List<com.example.stadiumfind.features.booking.data.remote.dto.BookingResponseDto>>>
+
+    /**
      * Lấy chi tiết đơn đặt sân theo ID (Ngày 22 & Ngày 23).
      */
     @GET("bookings/{id}")

@@ -19,6 +19,12 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     // Phân trang danh sách đơn đặt sân của một Người dùng (User)
     Page<Booking> findByUserId(Long userId, Pageable pageable);
 
+    // Lấy tất cả đơn đặt sân của một Người dùng (User) sắp xếp mới nhất lên đầu
+    List<Booking> findByUserIdOrderByBookingDateDescStartTimeDesc(Long userId);
+
+    // Đếm tổng số đơn đặt sân của một Người dùng (User)
+    long countByUserId(Long userId);
+
     // Phân trang đơn đặt sân của một sân con (Court)
     Page<Booking> findByCourtId(Long courtId, Pageable pageable);
 

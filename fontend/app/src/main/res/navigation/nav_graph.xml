@@ -149,7 +149,22 @@
         android:id="@+id/profileFragment"
         android:name="com.example.stadiumfind.features.profile.ProfileFragment"
         android:label="@string/nav_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_myBookingsFragment"
+            app:destination="@id/myBookingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <!-- ===== MY BOOKINGS / TICKETS SCREEN ===== -->
+    <fragment
+        android:id="@+id/myBookingsFragment"
+        android:name="com.example.stadiumfind.features.booking.presentation.mybookings.MyBookingsFragment"
+        android:label="Vé Của Tôi"
+        tools:layout="@layout/fragment_my_bookings" />
 
     <!-- ===== STADIUM DETAIL FLOW ===== -->
     <fragment

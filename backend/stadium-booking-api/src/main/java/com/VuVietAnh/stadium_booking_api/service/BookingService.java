@@ -14,6 +14,7 @@ public interface BookingService {
     BookingResponse createBooking(BookingCreateRequest request);
     BookingResponse getBookingById(Long id);
     Page<BookingResponse> getBookingsByUser(Long userId, Pageable pageable);
+    List<BookingResponse> getMyBookings(Long userId);
     Page<BookingResponse> getBookingsByCourt(Long courtId, Pageable pageable);
     List<BookingResponse> getBookingsByCourtAndDate(Long courtId, LocalDate date);
     List<com.VuVietAnh.stadium_booking_api.dto.response.OccupiedSlotResponse> getOccupiedSlots(Long courtId, LocalDate date);

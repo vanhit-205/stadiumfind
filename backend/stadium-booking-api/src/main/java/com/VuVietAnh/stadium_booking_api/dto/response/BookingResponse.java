@@ -23,6 +23,8 @@ public class BookingResponse {
     private String courtName;
     private Long stadiumId;
     private String stadiumName;
+    private String stadiumAddress;
+    private String stadiumImageUrl;
     private LocalDate bookingDate;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -30,6 +32,7 @@ public class BookingResponse {
     private BookingStatus status;
     private PaymentStatus paymentStatus;
     private String note;
+    private String qrCodeData;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

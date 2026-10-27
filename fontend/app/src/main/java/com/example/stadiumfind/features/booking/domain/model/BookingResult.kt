@@ -16,6 +16,8 @@ data class BookingResult(
     val courtName: String,
     val stadiumId: Long?,
     val stadiumName: String,
+    val stadiumAddress: String? = null,
+    val stadiumImageUrl: String? = null,
     val bookingDate: String,
     val startTime: String,
     val endTime: String,
@@ -23,6 +25,7 @@ data class BookingResult(
     val status: String,
     val paymentStatus: String,
     val note: String?,
+    val qrCodeData: String? = null,
     val createdAt: String?
 ) {
     /**

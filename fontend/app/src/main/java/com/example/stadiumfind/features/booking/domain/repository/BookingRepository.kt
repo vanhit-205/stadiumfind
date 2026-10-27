@@ -33,4 +33,9 @@ interface BookingRepository {
      * Lấy thông tin vé đặt theo ID (Ngày 22 & Ngày 23).
      */
     suspend fun getBookingById(id: Long): Resource<BookingResult>
+
+    /**
+     * Lấy toàn bộ danh sách vé đặt sân của người dùng đang đăng nhập (Ngày 24 - My Bookings).
+     */
+    suspend fun getMyBookings(): Resource<List<BookingResult>>
 }

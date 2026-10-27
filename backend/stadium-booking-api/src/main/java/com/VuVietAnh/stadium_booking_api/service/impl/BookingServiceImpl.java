@@ -106,6 +106,14 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<BookingResponse> getMyBookings(Long userId) {
+        return bookingRepository.findByUserIdOrderByBookingDateDescStartTimeDesc(userId).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Page<BookingResponse> getBookingsByCourt(Long courtId, Pageable pageable) {
         return bookingRepository.findByCourtId(courtId, pageable).map(this::mapToResponse);
     }
@@ -186,6 +194,8 @@ public class BookingServiceImpl implements BookingService {
                 .courtName(booking.getCourt().getName())
                 .stadiumId(booking.getCourt().getStadium().getId())
                 .stadiumName(booking.getCourt().getStadium().getName())
+                .stadiumAddress(booking.getCourt().getStadium().getAddress())
+                .stadiumImageUrl(booking.getCourt().getStadium().getImageUrl())
                 .bookingDate(booking.getBookingDate())
                 .startTime(booking.getStartTime())
                 .endTime(booking.getEndTime())
@@ -193,6 +203,7 @@ public class BookingServiceImpl implements BookingService {
                 .status(booking.getStatus())
                 .paymentStatus(booking.getPaymentStatus())
                 .note(booking.getNote())
+                .qrCodeData("SF_TICKET:" + booking.getId() + ":" + booking.getUser().getId() + ":" + booking.getBookingDate() + ":" + booking.getStartTime())
                 .createdAt(booking.getCreatedAt())
                 .updatedAt(booking.getUpdatedAt())
                 .build();

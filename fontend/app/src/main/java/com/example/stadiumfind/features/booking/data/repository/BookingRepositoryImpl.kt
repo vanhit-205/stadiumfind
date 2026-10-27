@@ -81,4 +81,15 @@ class BookingRepositoryImpl @Inject constructor(
             is Resource.Loading -> Resource.Loading
         }
     }
+
+    override suspend fun getMyBookings(): Resource<List<BookingResult>> {
+        val result = safeApiCall {
+            apiService.getMyBookings()
+        }
+        return when (result) {
+            is Resource.Success -> Resource.Success(result.data.map { it.toDomain() })
+            is Resource.Error -> Resource.Error(result.message, result.code)
+            is Resource.Loading -> Resource.Loading
+        }
+    }
 }

@@ -81,8 +81,10 @@
 - [ ] **Ngày 23 (Thứ 3): Mã QR Xác Nhận**
   - [ ] **Frontend:** Gọi API Đặt sân. Khi thành công, nhận `ticketId`.
   - [ ] **Frontend:** Tích hợp thư viện `ZXing` sinh mã QR code hiển thị trên màn hình Success.
-- [ ] **Ngày 24 (Thứ 4): Quản lý Vé (Ticket)**
-  - [ ] **Frontend:** Code màn hình "Vé của tôi" (My Bookings) dạng Tab (Sắp tới / Đã đá).
+- [x] **Ngày 24 (Thứ 4): Hoàn Thiện Hồ Sơ & Quản Lý Vé (Profile & My Bookings)**
+  - [x] **Backend (AI):** Gen API `/api/users/me` (thông tin user) và API `/api/bookings/my-bookings`.
+  - [x] **Frontend:** Thiết kế lại hoàn chỉnh màn hình Profile (xóa bỏ "Coming soon", thêm avatar, thông tin, các mục cài đặt).
+  - [x] **Frontend:** Code màn hình "Vé của tôi" (My Bookings) dạng Tab (Sắp tới / Lịch sử) & xem lại mã QR check-in.
 - [ ] **Ngày 25 (Thứ 5): API Tìm Kèo (Backend)**
   - [ ] **Backend (AI):** Gen API CRUD bảng `MatchPost` và API `JoinMatch`.
 - [ ] **Ngày 26 (Thứ 6): UI Bảng Tin Tìm Kèo (Feed)**

@@ -28,6 +28,12 @@ data class BookingResponseDto(
     @SerializedName("stadiumName")
     val stadiumName: String? = null,
 
+    @SerializedName("stadiumAddress")
+    val stadiumAddress: String? = null,
+
+    @SerializedName("stadiumImageUrl")
+    val stadiumImageUrl: String? = null,
+
     @SerializedName("bookingDate")
     val bookingDate: String,
 
@@ -49,6 +55,9 @@ data class BookingResponseDto(
     @SerializedName("note")
     val note: String? = null,
 
+    @SerializedName("qrCodeData")
+    val qrCodeData: String? = null,
+
     @SerializedName("createdAt")
     val createdAt: String? = null,
 
@@ -64,6 +73,8 @@ data class BookingResponseDto(
             courtName = courtName ?: "Sân bóng",
             stadiumId = stadiumId,
             stadiumName = stadiumName ?: "Cụm sân",
+            stadiumAddress = stadiumAddress,
+            stadiumImageUrl = stadiumImageUrl,
             bookingDate = bookingDate,
             startTime = startTime,
             endTime = endTime,
@@ -71,6 +82,7 @@ data class BookingResponseDto(
             status = status ?: "PENDING",
             paymentStatus = paymentStatus ?: "UNPAID",
             note = note,
+            qrCodeData = qrCodeData ?: "SF_TICKET:$id",
             createdAt = createdAt
         )
     }

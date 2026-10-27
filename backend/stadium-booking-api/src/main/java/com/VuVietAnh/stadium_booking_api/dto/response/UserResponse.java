@@ -20,6 +20,7 @@ public class UserResponse {
     private Role role;
     private String avatarUrl;
     private Boolean isActive;
+    private Long totalBookings;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

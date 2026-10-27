@@ -62,6 +62,21 @@ public class BookingController {
     }
 
     /**
+     * Lấy danh sách toàn bộ vé đặt sân của người dùng đang đăng nhập (Ngày 24 - My Bookings).
+     * Sắp xếp theo ngày và giờ đặt mới nhất trước.
+     */
+     @GetMapping("/my-bookings")
+     public ResponseEntity<ApiResponse<List<BookingResponse>>> getMyBookings(
+             @AuthenticationPrincipal CustomUserDetails userDetails
+     ) {
+         if (userDetails == null) {
+             throw new com.VuVietAnh.stadium_booking_api.exception.UnauthorizedException("User not authenticated");
+         }
+         List<BookingResponse> myBookings = bookingService.getMyBookings(userDetails.getUser().getId());
+         return ResponseEntity.ok(ApiResponse.ok("Get my bookings successfully", myBookings));
+     }
+
+    /**
      * Lấy thông tin chi tiết một đơn đặt sân theo ID (chuẩn bị cho xuất vé và mã QR - Ngày 23).
      */
     @GetMapping("/{id}")
