@@ -89,6 +89,9 @@ dependencies {
 
     // Google Play Services Location (lấy tọa độ thiết bị)
     implementation(libs.play.services.location)
+
+    // ZXing (Tạo mã QR)
+    implementation(libs.zxing.core)
 }
 
 // Tự động chạy adb reverse mỗi khi bấm Run/Build app

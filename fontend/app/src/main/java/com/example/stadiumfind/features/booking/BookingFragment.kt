@@ -257,33 +257,24 @@ class BookingFragment : Fragment() {
             confirmBottomSheet?.dismiss()
             confirmBottomSheet = null
 
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("🎉 Đặt Sân Thành Công!")
-                .setMessage(
-                    "Mã đặt sân: #${result.id}\n" +
-                    "Cụm sân: ${result.stadiumName}\n" +
-                    "Sân con: ${result.courtName}\n" +
-                    "Ngày đá: ${result.bookingDate}\n" +
-                    "Khung giờ: ${result.displayTimeRange}\n" +
-                    "Tổng tiền: ${result.formattedTotalPrice}\n\n" +
-                    "Đơn đặt của bạn đã được ghi nhận trên hệ thống!"
-                )
-                .setPositiveButton("Xem Vé / Mã QR") { dialog, _ ->
-                    dialog.dismiss()
-                    // Sẵn sàng chuyển tiếp sang màn hình Mã QR ở Ngày 23
-                    Toast.makeText(
-                        requireContext(),
-                        "Vé #${result.id} đã sẵn sàng cho Ngày 23 (Mã QR)",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-                .setNegativeButton("Đóng") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .setCancelable(false)
-                .show()
+            val address = viewModel.uiState.value.stadiumAddress.ifBlank { "Hà Nội" }
+            val bundle = Bundle().apply {
+                putLong(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_TICKET_ID, result.id)
+                putString(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_STADIUM_NAME, result.stadiumName)
+                putString(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_COURT_NAME, result.courtName)
+                putLong(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_COURT_ID, result.courtId)
+                putString(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_STADIUM_ADDRESS, address)
+                putString(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_BOOKING_DATE, result.bookingDate)
+                putString(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_TIME_RANGE, result.displayTimeRange)
+                putString(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_TOTAL_PRICE, result.formattedTotalPrice)
+                putString(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_NOTE, result.note)
+            }
 
             viewModel.clearBookingSuccess()
+            findNavController().navigate(
+                R.id.action_bookingFragment_to_bookingSuccessFragment,
+                bundle
+            )
         }
 
         // Xử lý khi có thông báo lỗi từ server (Ví dụ: trùng lịch 409)

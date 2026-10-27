@@ -75,9 +75,9 @@
 ---
 
 ## Tuần 4: Đặt Sân, Mã QR & Mạng Xã Hội (Tìm Kèo)
-- [ ] **Ngày 22 (Thứ 2): Luồng Đặt Sân (Booking)**
-  - [ ] **Backend (AI):** Gen API `/api/bookings` (Check overlap time bằng `@Query` JPA).
-  - [ ] **Frontend:** Viết API Service, UseCase và ViewModel cho luồng Đặt sân.
+- [x] **Ngày 22 (Thứ 2): Luồng Đặt Sân (Booking)**
+  - [x] **Backend (AI):** Gen API `/api/bookings` (Check overlap time bằng `@Query` JPA).
+  - [x] **Frontend:** Viết API Service, UseCase và ViewModel cho luồng Đặt sân.
 - [ ] **Ngày 23 (Thứ 3): Mã QR Xác Nhận**
   - [ ] **Frontend:** Gọi API Đặt sân. Khi thành công, nhận `ticketId`.
   - [ ] **Frontend:** Tích hợp thư viện `ZXing` sinh mã QR code hiển thị trên màn hình Success.

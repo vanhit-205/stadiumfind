@@ -90,6 +90,59 @@
             android:name="pricePerHour"
             app:argType="float"
             android:defaultValue="200000.0f" />
+        <action
+            android:id="@+id/action_bookingFragment_to_bookingSuccessFragment"
+            app:destination="@id/bookingSuccessFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bookingSuccessFragment"
+        android:name="com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment"
+        android:label="Vé Đặt Sân"
+        tools:layout="@layout/fragment_booking_success">
+        <argument
+            android:name="ticketId"
+            app:argType="long" />
+        <argument
+            android:name="stadiumName"
+            app:argType="string" />
+        <argument
+            android:name="courtName"
+            app:argType="string" />
+        <argument
+            android:name="courtId"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="stadiumAddress"
+            app:argType="string"
+            android:defaultValue="Hà Nội" />
+        <argument
+            android:name="bookingDate"
+            app:argType="string" />
+        <argument
+            android:name="timeRange"
+            app:argType="string" />
+        <argument
+            android:name="totalPrice"
+            app:argType="string" />
+        <argument
+            android:name="note"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+
+        <action
+            android:id="@+id/action_bookingSuccessFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
