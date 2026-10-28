@@ -44,6 +44,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/stadiums/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/courts/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/bookings/occupied-slots").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/matches/my-posts").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/matches/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/stadiums/**").hasAnyRole("STADIUM_OWNER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/stadiums/**").hasAnyRole("STADIUM_OWNER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/stadiums/**").hasAnyRole("STADIUM_OWNER", "ADMIN")

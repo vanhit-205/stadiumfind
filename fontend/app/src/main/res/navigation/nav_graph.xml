@@ -56,7 +56,22 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_matchFeedFragment"
+            app:destination="@id/matchFeedFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
+
+    <!-- ===== MATCH FEED FLOW (Ngày 26) ===== -->
+    <fragment
+        android:id="@+id/matchFeedFragment"
+        android:name="com.example.stadiumfind.features.match.presentation.feed.MatchFeedFragment"
+        android:label="Bảng Tin Tìm Kèo"
+        tools:layout="@layout/fragment_match_feed" />
 
     <fragment
         android:id="@+id/searchFragment"

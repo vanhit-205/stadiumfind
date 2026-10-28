@@ -203,4 +203,25 @@ ON DUPLICATE KEY UPDATE
     status = VALUES(status),
     payment_status = VALUES(payment_status);
 
+-- 5. Tạo các bài đăng tìm kèo mẫu (Sample Match Posts - Ngày 25)
+INSERT INTO match_posts (id, title, description, sport_type, play_date, start_time, end_time, max_participants, current_participants, price_per_person, status, creator_id, court_id, created_at, updated_at)
+VALUES
+(701, 'Cần tìm 3 bạn đá bóng sân 7 Thượng Đình tối nay', 'Đội mình thiếu 2-3 người đá dưỡng sinh vui vẻ sau giờ làm, trình độ phong trào trung bình. Anh em nào rảnh giao lưu nhé!', 'Football', DATE_ADD(CURRENT_DATE, INTERVAL 1 DAY), '19:00:00', '20:30:00', 5, 2, 50000.00, 'OPEN', 1001, 101, NOW(), NOW()),
+(702, 'Kèo bóng đá 5 người - Giao lưu cọ xát C500', 'Tìm đối tác đá cánh trái và thủ môn, đội toàn anh em IT nhiệt tình, có nước uống sẵn.', 'Football', DATE_ADD(CURRENT_DATE, INTERVAL 2 DAY), '17:30:00', '19:00:00', 4, 1, 60000.00, 'OPEN', 1002, 103, NOW(), NOW()),
+(703, 'Giao lưu Pickleball đôi nam nữ Chuyên Việt Đà Nẵng', 'Nhóm mình có 2 người cần tìm thêm 2 bạn nữa đánh đôi Pickleball, sân đẹp có mái che.', 'Pickleball', DATE_ADD(CURRENT_DATE, INTERVAL 1 DAY), '18:00:00', '19:30:00', 4, 4, 45000.00, 'FULL', 1001, 126, NOW(), NOW()),
+(704, 'Kèo bóng đá 7 người Sala Thủ Thiêm cuối tuần', 'Đội chuẩn bị đá giải cần tuyển thêm tiền đạo và trung vệ cứng, chia tiền sân theo đầu người.', 'Football', DATE_ADD(CURRENT_DATE, INTERVAL 3 DAY), '19:30:00', '21:00:00', 6, 2, 80000.00, 'OPEN', 1002, 147, NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+    title = VALUES(title),
+    current_participants = VALUES(current_participants),
+    status = VALUES(status);
+
+-- 6. Tạo người tham gia kèo mẫu (Sample Match Participants)
+INSERT INTO match_participants (id, match_post_id, user_id, status, joined_at, note, created_at, updated_at)
+VALUES
+(801, 701, 1002, 'ACCEPTED', NOW(), 'Đá được vị trí tiền vệ cánh hoặc hậu vệ', NOW(), NOW()),
+(802, 704, 1001, 'ACCEPTED', NOW(), 'Đá trung vệ chắc chắn', NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+    status = VALUES(status),
+    note = VALUES(note);
+
 SET FOREIGN_KEY_CHECKS = 1;

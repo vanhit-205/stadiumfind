@@ -18,7 +18,6 @@ import java.time.LocalTime;
 @Builder
 public class MatchPostCreateRequest {
 
-    @NotNull(message = "Creator ID is required")
     private Long creatorId;
 
     @NotNull(message = "Court ID is required")

@@ -2,7 +2,8 @@
 
 **Mục tiêu:** Hoàn thành ứng dụng Android (Kotlin, Clean Architecture) + Backend (Spring Boot AI gen).
 **Thời gian mỗi ngày:** 3.5 - 4 giờ.
-**Nguyên tắc:** Chủ nhật nghỉ ngơi hoàn toàn (hoặc chỉ review code nhẹ nhàng).
+**Nguyên tắc:** Chủ nhật nghỉ ngơi hoàn toàn (hoặc chỉ review code nhẹ nhàng). Mỗi khi lên kết hoạch sẽ tạo file để tôi duyệt
+
 
 ---
 
@@ -85,10 +86,10 @@
   - [x] **Backend (AI):** Gen API `/api/users/me` (thông tin user) và API `/api/bookings/my-bookings`.
   - [x] **Frontend:** Thiết kế lại hoàn chỉnh màn hình Profile (xóa bỏ "Coming soon", thêm avatar, thông tin, các mục cài đặt).
   - [x] **Frontend:** Code màn hình "Vé của tôi" (My Bookings) dạng Tab (Sắp tới / Lịch sử) & xem lại mã QR check-in.
-- [ ] **Ngày 25 (Thứ 5): API Tìm Kèo (Backend)**
-  - [ ] **Backend (AI):** Gen API CRUD bảng `MatchPost` và API `JoinMatch`.
-- [ ] **Ngày 26 (Thứ 6): UI Bảng Tin Tìm Kèo (Feed)**
-  - [ ] **Frontend:** Code UI màn hình News Feed và Form đăng bài tìm người.
+- [x] **Ngày 25 (Thứ 5): API Tìm Kèo (Backend)**
+  - [x] **Backend (AI):** Gen API CRUD bảng `MatchPost` và API `JoinMatch`.
+- [x] **Ngày 26 (Thứ 6): UI Bảng Tin Tìm Kèo (Feed)**
+  - [x] **Frontend:** Code UI màn hình News Feed và Form đăng bài tìm người.
 - [ ] **Ngày 27 (Thứ 7): Tương tác "Tham Gia Kèo"**
   - [ ] **Frontend:** Ghép API Đăng bài và Xin tham gia kèo. Cập nhật state UI.
 - [ ] **Ngày 28 (Chủ nhật): 💤 Nghỉ ngơi**

@@ -94,7 +94,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnBannerAction.setOnClickListener {
-            Toast.makeText(requireContext(), "Chuyển sang mục Ghép Kèo Giao Hữu", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_homeFragment_to_matchFeedFragment)
         }
 
         binding.tvViewAll.setOnClickListener {

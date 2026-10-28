@@ -13,7 +13,6 @@ public class MatchParticipantRequest {
     @NotNull(message = "Match post ID is required")
     private Long matchPostId;
 
-    @NotNull(message = "User ID is required")
     private Long userId;
 
     private String note;
