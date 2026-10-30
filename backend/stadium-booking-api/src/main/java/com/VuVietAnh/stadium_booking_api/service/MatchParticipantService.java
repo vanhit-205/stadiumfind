@@ -13,5 +13,6 @@ public interface MatchParticipantService {
     MatchParticipantResponse updateParticipantStatus(Long participantId, ParticipantStatus status);
     List<MatchParticipantResponse> getParticipantsByMatchPost(Long matchPostId);
     Page<MatchParticipantResponse> getMatchHistoryByUser(Long userId, Pageable pageable);
+    Page<MatchParticipantResponse> getMatchHistoryByUserAndStatus(Long userId, ParticipantStatus status, Pageable pageable);
     void leaveMatch(Long matchPostId, Long userId);
 }

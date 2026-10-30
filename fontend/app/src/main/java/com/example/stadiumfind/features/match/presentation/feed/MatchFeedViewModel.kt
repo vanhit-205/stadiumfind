@@ -7,6 +7,12 @@ import com.example.stadiumfind.features.booking.domain.model.CourtItem
 import com.example.stadiumfind.features.match.data.remote.dto.MatchPostCreateRequestDto
 import com.example.stadiumfind.features.match.domain.model.MatchPost
 import com.example.stadiumfind.features.match.domain.repository.MatchRepository
+import com.example.stadiumfind.core.data.UserPreferencesDataStore
+import com.example.stadiumfind.features.match.domain.model.MatchParticipant
+import com.example.stadiumfind.features.match.domain.usecase.GetMatchParticipantsUseCase
+import com.example.stadiumfind.features.match.domain.usecase.JoinMatchUseCase
+import com.example.stadiumfind.features.match.domain.usecase.LeaveMatchUseCase
+import com.example.stadiumfind.features.match.domain.usecase.UpdateParticipantStatusUseCase
 import com.example.stadiumfind.features.stadium.domain.model.StadiumItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -34,16 +40,42 @@ data class CreateMatchDialogState(
     val isSubmitting: Boolean = false
 )
 
+data class ManageMatchState(
+    val isLoading: Boolean = false,
+    val participants: List<MatchParticipant> = emptyList(),
+    val errorMessage: String? = null
+)
+
 @HiltViewModel
 class MatchFeedViewModel @Inject constructor(
-    private val matchRepository: MatchRepository
+    private val matchRepository: MatchRepository,
+    private val joinMatchUseCase: JoinMatchUseCase,
+    private val leaveMatchUseCase: LeaveMatchUseCase,
+    private val getMatchParticipantsUseCase: GetMatchParticipantsUseCase,
+    private val updateParticipantStatusUseCase: UpdateParticipantStatusUseCase,
+    private val userPreferencesDataStore: UserPreferencesDataStore
 ) : ViewModel() {
+
+    private val _currentUserId = MutableStateFlow<Long?>(null)
+    val currentUserId: StateFlow<Long?> = _currentUserId.asStateFlow()
 
     private val _uiState = MutableStateFlow<MatchFeedUiState>(MatchFeedUiState.Loading)
     val uiState: StateFlow<MatchFeedUiState> = _uiState.asStateFlow()
 
     private val _createPostResult = MutableSharedFlow<Resource<MatchPost>>()
     val createPostResult: SharedFlow<Resource<MatchPost>> = _createPostResult.asSharedFlow()
+
+    private val _joinMatchResult = MutableSharedFlow<Resource<MatchParticipant>>()
+    val joinMatchResult: SharedFlow<Resource<MatchParticipant>> = _joinMatchResult.asSharedFlow()
+
+    private val _isJoining = MutableStateFlow(false)
+    val isJoining: StateFlow<Boolean> = _isJoining.asStateFlow()
+
+    private val _manageMatchState = MutableStateFlow(ManageMatchState())
+    val manageMatchState: StateFlow<ManageMatchState> = _manageMatchState.asStateFlow()
+
+    private val _updateParticipantResult = MutableSharedFlow<Resource<MatchParticipant>>()
+    val updateParticipantResult: SharedFlow<Resource<MatchParticipant>> = _updateParticipantResult.asSharedFlow()
 
     private val _dialogState = MutableStateFlow(CreateMatchDialogState())
     val dialogState: StateFlow<CreateMatchDialogState> = _dialogState.asStateFlow()
@@ -52,8 +84,80 @@ class MatchFeedViewModel @Inject constructor(
     private var currentSportFilter: String = "ALL"
 
     init {
+        observeCurrentUserId()
         loadMatchPosts()
         loadStadiumsForCreate()
+    }
+
+    private fun observeCurrentUserId() {
+        viewModelScope.launch {
+            userPreferencesDataStore.userId.collect { id ->
+                _currentUserId.value = id
+            }
+        }
+    }
+
+    fun loadParticipants(matchPostId: Long) {
+        viewModelScope.launch {
+            _manageMatchState.update { it.copy(isLoading = true, errorMessage = null) }
+            getMatchParticipantsUseCase(matchPostId).collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        _manageMatchState.update { it.copy(isLoading = false, participants = result.data) }
+                    }
+                    is Resource.Error -> {
+                        _manageMatchState.update { it.copy(isLoading = false, errorMessage = result.message) }
+                    }
+                    is Resource.Loading -> Unit
+                }
+            }
+        }
+    }
+
+    fun updateParticipantStatus(matchPostId: Long, participantId: Long, status: String) {
+        viewModelScope.launch {
+            updateParticipantStatusUseCase(participantId, status).collect { result ->
+                _updateParticipantResult.emit(result)
+                if (result is Resource.Success) {
+                    // Cập nhật lại danh sách ứng viên trong dialog quản lý
+                    _manageMatchState.update { state ->
+                        val updatedList = state.participants.map { p ->
+                            if (p.id == participantId) p.copy(status = status) else p
+                        }
+                        state.copy(participants = updatedList)
+                    }
+                    // Tải lại match posts để đồng bộ số lượng slot
+                    loadMatchPosts()
+                }
+            }
+        }
+    }
+
+    fun joinMatch(matchPostId: Long, note: String?) {
+        viewModelScope.launch {
+            _isJoining.value = true
+            joinMatchUseCase(matchPostId, note).collect { result ->
+                if (result !is Resource.Loading) {
+                    _isJoining.value = false
+                }
+                _joinMatchResult.emit(result)
+                if (result is Resource.Success) {
+                    // Cập nhật số lượng người tham gia trong danh sách hiện tại
+                    allPosts = allPosts.map { post ->
+                        if (post.id == matchPostId) {
+                            val newCount = post.currentParticipants + 1
+                            post.copy(
+                                currentParticipants = newCount,
+                                status = if (newCount >= post.maxParticipants) "FULL" else post.status
+                            )
+                        } else {
+                            post
+                        }
+                    }
+                    applyFilter(currentSportFilter)
+                }
+            }
+        }
     }
 
     fun loadMatchPosts() {

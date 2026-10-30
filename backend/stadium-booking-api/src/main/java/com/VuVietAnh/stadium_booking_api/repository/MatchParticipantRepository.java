@@ -30,4 +30,7 @@ public interface MatchParticipantRepository extends JpaRepository<MatchParticipa
 
     // Đếm số lượng thành viên đã được duyệt (ACCEPTED) trong một trận đấu
     long countByMatchPostIdAndStatus(Long matchPostId, ParticipantStatus status);
+
+    // Phân trang danh sách các bài ghép kèo mà Người dùng tham gia, lọc theo trạng thái
+    Page<MatchParticipant> findByUserIdAndStatus(Long userId, ParticipantStatus status, Pageable pageable);
 }

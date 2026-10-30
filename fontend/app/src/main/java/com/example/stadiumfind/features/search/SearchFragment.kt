@@ -358,9 +358,21 @@ class SearchFragment : Fragment() {
      * Di chuyển mượt (animate) tới vị trí hiện tại của user và tải các sân lân cận.
      */
     private fun animateToCurrentLocation(forceRefreshNearby: Boolean = false) {
+        if (!locationHelper.isLocationServiceEnabled()) {
+            Toast.makeText(requireContext(), "Vui lòng bật định vị GPS trên thiết bị để xác định vị trí chính xác", Toast.LENGTH_LONG).show()
+        }
+
+        binding.progressLoadingMap.visibility = View.VISIBLE
         viewLifecycleOwner.lifecycleScope.launch {
             val currentLocation = locationHelper.getCurrentLocation()
-            val targetGeoPoint = currentLocation ?: LocationHelper.DEFAULT_LOCATION
+            binding.progressLoadingMap.visibility = View.GONE
+
+            val targetGeoPoint = if (currentLocation != null) {
+                currentLocation
+            } else {
+                Toast.makeText(requireContext(), "Không thể lấy vị trí hiện tại, hiển thị vị trí mặc định", Toast.LENGTH_SHORT).show()
+                LocationHelper.DEFAULT_LOCATION
+            }
 
             binding.mapView.controller.animateTo(
                 targetGeoPoint,

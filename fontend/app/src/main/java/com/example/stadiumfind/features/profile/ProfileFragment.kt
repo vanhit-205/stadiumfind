@@ -81,8 +81,14 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_profileFragment_to_myBookingsFragment)
         }
 
+        // Chuyển sang màn hình "Kèo tôi tham gia" (My Matches)
+        val cardMyMatches = requireView().findViewById<MaterialCardView>(R.id.cardMyMatches)
+        cardMyMatches?.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_myMatchesFragment)
+        }
+
         btnNotificationSetting.setOnClickListener {
-            Toast.makeText(requireContext(), "Tính năng thông báo đang được thiết lập (FCM)", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_profileFragment_to_notificationFragment)
         }
 
         btnAboutApp.setOnClickListener {

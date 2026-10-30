@@ -64,6 +64,22 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_myMatchesFragment"
+            app:destination="@id/myMatchesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- ===== MATCH FEED FLOW (Ngày 26) ===== -->
@@ -71,7 +87,16 @@
         android:id="@+id/matchFeedFragment"
         android:name="com.example.stadiumfind.features.match.presentation.feed.MatchFeedFragment"
         android:label="Bảng Tin Tìm Kèo"
-        tools:layout="@layout/fragment_match_feed" />
+        tools:layout="@layout/fragment_match_feed">
+
+        <action
+            android:id="@+id/action_matchFeedFragment_to_myMatchesFragment"
+            app:destination="@id/myMatchesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/searchFragment"
@@ -172,6 +197,22 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_profileFragment_to_myMatchesFragment"
+            app:destination="@id/myMatchesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_profileFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- ===== MY BOOKINGS / TICKETS SCREEN ===== -->
@@ -180,6 +221,29 @@
         android:name="com.example.stadiumfind.features.booking.presentation.mybookings.MyBookingsFragment"
         android:label="Vé Của Tôi"
         tools:layout="@layout/fragment_my_bookings" />
+
+    <!-- ===== KÈO TÔI THAM GIA (MY MATCHES) ===== -->
+    <fragment
+        android:id="@+id/myMatchesFragment"
+        android:name="com.example.stadiumfind.features.match.presentation.manage.MyMatchesFragment"
+        android:label="Kèo Tôi Tham Gia"
+        tools:layout="@layout/fragment_my_matches" />
+
+    <!-- ===== THÔNG BÁO (NOTIFICATIONS) ===== -->
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.stadiumfind.features.notification.presentation.NotificationFragment"
+        android:label="Thông Báo"
+        tools:layout="@layout/fragment_notification">
+
+        <action
+            android:id="@+id/action_notificationFragment_to_myMatchesFragment"
+            app:destination="@id/myMatchesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <!-- ===== STADIUM DETAIL FLOW ===== -->
     <fragment

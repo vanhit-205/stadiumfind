@@ -54,7 +54,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Icon chuông thông báo -->
+            <!-- Icon chuông thông báo kèm badge -->
             <FrameLayout
                 android:id="@+id/btnNotification"
                 android:layout_width="44dp"
@@ -70,6 +70,17 @@
                     android:contentDescription="Thông báo"
                     android:src="@drawable/ic_bell"
                     app:tint="@color/text_primary" />
+
+                <!-- Badge chấm đỏ thông báo chưa đọc -->
+                <View
+                    android:id="@+id/viewNotificationBadge"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_badge_red"
+                    android:visibility="gone" />
             </FrameLayout>
         </LinearLayout>
 

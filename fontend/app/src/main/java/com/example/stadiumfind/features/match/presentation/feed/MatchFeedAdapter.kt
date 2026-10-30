@@ -15,10 +15,19 @@ import java.text.DecimalFormat
 
 class MatchFeedAdapter(
     private val onJoinClick: (MatchPost) -> Unit,
+    private val onManageClick: (MatchPost) -> Unit,
     private val onItemClick: (MatchPost) -> Unit
 ) : ListAdapter<MatchPost, MatchFeedAdapter.MatchPostViewHolder>(DiffCallback) {
 
     private val currencyFormatter = DecimalFormat("#,###")
+    private var currentUserId: Long? = null
+
+    fun setCurrentUserId(userId: Long?) {
+        if (this.currentUserId != userId) {
+            this.currentUserId = userId
+            notifyDataSetChanged()
+        }
+    }
 
     inner class MatchPostViewHolder(
         private val binding: ItemMatchPostBinding
@@ -26,9 +35,10 @@ class MatchFeedAdapter(
 
         fun bind(item: MatchPost) {
             val context = binding.root.context
+            val isCreator = (currentUserId != null && item.creatorId == currentUserId)
 
             // Creator info
-            binding.tvCreatorName.text = item.creatorName
+            binding.tvCreatorName.text = if (isCreator) "${item.creatorName} (Bạn)" else item.creatorName
             binding.ivCreatorAvatar.load(item.creatorAvatar) {
                 crossfade(true)
                 placeholder(R.drawable.ic_person)
@@ -45,21 +55,41 @@ class MatchFeedAdapter(
             }
             binding.tvSportType.text = sportIcon
 
-            // Status badge
-            if (item.isFull) {
+            // Status badge & Action Button
+            if (isCreator) {
+                // Chủ kèo: Luôn cho phép bấm Quản Lý Kèo
+                binding.tvStatusBadge.text = "Kèo của bạn"
+                binding.tvStatusBadge.setBackgroundResource(R.drawable.bg_badge_open)
+                binding.tvStatusBadge.setTextColor(ContextCompat.getColor(context, R.color.primary_300))
+
+                binding.btnJoinMatch.isEnabled = true
+                binding.btnJoinMatch.alpha = 1.0f
+                binding.btnJoinMatch.text = "Quản Lý Kèo"
+                binding.btnJoinMatch.setBackgroundResource(R.drawable.bg_badge_open)
+                binding.btnJoinMatch.setTextColor(ContextCompat.getColor(context, R.color.primary_300))
+                binding.btnJoinMatch.setOnClickListener { onManageClick(item) }
+            } else if (item.isFull) {
                 binding.tvStatusBadge.text = "Đã đủ người"
                 binding.tvStatusBadge.setBackgroundResource(R.drawable.bg_badge_full)
                 binding.tvStatusBadge.setTextColor(ContextCompat.getColor(context, R.color.error_red))
+
                 binding.btnJoinMatch.isEnabled = false
                 binding.btnJoinMatch.alpha = 0.5f
                 binding.btnJoinMatch.text = "Đã Đủ"
+                binding.btnJoinMatch.setBackgroundResource(R.drawable.bg_btn_book_sm)
+                binding.btnJoinMatch.setTextColor(ContextCompat.getColor(context, R.color.text_on_primary))
+                binding.btnJoinMatch.setOnClickListener(null)
             } else {
                 binding.tvStatusBadge.text = "Còn ${item.remainingSlots} slot"
                 binding.tvStatusBadge.setBackgroundResource(R.drawable.bg_badge_open)
                 binding.tvStatusBadge.setTextColor(ContextCompat.getColor(context, R.color.primary_300))
+
                 binding.btnJoinMatch.isEnabled = true
                 binding.btnJoinMatch.alpha = 1.0f
                 binding.btnJoinMatch.text = "Tham Gia Kèo"
+                binding.btnJoinMatch.setBackgroundResource(R.drawable.bg_btn_book_sm)
+                binding.btnJoinMatch.setTextColor(ContextCompat.getColor(context, R.color.text_on_primary))
+                binding.btnJoinMatch.setOnClickListener { onJoinClick(item) }
             }
 
             // Post content
@@ -81,7 +111,6 @@ class MatchFeedAdapter(
             }
 
             // Click listeners
-            binding.btnJoinMatch.setOnClickListener { onJoinClick(item) }
             binding.root.setOnClickListener { onItemClick(item) }
         }
     }

@@ -67,6 +67,89 @@ class MatchRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun joinMatch(matchPostId: Long, note: String?): Flow<Resource<com.example.stadiumfind.features.match.domain.model.MatchParticipant>> = flow {
+        emit(Resource.Loading)
+        val currentUserId = userPreferencesDataStore.userId.firstOrNull()
+        val request = com.example.stadiumfind.features.match.data.remote.dto.MatchParticipantRequestDto(
+            matchPostId = matchPostId,
+            userId = currentUserId,
+            note = note
+        )
+        val result = safeApiCall {
+            apiService.joinMatch(matchPostId, request)
+        }
+        when (result) {
+            is Resource.Success -> emit(Resource.Success(result.data.toDomain()))
+            is Resource.Error -> emit(Resource.Error(result.message, result.code))
+            is Resource.Loading -> emit(Resource.Loading)
+        }
+    }
+
+    override fun getParticipants(matchPostId: Long): Flow<Resource<List<com.example.stadiumfind.features.match.domain.model.MatchParticipant>>> = flow {
+        emit(Resource.Loading)
+        val result = safeApiCall {
+            apiService.getParticipants(matchPostId)
+        }
+        when (result) {
+            is Resource.Success -> {
+                val list = result.data.map { it.toDomain() }
+                emit(Resource.Success(list))
+            }
+            is Resource.Error -> emit(Resource.Error(result.message, result.code))
+            is Resource.Loading -> emit(Resource.Loading)
+        }
+    }
+
+    override fun updateParticipantStatus(
+        participantId: Long,
+        status: String
+    ): Flow<Resource<com.example.stadiumfind.features.match.domain.model.MatchParticipant>> = flow {
+        emit(Resource.Loading)
+        val result = safeApiCall {
+            apiService.updateParticipantStatus(participantId, status)
+        }
+        when (result) {
+            is Resource.Success -> emit(Resource.Success(result.data.toDomain()))
+            is Resource.Error -> emit(Resource.Error(result.message, result.code))
+            is Resource.Loading -> emit(Resource.Loading)
+        }
+    }
+
+    override fun getMyMatches(
+        status: String?,
+        page: Int,
+        size: Int
+    ): Flow<Resource<List<com.example.stadiumfind.features.match.domain.model.MatchParticipant>>> = flow {
+        emit(Resource.Loading)
+        val result = safeApiCall {
+            apiService.getMyMatches(
+                status = if (status.isNullOrBlank() || status == "ALL") null else status,
+                page = page,
+                size = size
+            )
+        }
+        when (result) {
+            is Resource.Success -> {
+                val list = result.data.content.map { it.toDomain() }
+                emit(Resource.Success(list))
+            }
+            is Resource.Error -> emit(Resource.Error(result.message, result.code))
+            is Resource.Loading -> emit(Resource.Loading)
+        }
+    }
+
+    override fun leaveMatch(matchPostId: Long): Flow<Resource<Unit>> = flow {
+        emit(Resource.Loading)
+        val result = safeApiCall {
+            apiService.leaveMatch(matchPostId)
+        }
+        when (result) {
+            is Resource.Success -> emit(Resource.Success(Unit))
+            is Resource.Error -> emit(Resource.Error(result.message, result.code))
+            is Resource.Loading -> emit(Resource.Loading)
+        }
+    }
+
     override suspend fun getStadiums(): Resource<List<StadiumItem>> {
         val result = safeApiCall { stadiumApiService.getStadiums(page = 0, size = 50) }
         return when (result) {
@@ -101,6 +184,34 @@ class MatchRepositoryImpl @Inject constructor(
             is Resource.Error -> Resource.Error(result.message, result.code)
             is Resource.Loading -> Resource.Loading
         }
+    }
+
+    private fun com.example.stadiumfind.features.match.data.remote.dto.MatchParticipantDto.toDomain(): com.example.stadiumfind.features.match.domain.model.MatchParticipant {
+        return com.example.stadiumfind.features.match.domain.model.MatchParticipant(
+            id = id,
+            matchPostId = matchPostId,
+            userId = userId,
+            userName = userName ?: "Thành viên",
+            userAvatar = userAvatar,
+            userPhoneNumber = userPhoneNumber,
+            status = status,
+            note = note,
+            joinedAt = joinedAt,
+            matchTitle = matchTitle,
+            sportType = sportType,
+            playDate = playDate,
+            startTime = startTime,
+            endTime = endTime,
+            stadiumName = stadiumName,
+            courtName = courtName,
+            maxParticipants = maxParticipants ?: 10,
+            currentParticipants = currentParticipants ?: 1,
+            pricePerPerson = pricePerPerson ?: 0.0,
+            matchStatus = matchStatus,
+            creatorName = creatorName,
+            creatorAvatar = creatorAvatar,
+            creatorPhone = creatorPhone
+        )
     }
 
     private fun MatchPostDto.toDomain(): MatchPost {

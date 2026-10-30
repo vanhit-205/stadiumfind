@@ -90,7 +90,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnNotification.setOnClickListener {
-            Toast.makeText(requireContext(), "Bạn không có thông báo mới", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_homeFragment_to_notificationFragment)
         }
 
         binding.btnBannerAction.setOnClickListener {

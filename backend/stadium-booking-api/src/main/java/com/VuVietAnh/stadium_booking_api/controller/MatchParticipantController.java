@@ -103,4 +103,30 @@ public class MatchParticipantController {
         Page<MatchParticipantResponse> page = matchParticipantService.getMatchHistoryByUser(userDetails.getUser().getId(), pageable);
         return ResponseEntity.ok(ApiResponse.ok("Get match participation history successfully", page));
     }
+
+    /**
+     * Lấy danh sách kèo tôi tham gia, có hỗ trợ lọc theo trạng thái (PENDING, ACCEPTED, REJECTED, CANCELLED).
+     * Nếu không truyền status → trả về tất cả (giống my-history).
+     */
+    @GetMapping("/match-participants/my-matches")
+    public ResponseEntity<ApiResponse<Page<MatchParticipantResponse>>> getMyMatches(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestParam(required = false) ParticipantStatus status,
+            @PageableDefault(page = 0, size = 10, sort = "joinedAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        if (userDetails == null) {
+            throw new AccessDeniedException("User must be authenticated");
+        }
+        Long userId = userDetails.getUser().getId();
+        Page<MatchParticipantResponse> page;
+
+        if (status != null) {
+            page = matchParticipantService.getMatchHistoryByUserAndStatus(userId, status, pageable);
+        } else {
+            page = matchParticipantService.getMatchHistoryByUser(userId, pageable);
+        }
+
+        return ResponseEntity.ok(ApiResponse.ok("Get my matches successfully", page));
+    }
 }
+
