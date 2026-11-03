@@ -90,8 +90,8 @@
   - [x] **Backend (AI):** Gen API CRUD bảng `MatchPost` và API `JoinMatch`.
 - [x] **Ngày 26 (Thứ 6): UI Bảng Tin Tìm Kèo (Feed)**
   - [x] **Frontend:** Code UI màn hình News Feed và Form đăng bài tìm người.
-- [ ] **Ngày 27 (Thứ 7): Tương tác "Tham Gia Kèo"**
-  - [ ] **Frontend:** Ghép API Đăng bài và Xin tham gia kèo. Cập nhật state UI.
+- [x] **Ngày 27 (Thứ 7): Tương tác "Tham Gia Kèo"**
+  - [x] **Frontend:** Ghép API Đăng bài và Xin tham gia kèo. Cập nhật state UI.
 - [ ] **Ngày 28 (Chủ nhật): 💤 Nghỉ ngơi**
 
 ---

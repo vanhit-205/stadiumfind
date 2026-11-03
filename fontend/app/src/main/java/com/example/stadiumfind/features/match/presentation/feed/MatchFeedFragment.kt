@@ -126,6 +126,12 @@ class MatchFeedFragment : Fragment() {
                 }
 
                 launch {
+                    viewModel.userMatchStatusMap.collect { statusMap ->
+                        adapter.setUserParticipationMap(statusMap)
+                    }
+                }
+
+                launch {
                     viewModel.uiState.collect { state ->
                         binding.swipeRefreshLayout.isRefreshing = false
                         when (state) {
@@ -157,6 +163,7 @@ class MatchFeedFragment : Fragment() {
                                 Toast.makeText(requireContext(), "Đăng bài tìm kèo thành công!", Toast.LENGTH_SHORT).show()
                                 val bottomSheet = parentFragmentManager.findFragmentByTag(CreateMatchPostBottomSheet.TAG) as? CreateMatchPostBottomSheet
                                 bottomSheet?.dismiss()
+                                binding.rvMatchPosts.scrollToPosition(0)
                             }
                             is Resource.Error -> {
                                 Toast.makeText(requireContext(), result.message, Toast.LENGTH_LONG).show()

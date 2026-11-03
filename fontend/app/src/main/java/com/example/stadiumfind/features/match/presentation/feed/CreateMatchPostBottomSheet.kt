@@ -157,6 +157,10 @@ class CreateMatchPostBottomSheet : BottomSheetDialogFragment() {
 
     private fun setupSubmitButton() {
         binding.btnSubmitMatchPost.setOnClickListener {
+            if (viewModel.dialogState.value.isSubmitting) {
+                return@setOnClickListener
+            }
+
             val title = binding.etMatchTitle.text.toString().trim()
             val playDate = binding.etPlayDate.text.toString().trim()
             val startTime = binding.etStartTime.text.toString().trim()
@@ -169,6 +173,10 @@ class CreateMatchPostBottomSheet : BottomSheetDialogFragment() {
                 Toast.makeText(requireContext(), "Vui lòng nhập tiêu đề bài đăng", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            if (title.length < 5) {
+                Toast.makeText(requireContext(), "Tiêu đề bài đăng phải có ít nhất 5 ký tự", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             if (playDate.isEmpty()) {
                 Toast.makeText(requireContext(), "Vui lòng chọn ngày thi đấu", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -177,15 +185,28 @@ class CreateMatchPostBottomSheet : BottomSheetDialogFragment() {
                 Toast.makeText(requireContext(), "Vui lòng chọn khung giờ thi đấu (Từ - Đến)", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            if (startTime >= endTime) {
+                Toast.makeText(requireContext(), "Giờ kết thúc phải diễn ra sau giờ bắt đầu", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val maxParticipants = maxParticipantsStr.toIntOrNull() ?: 10
+            if (maxParticipants <= 1) {
+                Toast.makeText(requireContext(), "Số lượng người tham gia phải từ 2 người trở lên", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val pricePerPerson = priceStr.toDoubleOrNull() ?: 0.0
+            if (pricePerPerson < 0) {
+                Toast.makeText(requireContext(), "Chi phí mỗi người không được âm", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             val sportType = when (binding.rgSportType.checkedRadioButtonId) {
                 R.id.rbBadminton -> "BADMINTON"
                 R.id.rbPickleball -> "PICKLEBALL"
                 else -> "FOOTBALL"
             }
-
-            val maxParticipants = maxParticipantsStr.toIntOrNull() ?: 10
-            val pricePerPerson = priceStr.toDoubleOrNull() ?: 0.0
 
             viewModel.createMatchPost(
                 title = title,

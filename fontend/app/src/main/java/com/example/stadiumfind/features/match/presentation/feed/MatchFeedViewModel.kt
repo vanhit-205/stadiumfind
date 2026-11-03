@@ -80,12 +80,17 @@ class MatchFeedViewModel @Inject constructor(
     private val _dialogState = MutableStateFlow(CreateMatchDialogState())
     val dialogState: StateFlow<CreateMatchDialogState> = _dialogState.asStateFlow()
 
+    // Map lưu trạng thái tham gia của người dùng hiện tại: matchPostId -> status ("PENDING", "ACCEPTED", "REJECTED")
+    private val _userMatchStatusMap = MutableStateFlow<Map<Long, String>>(emptyMap())
+    val userMatchStatusMap: StateFlow<Map<Long, String>> = _userMatchStatusMap.asStateFlow()
+
     private var allPosts: List<MatchPost> = emptyList()
     private var currentSportFilter: String = "ALL"
 
     init {
         observeCurrentUserId()
         loadMatchPosts()
+        loadMyJoinedMatches()
         loadStadiumsForCreate()
     }
 
@@ -93,6 +98,20 @@ class MatchFeedViewModel @Inject constructor(
         viewModelScope.launch {
             userPreferencesDataStore.userId.collect { id ->
                 _currentUserId.value = id
+                if (id != null) {
+                    loadMyJoinedMatches()
+                }
+            }
+        }
+    }
+
+    fun loadMyJoinedMatches() {
+        viewModelScope.launch {
+            matchRepository.getMyMatches().collect { result ->
+                if (result is Resource.Success) {
+                    val map = result.data.associate { it.matchPostId to it.status.uppercase() }
+                    _userMatchStatusMap.value = map
+                }
             }
         }
     }
@@ -126,8 +145,9 @@ class MatchFeedViewModel @Inject constructor(
                         }
                         state.copy(participants = updatedList)
                     }
-                    // Tải lại match posts để đồng bộ số lượng slot
+                    // Tải lại match posts để đồng bộ số lượng slot thực tế và danh sách kèo
                     loadMatchPosts()
+                    loadMyJoinedMatches()
                 }
             }
         }
@@ -142,19 +162,23 @@ class MatchFeedViewModel @Inject constructor(
                 }
                 _joinMatchResult.emit(result)
                 if (result is Resource.Success) {
-                    // Cập nhật số lượng người tham gia trong danh sách hiện tại
-                    allPosts = allPosts.map { post ->
-                        if (post.id == matchPostId) {
-                            val newCount = post.currentParticipants + 1
-                            post.copy(
-                                currentParticipants = newCount,
-                                status = if (newCount >= post.maxParticipants) "FULL" else post.status
-                            )
-                        } else {
-                            post
-                        }
+                    // Cập nhật trạng thái tham gia của user đối với match này thành PENDING (chờ chủ bài duyệt)
+                    _userMatchStatusMap.update { current ->
+                        current + (matchPostId to "PENDING")
                     }
-                    applyFilter(currentSportFilter)
+                    loadMyJoinedMatches()
+                }
+            }
+        }
+    }
+
+    fun leaveMatch(matchPostId: Long) {
+        viewModelScope.launch {
+            leaveMatchUseCase(matchPostId).collect { result ->
+                if (result is Resource.Success) {
+                    _userMatchStatusMap.update { it - matchPostId }
+                    loadMatchPosts()
+                    loadMyJoinedMatches()
                 }
             }
         }
@@ -162,6 +186,7 @@ class MatchFeedViewModel @Inject constructor(
 
     fun loadMatchPosts() {
         viewModelScope.launch {
+            loadMyJoinedMatches()
             matchRepository.getOpenMatchPosts(currentSportFilter).collect { result ->
                 when (result) {
                     is Resource.Loading -> {

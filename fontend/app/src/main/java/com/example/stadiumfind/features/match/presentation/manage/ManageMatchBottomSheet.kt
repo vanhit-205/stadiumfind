@@ -107,6 +107,11 @@ class ManageMatchBottomSheet : BottomSheetDialogFragment() {
                         when (result) {
                             is Resource.Success -> {
                                 Toast.makeText(requireContext(), "Cập nhật trạng thái thành công!", Toast.LENGTH_SHORT).show()
+                                val updated = result.data
+                                if (updated.status.equals("ACCEPTED", ignoreCase = true)) {
+                                    currentParticipants = (currentParticipants + 1).coerceAtMost(maxParticipants)
+                                    updateHeaderInfo()
+                                }
                             }
                             is Resource.Error -> {
                                 Toast.makeText(requireContext(), "Lỗi: ${result.message}", Toast.LENGTH_LONG).show()
