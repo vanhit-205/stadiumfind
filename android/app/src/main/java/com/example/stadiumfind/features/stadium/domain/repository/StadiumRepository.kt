@@ -35,4 +35,19 @@ interface StadiumRepository {
      * Lấy danh sách các cụm sân bóng (hỗ trợ tìm kiếm theo từ khóa).
      */
     suspend fun getStadiumsList(keyword: String? = null): com.example.stadiumfind.core.network.Resource<List<StadiumItem>>
+
+    /**
+     * Lấy danh sách sân của chủ sân (ownerId)
+     */
+    suspend fun getStadiumsByOwner(ownerId: Long): com.example.stadiumfind.core.network.Resource<List<StadiumItem>>
+
+    /**
+     * Lấy danh sách sân của chủ sân hiện tại từ access token (ROLE_OWNER)
+     */
+    suspend fun getMyStadiums(): com.example.stadiumfind.core.network.Resource<List<StadiumItem>>
+
+    /**
+     * Cập nhật trạng thái mở/đóng cửa của sân
+     */
+    suspend fun updateStadiumStatus(id: Long, isActive: Boolean): com.example.stadiumfind.core.network.Resource<StadiumItem>
 }

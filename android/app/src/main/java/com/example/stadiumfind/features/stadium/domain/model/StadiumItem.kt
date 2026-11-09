@@ -25,7 +25,8 @@ data class StadiumItem(
     val sportTypes: List<String> = listOf("Bóng đá"),
     val latitude: Double = 0.0,
     val longitude: Double = 0.0,
-    val distance: Double? = null
+    val distance: Double? = null,
+    val isActive: Boolean = true
 ) {
     val formattedDistance: String
         get() {

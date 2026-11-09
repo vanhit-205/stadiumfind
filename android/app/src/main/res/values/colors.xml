@@ -5,8 +5,10 @@
     <color name="primary_400">#43A047</color>
     <color name="primary_500">#2E7D32</color>
     <color name="primary_600">#1B5E20</color>
+    <color name="brand_primary">#2E7D32</color>
 
     <!-- Surface / Background -->
+    <color name="surface_bg">#0F1012</color>
     <color name="surface_dark">#0F1012</color>
     <color name="surface_elevated">#1A1C1F</color>
     <color name="surface_card">#1E2124</color>

@@ -67,6 +67,21 @@ public class StadiumController {
     }
 
     /**
+     * Lấy danh sách sân bóng của chủ sân đang đăng nhập (STADIUM_OWNER).
+     */
+    @GetMapping("/my-stadiums")
+    public ResponseEntity<ApiResponse<java.util.List<StadiumResponse>>> getMyStadiums(
+            @org.springframework.security.core.annotation.AuthenticationPrincipal com.VuVietAnh.stadium_booking_api.security.CustomUserDetails userDetails
+    ) {
+        if (userDetails == null) {
+            throw new com.VuVietAnh.stadium_booking_api.exception.UnauthorizedException("User not authenticated");
+        }
+        Long ownerId = userDetails.getUser().getId();
+        Page<StadiumResponse> page = stadiumService.getStadiumsByOwner(ownerId, Pageable.unpaged());
+        return ResponseEntity.ok(ApiResponse.ok("Get my stadiums successfully", page.getContent()));
+    }
+
+    /**
      * Lấy danh sách sân bóng của một chủ sân (Owner) cụ thể (có phân trang).
      */
     @GetMapping("/owner/{ownerId}")
@@ -107,5 +122,19 @@ public class StadiumController {
     public ResponseEntity<ApiResponse<Void>> deleteStadium(@PathVariable Long id) {
         stadiumService.deleteStadium(id);
         return ResponseEntity.ok(ApiResponse.ok("Delete stadium successfully", null));
+    }
+
+    /**
+     * Cập nhật trạng thái đóng/mở cửa của sân bóng (yêu cầu quyền STADIUM_OWNER hoặc ADMIN).
+     */
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ApiResponse<StadiumResponse>> updateStadiumStatus(
+            @PathVariable Long id,
+            @RequestParam Boolean isActive,
+            @org.springframework.security.core.annotation.AuthenticationPrincipal com.VuVietAnh.stadium_booking_api.security.CustomUserDetails userDetails
+    ) {
+        Long currentUserId = userDetails != null ? userDetails.getUser().getId() : null;
+        StadiumResponse data = stadiumService.updateStadiumStatus(id, isActive, currentUserId);
+        return ResponseEntity.ok(ApiResponse.ok("Update stadium status successfully", data));
     }
 }

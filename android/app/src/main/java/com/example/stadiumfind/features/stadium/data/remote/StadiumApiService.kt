@@ -29,4 +29,20 @@ interface StadiumApiService {
     suspend fun getStadiumById(
         @Path("id") id: Long
     ): Response<BaseResponse<StadiumDto>>
+
+    @GET("stadiums/my-stadiums")
+    suspend fun getMyStadiums(): Response<BaseResponse<List<StadiumDto>>>
+
+    @GET("stadiums/owner/{ownerId}")
+    suspend fun getStadiumsByOwner(
+        @Path("ownerId") ownerId: Long,
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 100
+    ): Response<BaseResponse<PageResponse<StadiumDto>>>
+
+    @retrofit2.http.PATCH("stadiums/{id}/status")
+    suspend fun updateStadiumStatus(
+        @Path("id") id: Long,
+        @Query("isActive") isActive: Boolean
+    ): Response<BaseResponse<StadiumDto>>
 }

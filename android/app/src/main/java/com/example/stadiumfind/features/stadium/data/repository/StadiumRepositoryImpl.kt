@@ -85,4 +85,37 @@ class StadiumRepositoryImpl @Inject constructor(
             is Resource.Loading -> Resource.Loading
         }
     }
+
+    override suspend fun getStadiumsByOwner(ownerId: Long): Resource<List<StadiumItem>> {
+        val result = safeApiCall { apiService.getStadiumsByOwner(ownerId = ownerId, page = 0, size = 100) }
+        return when (result) {
+            is Resource.Success -> {
+                val items = result.data.content.map { it.toDomain() }
+                Resource.Success(items)
+            }
+            is Resource.Error -> Resource.Error(result.message, result.code)
+            is Resource.Loading -> Resource.Loading
+        }
+    }
+
+    override suspend fun getMyStadiums(): Resource<List<StadiumItem>> {
+        val result = safeApiCall { apiService.getMyStadiums() }
+        return when (result) {
+            is Resource.Success -> {
+                val items = result.data.map { it.toDomain() }
+                Resource.Success(items)
+            }
+            is Resource.Error -> Resource.Error(result.message, result.code)
+            is Resource.Loading -> Resource.Loading
+        }
+    }
+
+    override suspend fun updateStadiumStatus(id: Long, isActive: Boolean): Resource<StadiumItem> {
+        val result = safeApiCall { apiService.updateStadiumStatus(id, isActive) }
+        return when (result) {
+            is Resource.Success -> Resource.Success(result.data.toDomain())
+            is Resource.Error -> Resource.Error(result.message, result.code)
+            is Resource.Loading -> Resource.Loading
+        }
+    }
 }

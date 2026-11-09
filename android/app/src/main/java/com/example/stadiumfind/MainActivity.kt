@@ -77,7 +77,8 @@ class MainActivity : AppCompatActivity() {
             R.id.loginFragment,
             R.id.registerFragment,
             R.id.stadiumDetailFragment,
-            R.id.bookingFragment
+            R.id.bookingFragment,
+            R.id.ownerRevenueFragment
         )
 
         navController.addOnDestinationChangedListener { _, destination, _ ->

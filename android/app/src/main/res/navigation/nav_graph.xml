@@ -48,6 +48,33 @@
         android:label="Duyệt đơn đặt sân"
         tools:layout="@layout/fragment_owner_bookings" />
 
+    <!-- ===== OWNER STADIUMS FLOW ===== -->
+    <fragment
+        android:id="@+id/ownerStadiumsFragment"
+        android:name="com.example.stadiumfind.features.owner.presentation.stadiums.OwnerStadiumsFragment"
+        android:label="Sân của tôi"
+        tools:layout="@layout/fragment_owner_stadiums">
+        <action
+            android:id="@+id/action_ownerStadiumsFragment_to_ownerRevenueFragment"
+            app:destination="@id/ownerRevenueFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ownerRevenueFragment"
+        android:name="com.example.stadiumfind.features.owner.presentation.revenue.OwnerRevenueFragment"
+        android:label="Thống kê doanh thu"
+        tools:layout="@layout/fragment_owner_revenue">
+        <argument
+            android:name="stadiumId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="stadiumName"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+
     <!-- ===== MAIN (Bottom Nav) FLOW ===== -->
     <fragment
         android:id="@+id/homeFragment"
@@ -214,6 +241,22 @@
         <action
             android:id="@+id/action_profileFragment_to_notificationFragment"
             app:destination="@id/notificationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_profileFragment_to_ownerRevenueFragment"
+            app:destination="@id/ownerRevenueFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_profileFragment_to_ownerStadiumsFragment"
+            app:destination="@id/ownerStadiumsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

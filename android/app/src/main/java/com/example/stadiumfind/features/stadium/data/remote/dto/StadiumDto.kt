@@ -39,6 +39,9 @@ data class StadiumDto(
     @SerializedName("rating")
     val rating: Double?,
 
+    @SerializedName("isActive")
+    val isActive: Boolean? = true,
+
     @SerializedName("minPricePerHour")
     val minPricePerHour: Double?,
 

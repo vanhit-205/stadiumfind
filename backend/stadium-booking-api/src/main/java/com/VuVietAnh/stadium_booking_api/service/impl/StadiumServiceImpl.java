@@ -170,6 +170,21 @@ public class StadiumServiceImpl implements StadiumService {
         stadiumRepository.deleteById(id);
     }
 
+    @Override
+    @Transactional
+    public StadiumResponse updateStadiumStatus(Long id, Boolean isActive, Long currentUserId) {
+        Stadium stadium = stadiumRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Stadium not found with id: " + id));
+
+        if (currentUserId != null && !stadium.getOwner().getId().equals(currentUserId)) {
+            throw new BadRequestException("You do not have permission to update this stadium");
+        }
+
+        stadium.setIsActive(isActive != null ? isActive : true);
+        Stadium saved = stadiumRepository.save(stadium);
+        return mapToResponse(saved);
+    }
+
     private StadiumResponse mapToResponse(Stadium stadium) {
         BigDecimal minPrice = null;
         int totalCourts = 0;
@@ -207,6 +222,7 @@ public class StadiumServiceImpl implements StadiumService {
                 .closingTime(stadium.getClosingTime())
                 .imageUrl(stadium.getImageUrl())
                 .rating(stadium.getRating())
+                .isActive(stadium.getIsActive() != null ? stadium.getIsActive() : true)
                 .minPricePerHour(minPrice)
                 .totalCourts(totalCourts)
                 .sportTypes(sportTypes)

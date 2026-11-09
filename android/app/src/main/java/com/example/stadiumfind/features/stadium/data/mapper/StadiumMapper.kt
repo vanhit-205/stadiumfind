@@ -25,6 +25,7 @@ fun StadiumDto.toDomain(): StadiumItem {
         sportTypes = if (!sportTypes.isNullOrEmpty()) sportTypes else listOf("Bóng đá"),
         latitude = latitude ?: 0.0,
         longitude = longitude ?: 0.0,
-        distance = distance
+        distance = distance,
+        isActive = isActive ?: true
     )
 }

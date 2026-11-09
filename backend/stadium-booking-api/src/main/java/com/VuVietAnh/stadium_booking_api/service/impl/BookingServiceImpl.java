@@ -53,6 +53,10 @@ public class BookingServiceImpl implements BookingService {
         Court court = courtRepository.findById(request.getCourtId())
                 .orElseThrow(() -> new ResourceNotFoundException("Court not found with id: " + request.getCourtId()));
 
+        if (court.getStadium() != null && Boolean.FALSE.equals(court.getStadium().getIsActive())) {
+            throw new BadRequestException("Sân bóng hiện đang tạm đóng cửa");
+        }
+
         if (court.getStatus() != CourtStatus.AVAILABLE) {
             throw new BadRequestException("Court is currently unavailable for booking");
         }

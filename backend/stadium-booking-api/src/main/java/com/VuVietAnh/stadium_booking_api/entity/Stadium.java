@@ -64,6 +64,10 @@ public class Stadium extends BaseEntity {
     @Column(name = "rating")
     private Double rating;
 
+    @Column(name = "is_active", nullable = false)
+    @Builder.Default
+    private Boolean isActive = true;
+
     // Quan hệ N-1: Nhiều sân vận động thuộc về 1 Chủ sân (User)
     @NotNull(message = "Stadium owner cannot be null")
     @ManyToOne(fetch = FetchType.LAZY)

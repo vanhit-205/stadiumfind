@@ -27,6 +27,7 @@ public class StadiumResponse {
     private LocalTime closingTime;
     private String imageUrl;
     private Double rating;
+    private Boolean isActive;
     private Double distance;
     private BigDecimal minPricePerHour;
     private Integer totalCourts;

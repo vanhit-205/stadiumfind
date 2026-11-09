@@ -5,8 +5,8 @@
         android:icon="@drawable/ic_calendar"
         android:title="Duyệt Đơn" />
     <item
-        android:id="@+id/homeFragment"
-        android:icon="@drawable/ic_stadium_placeholder"
+        android:id="@+id/ownerStadiumsFragment"
+        android:icon="@drawable/ic_stadium_pitch"
         android:title="Sân Của Tôi" />
     <item
         android:id="@+id/profileFragment"

@@ -14,4 +14,6 @@ public interface StadiumService {
     java.util.List<StadiumResponse> getNearbyStadiums(Double latitude, Double longitude, Double radiusKm);
     StadiumResponse updateStadium(Long id, StadiumCreateRequest request);
     void deleteStadium(Long id);
+
+    StadiumResponse updateStadiumStatus(Long id, Boolean isActive, Long currentUserId);
 }

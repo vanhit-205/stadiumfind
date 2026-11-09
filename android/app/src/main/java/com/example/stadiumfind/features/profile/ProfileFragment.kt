@@ -42,6 +42,14 @@ class ProfileFragment : Fragment() {
     private lateinit var btnAboutApp: View
     private lateinit var btnLogout: MaterialButton
 
+    private lateinit var tvSectionActivities: TextView
+    private lateinit var layoutUserActivities: View
+    private lateinit var layoutOwnerActivities: View
+    private lateinit var layoutUserMiniStats: View
+    private lateinit var dividerUserMiniStats: View
+    private lateinit var cardOwnerRevenue: MaterialCardView
+    private lateinit var cardOwnerStadiums: MaterialCardView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -68,6 +76,14 @@ class ProfileFragment : Fragment() {
         btnAboutApp = view.findViewById(R.id.btnAboutApp)
         btnLogout = view.findViewById(R.id.btnLogout)
 
+        tvSectionActivities = view.findViewById(R.id.tvSectionActivities)
+        layoutUserActivities = view.findViewById(R.id.layoutUserActivities)
+        layoutOwnerActivities = view.findViewById(R.id.layoutOwnerActivities)
+        layoutUserMiniStats = view.findViewById(R.id.layoutUserMiniStats)
+        dividerUserMiniStats = view.findViewById(R.id.dividerUserMiniStats)
+        cardOwnerRevenue = view.findViewById(R.id.cardOwnerRevenue)
+        cardOwnerStadiums = view.findViewById(R.id.cardOwnerStadiums)
+
         swipeRefreshLayout.setColorSchemeResources(R.color.primary_400)
     }
 
@@ -85,6 +101,16 @@ class ProfileFragment : Fragment() {
         val cardMyMatches = requireView().findViewById<MaterialCardView>(R.id.cardMyMatches)
         cardMyMatches?.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_myMatchesFragment)
+        }
+
+        // Owner: Chuyển sang Thống kê doanh thu
+        cardOwnerRevenue.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_ownerRevenueFragment)
+        }
+
+        // Owner: Chuyển sang Quản lý sân bóng
+        cardOwnerStadiums.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_ownerStadiumsFragment)
         }
 
         btnNotificationSetting.setOnClickListener {
@@ -120,6 +146,24 @@ class ProfileFragment : Fragment() {
                             tvEmail.text = user.email
                             tvPhone.text = if (user.phoneNumber.isNotBlank()) user.phoneNumber else "Chưa cập nhật SĐT"
                             tvTotalBookingsCount.text = user.totalBookings.toString()
+
+                            val isOwner = user.role.equals("STADIUM_OWNER", ignoreCase = true) ||
+                                    user.role.equals("OWNER", ignoreCase = true)
+
+                            if (isOwner) {
+                                // Ẩn mục của User, hiển thị mục dành riêng cho Chủ sân
+                                layoutUserActivities.visibility = View.GONE
+                                layoutOwnerActivities.visibility = View.VISIBLE
+                                layoutUserMiniStats.visibility = View.GONE
+                                dividerUserMiniStats.visibility = View.GONE
+                                tvSectionActivities.text = "QUẢN LÝ KINH DOANH"
+                            } else {
+                                layoutUserActivities.visibility = View.VISIBLE
+                                layoutOwnerActivities.visibility = View.GONE
+                                layoutUserMiniStats.visibility = View.VISIBLE
+                                dividerUserMiniStats.visibility = View.VISIBLE
+                                tvSectionActivities.text = "HOẠT ĐỘNG CỦA TÔI"
+                            }
 
                             // Đặt cấp bậc thành viên dựa trên số lần đặt
                             tvMembershipTier.text = when {
