@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.stadiumfind.core.data.UserPreferencesDataStore
 import com.example.stadiumfind.core.network.Resource
+import com.example.stadiumfind.features.booking.domain.repository.BookingRepository
 import com.example.stadiumfind.features.profile.domain.model.UserProfile
 import com.example.stadiumfind.features.profile.domain.usecase.GetUserProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +25,8 @@ sealed class ProfileUiState {
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getUserProfileUseCase: GetUserProfileUseCase,
-    private val userPreferences: UserPreferencesDataStore
+    private val userPreferences: UserPreferencesDataStore,
+    private val bookingRepository: BookingRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Idle)
@@ -75,6 +77,7 @@ class ProfileViewModel @Inject constructor(
 
     fun logout(onComplete: () -> Unit) {
         viewModelScope.launch {
+            bookingRepository.clearCachedBookings()
             userPreferences.clearAll()
             onComplete()
         }

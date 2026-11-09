@@ -128,8 +128,7 @@
             android:defaultValue="Sân bóng đá" />
         <argument
             android:name="pricePerHour"
-            app:argType="float"
-            android:defaultValue="200000.0f" />
+            android:defaultValue="200000.0" />
         <action
             android:id="@+id/action_bookingFragment_to_bookingSuccessFragment"
             app:destination="@id/bookingSuccessFragment"

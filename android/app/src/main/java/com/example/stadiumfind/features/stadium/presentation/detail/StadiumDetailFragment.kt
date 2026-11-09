@@ -125,7 +125,9 @@ class StadiumDetailFragment : Fragment() {
                 val bundle = Bundle().apply {
                     putLong(com.example.stadiumfind.features.booking.BookingFragment.ARG_STADIUM_ID, stadium.id)
                     putString(com.example.stadiumfind.features.booking.BookingFragment.ARG_STADIUM_NAME, stadium.name)
+                    putString(com.example.stadiumfind.features.booking.BookingFragment.ARG_PRICE_PER_HOUR, stadium.minPricePerHour.toString())
                     putDouble(com.example.stadiumfind.features.booking.BookingFragment.ARG_PRICE_PER_HOUR, stadium.minPricePerHour)
+                    putFloat(com.example.stadiumfind.features.booking.BookingFragment.ARG_PRICE_PER_HOUR, stadium.minPricePerHour.toFloat())
                 }
                 findNavController().navigate(
                     R.id.action_stadiumDetailFragment_to_bookingFragment,

@@ -74,7 +74,13 @@ class BookingFragment : Fragment() {
     private fun extractArgumentsAndInit() {
         val stadiumId = arguments?.getLong(ARG_STADIUM_ID, 1L) ?: 1L
         val stadiumName = arguments?.getString(ARG_STADIUM_NAME) ?: "Sân bóng Thượng Đình"
-        val pricePerHour = arguments?.getDouble(ARG_PRICE_PER_HOUR, 250000.0) ?: 250000.0
+        val pricePerHour = arguments?.let { bundle ->
+            if (bundle.containsKey(ARG_PRICE_PER_HOUR)) {
+                runCatching { bundle.getDouble(ARG_PRICE_PER_HOUR) }.getOrNull()
+                    ?: runCatching { bundle.getFloat(ARG_PRICE_PER_HOUR).toDouble() }.getOrNull()
+                    ?: runCatching { bundle.getString(ARG_PRICE_PER_HOUR)?.toDoubleOrNull() }.getOrNull()
+            } else null
+        } ?: 250000.0
 
         viewModel.initBooking(stadiumId, stadiumName, pricePerHour)
     }

@@ -36,6 +36,12 @@ interface BookingRepository {
 
     /**
      * Lấy toàn bộ danh sách vé đặt sân của người dùng đang đăng nhập (Ngày 24 - My Bookings).
+     * Hỗ trợ lưu trữ offline và tự động fallback sang Room DB khi mất mạng (Ngày 29).
      */
     suspend fun getMyBookings(): Resource<List<BookingResult>>
+
+    /**
+     * Xóa toàn bộ vé trong bộ nhớ đệm offline Room DB (dùng khi đăng xuất).
+     */
+    suspend fun clearCachedBookings()
 }
