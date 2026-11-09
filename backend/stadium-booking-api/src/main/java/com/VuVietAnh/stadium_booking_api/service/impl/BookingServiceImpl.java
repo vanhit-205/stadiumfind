@@ -114,6 +114,14 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<BookingResponse> getOwnerBookings(Long ownerId) {
+        return bookingRepository.findByStadiumOwnerIdOrderByCreatedAtDesc(ownerId).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Page<BookingResponse> getBookingsByCourt(Long courtId, Pageable pageable) {
         return bookingRepository.findByCourtId(courtId, pageable).map(this::mapToResponse);
     }

@@ -1,0 +1,19 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    <!-- Vòng tròn nền viền mờ màu vàng cam -->
+    <path
+        android:fillColor="#1AFFB300"
+        android:strokeColor="#FFB300"
+        android:strokeWidth="2.5"
+        android:pathData="M32,32m-27,0a27,27 0,1 1,54 0a27,27 0,1 1,-54 0" />
+    <!-- Đồng hồ cát / Biểu tượng đồng hồ chờ -->
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M32,18 C24.27,18 18,24.27 18,32 C18,39.73 24.27,46 32,46 C39.73,46 46,39.73 46,32 C46,24.27 39.73,18 32,18 Z M32,42.5 C26.2,42.5 21.5,37.8 21.5,32 C21.5,26.2 26.2,21.5 32,21.5 C37.8,21.5 42.5,26.2 42.5,32 C42.5,37.8 37.8,42.5 32,42.5 Z" />
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M33.5,25 L30.5,25 L30.5,33.5 L36.5,37.1 L38,34.6 L33.5,31.9 Z" />
+</vector>

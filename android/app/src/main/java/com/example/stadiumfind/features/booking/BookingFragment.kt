@@ -273,6 +273,8 @@ class BookingFragment : Fragment() {
                 putString(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_BOOKING_DATE, result.bookingDate)
                 putString(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_TIME_RANGE, result.displayTimeRange)
                 putString(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_TOTAL_PRICE, result.formattedTotalPrice)
+                putString(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_STATUS, result.status)
+                putString(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_PAYMENT_STATUS, result.paymentStatus)
                 putString(com.example.stadiumfind.features.booking.presentation.success.BookingSuccessFragment.ARG_NOTE, result.note)
             }
 

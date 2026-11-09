@@ -7,6 +7,7 @@ import com.example.stadiumfind.core.network.Resource
 import com.example.stadiumfind.features.auth.domain.model.AuthResult
 import com.example.stadiumfind.features.auth.domain.usecase.LoginUseCase
 import com.example.stadiumfind.features.auth.domain.usecase.RegisterUseCase
+import com.example.stadiumfind.features.booking.domain.repository.BookingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +19,8 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val registerUseCase: RegisterUseCase,
-    private val dataStore: UserPreferencesDataStore
+    private val dataStore: UserPreferencesDataStore,
+    private val bookingRepository: BookingRepository
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow<Resource<AuthResult>?>(null)
@@ -54,12 +56,19 @@ class AuthViewModel @Inject constructor(
     fun consumeRegisterState() { _registerState.value = null }
 
     private suspend fun persistAuthData(authResult: AuthResult) {
+        // Dọn dẹp cache vé cũ của user trước đó nếu có
+        try {
+            bookingRepository.clearCachedBookings()
+        } catch (_: Exception) {
+        }
+
         dataStore.saveAuthData(
             accessToken = authResult.accessToken,
             refreshToken = authResult.refreshToken,
             userId = authResult.user?.id,
             username = authResult.user?.username,
             email = authResult.user?.email,
+            role = authResult.user?.role,
             avatarUrl = authResult.user?.avatarUrl
         )
     }

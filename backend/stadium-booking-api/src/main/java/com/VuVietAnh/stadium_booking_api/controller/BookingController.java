@@ -77,6 +77,32 @@ public class BookingController {
      }
 
     /**
+     * Lấy danh sách các đơn đặt sân thuộc về các sân do Chủ sân (Owner) sở hữu.
+     */
+    @GetMapping("/owner-bookings")
+    public ResponseEntity<ApiResponse<List<BookingResponse>>> getOwnerBookings(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        if (userDetails == null) {
+            throw new com.VuVietAnh.stadium_booking_api.exception.UnauthorizedException("User not authenticated");
+        }
+        List<BookingResponse> ownerBookings = bookingService.getOwnerBookings(userDetails.getUser().getId());
+        return ResponseEntity.ok(ApiResponse.ok("Get owner bookings successfully", ownerBookings));
+    }
+
+    /**
+     * API Chủ sân hoặc Admin cập nhật trạng thái đơn (Ví dụ: CONFIRMED để duyệt đơn, CANCELLED để từ chối).
+     */
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ApiResponse<BookingResponse>> updateBookingStatus(
+            @PathVariable Long id,
+            @RequestParam com.VuVietAnh.stadium_booking_api.enums.BookingStatus status
+    ) {
+        BookingResponse updatedBooking = bookingService.updateBookingStatus(id, status);
+        return ResponseEntity.ok(ApiResponse.ok("Booking status updated successfully", updatedBooking));
+    }
+
+    /**
      * Lấy thông tin chi tiết một đơn đặt sân theo ID (chuẩn bị cho xuất vé và mã QR - Ngày 23).
      */
     @GetMapping("/{id}")

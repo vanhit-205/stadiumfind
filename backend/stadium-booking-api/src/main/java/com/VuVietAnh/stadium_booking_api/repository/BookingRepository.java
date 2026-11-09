@@ -37,6 +37,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     // Lấy các đơn đặt sân trong một cụm sân cụ thể (Dành cho chủ sân xem tất cả lịch đặt)
     Page<Booking> findByCourtStadiumId(Long stadiumId, Pageable pageable);
 
+    // Lấy tất cả các đơn đặt sân thuộc về các sân của Chủ sân (Owner)
+    @Query("SELECT b FROM Booking b WHERE b.court.stadium.owner.id = :ownerId ORDER BY b.createdAt DESC")
+    List<Booking> findByStadiumOwnerIdOrderByCreatedAtDesc(@Param("ownerId") Long ownerId);
+
     // Kiểm tra xem khung giờ dự định đặt sân có bị trùng với đơn đặt hiện có (khác trạng thái CANCELLED) không
     @Query("SELECT CASE WHEN COUNT(b) > 0 THEN true ELSE false END FROM Booking b " +
            "WHERE b.court.id = :courtId " +

@@ -142,6 +142,8 @@ class BookingListTabFragment : Fragment() {
             BookingSuccessFragment.ARG_BOOKING_DATE to ticket.bookingDate,
             BookingSuccessFragment.ARG_TIME_RANGE to ticket.displayTimeRange,
             BookingSuccessFragment.ARG_TOTAL_PRICE to ticket.formattedTotalPrice,
+            BookingSuccessFragment.ARG_STATUS to ticket.status,
+            BookingSuccessFragment.ARG_PAYMENT_STATUS to ticket.paymentStatus,
             BookingSuccessFragment.ARG_NOTE to ticket.note
         )
         findNavController().navigate(R.id.bookingSuccessFragment, bundle)

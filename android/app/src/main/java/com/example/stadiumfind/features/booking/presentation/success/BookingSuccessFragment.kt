@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -37,6 +38,8 @@ class BookingSuccessFragment : Fragment() {
     private var bookingDate: String = ""
     private var timeRange: String = ""
     private var totalPrice: String = ""
+    private var status: String = "PENDING"
+    private var paymentStatus: String = "UNPAID"
     private var note: String? = null
 
     companion object {
@@ -48,6 +51,8 @@ class BookingSuccessFragment : Fragment() {
         const val ARG_BOOKING_DATE = "bookingDate"
         const val ARG_TIME_RANGE = "timeRange"
         const val ARG_TOTAL_PRICE = "totalPrice"
+        const val ARG_STATUS = "status"
+        const val ARG_PAYMENT_STATUS = "paymentStatus"
         const val ARG_NOTE = "note"
     }
 
@@ -62,6 +67,8 @@ class BookingSuccessFragment : Fragment() {
             bookingDate = it.getString(ARG_BOOKING_DATE) ?: ""
             timeRange = it.getString(ARG_TIME_RANGE) ?: ""
             totalPrice = it.getString(ARG_TOTAL_PRICE) ?: "0đ"
+            status = it.getString(ARG_STATUS) ?: "PENDING"
+            paymentStatus = it.getString(ARG_PAYMENT_STATUS) ?: "UNPAID"
             note = it.getString(ARG_NOTE)
         }
     }
@@ -99,10 +106,33 @@ class BookingSuccessFragment : Fragment() {
         binding.tvTicketStadiumName.text = stadiumName
         binding.tvTicketCourtName.text = courtName
         binding.tvTicketAddress.text = stadiumAddress
-        binding.tvTicketCode.text = "Mã vé: #SF-$ticketId"
+        binding.tvTicketCode.text = "Mã đơn: #SF-$ticketId"
         binding.tvTicketDate.text = bookingDate
         binding.tvTicketTime.text = timeRange
         binding.tvTicketPrice.text = totalPrice
+
+        val isConfirmed = status.equals("CONFIRMED", ignoreCase = true)
+        if (isConfirmed) {
+            binding.ivSuccessCheck.setImageResource(R.drawable.ic_success_large)
+            binding.tvSuccessTitle.text = "Đặt Sân Thành Công!"
+            binding.tvSuccessSubtitle.text = "Xuất trình mã QR tại quầy để làm thủ tục nhận sân"
+            binding.tvTicketStatus.text = "ĐÃ XÁC NHẬN"
+            binding.tvTicketStatus.setBackgroundResource(R.drawable.bg_status_badge_success)
+            binding.tvTicketStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.success_green))
+
+            binding.layoutPendingNotice.visibility = View.GONE
+            binding.cardQrContainer.visibility = View.VISIBLE
+        } else {
+            binding.ivSuccessCheck.setImageResource(R.drawable.ic_pending_large)
+            binding.tvSuccessTitle.text = "Đã Gửi Yêu Cầu Đặt Sân!"
+            binding.tvSuccessSubtitle.text = "Đơn của bạn đang chờ chủ sân phê duyệt"
+            binding.tvTicketStatus.text = "CHỜ DUYỆT"
+            binding.tvTicketStatus.setBackgroundResource(R.drawable.bg_status_badge_pending)
+            binding.tvTicketStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.warning_amber))
+
+            binding.layoutPendingNotice.visibility = View.VISIBLE
+            binding.cardQrContainer.visibility = View.GONE
+        }
 
         if (!note.isNullOrBlank()) {
             binding.tvTicketNote.visibility = View.VISIBLE
@@ -113,6 +143,13 @@ class BookingSuccessFragment : Fragment() {
     }
 
     private fun generateAndDisplayQrCode() {
+        // Chỉ sinh mã QR khi đơn đã được duyệt (CONFIRMED)
+        val isConfirmed = status.equals("CONFIRMED", ignoreCase = true)
+        if (!isConfirmed) {
+            binding.cardQrContainer.visibility = View.GONE
+            return
+        }
+
         val payload = QrCodeGenerator.createTicketPayload(
             ticketId = ticketId,
             courtId = courtId,

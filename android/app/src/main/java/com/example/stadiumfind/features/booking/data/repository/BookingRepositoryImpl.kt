@@ -1,5 +1,6 @@
 package com.example.stadiumfind.features.booking.data.repository
 
+import com.example.stadiumfind.core.data.UserPreferencesDataStore
 import com.example.stadiumfind.core.network.Resource
 import com.example.stadiumfind.core.network.safeApiCall
 import com.example.stadiumfind.features.booking.data.local.dao.TicketDao
@@ -10,13 +11,15 @@ import com.example.stadiumfind.features.booking.domain.model.BookingResult
 import com.example.stadiumfind.features.booking.domain.model.CourtItem
 import com.example.stadiumfind.features.booking.domain.model.OccupiedSlot
 import com.example.stadiumfind.features.booking.domain.repository.BookingRepository
+import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class BookingRepositoryImpl @Inject constructor(
     private val apiService: BookingApiService,
-    private val ticketDao: TicketDao
+    private val ticketDao: TicketDao,
+    private val userPreferences: UserPreferencesDataStore
 ) : BookingRepository {
 
     override suspend fun getOccupiedSlots(courtId: Long, date: String): Resource<List<OccupiedSlot>> {
@@ -117,20 +120,27 @@ class BookingRepositoryImpl @Inject constructor(
         val result = safeApiCall {
             apiService.getMyBookings()
         }
+        val currentUserId = userPreferences.userId.firstOrNull()
         return when (result) {
             is Resource.Success -> {
                 val items = result.data.map { it.toDomain() }
                 try {
-                    // Đồng bộ vé mới nhất từ server vào Room Database
-                    ticketDao.upsertTickets(items.map { it.toEntity() })
+                    // Nếu có currentUserId, chỉ cập nhật vé của user hiện tại
+                    if (currentUserId != null) {
+                        ticketDao.upsertTickets(items.map { it.toEntity() })
+                    }
                 } catch (_: Exception) {
                 }
                 Resource.Success(items)
             }
             is Resource.Error -> {
-                // Offline Fallback: Khi mất mạng hoặc server lỗi, đọc vé đã lưu trong Room
+                // Offline Fallback: Khi mất mạng hoặc server lỗi, đọc vé đúng của user hiện tại trong Room
                 try {
-                    val localTickets = ticketDao.getAllTickets()
+                    val localTickets = if (currentUserId != null) {
+                        ticketDao.getTicketsByUserId(currentUserId)
+                    } else {
+                        emptyList()
+                    }
                     if (localTickets.isNotEmpty()) {
                         Resource.Success(localTickets.map { it.toDomain() })
                     } else {
@@ -148,6 +158,30 @@ class BookingRepositoryImpl @Inject constructor(
         try {
             ticketDao.clearAll()
         } catch (_: Exception) {
+        }
+    }
+
+    override suspend fun getOwnerBookings(): Resource<List<BookingResult>> {
+        val result = safeApiCall {
+            apiService.getOwnerBookings()
+        }
+        return when (result) {
+            is Resource.Success -> {
+                Resource.Success(result.data.map { it.toDomain() })
+            }
+            is Resource.Error -> Resource.Error(result.message, result.code)
+            is Resource.Loading -> Resource.Loading
+        }
+    }
+
+    override suspend fun updateBookingStatus(bookingId: Long, status: String): Resource<BookingResult> {
+        val result = safeApiCall {
+            apiService.updateBookingStatus(bookingId, status)
+        }
+        return when (result) {
+            is Resource.Success -> Resource.Success(result.data.toDomain())
+            is Resource.Error -> Resource.Error(result.message, result.code)
+            is Resource.Loading -> Resource.Loading
         }
     }
 }

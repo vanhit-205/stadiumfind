@@ -21,6 +21,12 @@ interface TicketDao {
     @Query("SELECT * FROM tickets ORDER BY bookingDate DESC, startTime DESC")
     suspend fun getAllTickets(): List<TicketEntity>
 
+    @Query("SELECT * FROM tickets WHERE userId = :userId ORDER BY bookingDate DESC, startTime DESC")
+    suspend fun getTicketsByUserId(userId: Long): List<TicketEntity>
+
+    @Query("SELECT * FROM tickets WHERE userId = :userId ORDER BY bookingDate DESC, startTime DESC")
+    fun getTicketsByUserIdFlow(userId: Long): Flow<List<TicketEntity>>
+
     @Query("SELECT * FROM tickets ORDER BY bookingDate DESC, startTime DESC")
     fun getAllTicketsFlow(): Flow<List<TicketEntity>>
 

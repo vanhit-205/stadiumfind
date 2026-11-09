@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="@color/surface_card"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeColor="@color/stroke_default"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- HEADER: TÊN SÂN & BADGE TRẠNG THÁI -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvOwnerStadiumName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="Sân bóng Thượng Đình" />
+
+            <TextView
+                android:id="@+id/tvOwnerStatusBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                tools:text="Chờ Duyệt" />
+        </LinearLayout>
+
+        <!-- TÊN SÂN CON (COURT) & NGƯỜI ĐẶT -->
+        <TextView
+            android:id="@+id/tvOwnerCourtAndCustomer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/primary_300"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="Sân 7A • Người đặt: Nguyễn Văn A" />
+
+        <!-- THÔNG TIN NGÀY & GIỜ ĐÁ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvOwnerBookingDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                tools:text="📅 2026-11-10" />
+
+            <TextView
+                android:id="@+id/tvOwnerBookingTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="⏰ 17:30 - 19:00" />
+        </LinearLayout>
+
+        <!-- TỔNG TIỀN & GHI CHÚ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvOwnerTotalPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/accent_yellow"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="Tổng tiền: 350.000đ" />
+
+            <TextView
+                android:id="@+id/tvOwnerNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                tools:text="Ghi chú: Lấy thêm 2 áo bib" />
+        </LinearLayout>
+
+        <!-- ĐƯỜNG KẺ PHÂN CÁCH NÚT -->
+        <View
+            android:id="@+id/dividerOwnerActions"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="12dp"
+            android:background="@color/stroke_default" />
+
+        <!-- THANH NÚT DUYỆT & TỪ CHỐI (CHỈ HIỂN THỊ KHI PENDING) -->
+        <LinearLayout
+            android:id="@+id/layoutOwnerActions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOwnerReject"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="Từ Chối"
+                android:textColor="@color/error_red"
+                app:cornerRadius="10dp"
+                app:strokeColor="@color/error_red" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOwnerApprove"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/primary_500"
+                android:text="Duyệt Đơn"
+                android:textColor="@color/text_on_primary"
+                android:textStyle="bold"
+                app:cornerRadius="10dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

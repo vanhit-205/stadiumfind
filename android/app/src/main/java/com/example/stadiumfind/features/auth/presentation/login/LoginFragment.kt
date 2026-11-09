@@ -89,14 +89,7 @@ class LoginFragment : Fragment() {
                             loadingDialog.safeDismiss()
                             binding.btnLogin.setEnabled(true)
                             viewModel.consumeLoginState()
-                            // Điều hướng vào Home, xóa Auth stack
-                            findNavController().navigate(
-                                R.id.action_loginFragment_to_homeFragment,
-                                null,
-                                androidx.navigation.NavOptions.Builder()
-                                    .setPopUpTo(R.id.loginFragment, true)
-                                    .build()
-                            )
+                            (requireActivity() as? com.example.stadiumfind.MainActivity)?.refreshNavigation()
                         }
                         is Resource.Error -> {
                             loadingDialog.safeDismiss()

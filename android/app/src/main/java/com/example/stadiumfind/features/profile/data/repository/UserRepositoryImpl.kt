@@ -29,6 +29,7 @@ class UserRepositoryImpl @Inject constructor(
                     userId = profile.id,
                     username = profile.username,
                     email = profile.email,
+                    role = profile.role,
                     avatarUrl = profile.avatarUrl
                 )
                 Resource.Success(profile)

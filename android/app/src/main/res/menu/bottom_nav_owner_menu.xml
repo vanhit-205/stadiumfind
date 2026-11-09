@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/ownerBookingsFragment"
+        android:icon="@drawable/ic_calendar"
+        android:title="Duyệt Đơn" />
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_stadium_placeholder"
+        android:title="Sân Của Tôi" />
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_person"
+        android:title="Tài Khoản" />
+</menu>

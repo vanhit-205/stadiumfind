@@ -35,15 +35,38 @@ class MainActivity : AppCompatActivity() {
         setupNavigation()
     }
 
+    /**
+     * Cập nhật lại giao diện và luồng điều hướng khi người dùng đăng nhập hoặc đăng xuất thành công.
+     */
+    fun refreshNavigation() {
+        setupNavigation()
+    }
+
     private fun setupNavigation() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // Auto-login: có token thì vào thẳng Home, ngược lại bắt đầu ở Login
+        // Auto-login: có token thì kiểm tra role
         val isLoggedIn = runBlocking { userPreferences.isLoggedIn.first() }
+        val userRole = runBlocking { userPreferences.role.first() }
+
+        val isOwner = "STADIUM_OWNER".equals(userRole, ignoreCase = true)
+        if (isOwner) {
+            binding.bottomNav.menu.clear()
+            binding.bottomNav.inflateMenu(R.menu.bottom_nav_owner_menu)
+        } else {
+            binding.bottomNav.menu.clear()
+            binding.bottomNav.inflateMenu(R.menu.bottom_nav_menu)
+        }
+
         val graph = navController.navInflater.inflate(R.navigation.nav_graph)
-        graph.setStartDestination(if (isLoggedIn) R.id.homeFragment else R.id.loginFragment)
+        val startDest = when {
+            !isLoggedIn -> R.id.loginFragment
+            isOwner -> R.id.ownerBookingsFragment
+            else -> R.id.homeFragment
+        }
+        graph.setStartDestination(startDest)
         navController.setGraph(graph, null)
 
         // Gắn Bottom Navigation với NavController

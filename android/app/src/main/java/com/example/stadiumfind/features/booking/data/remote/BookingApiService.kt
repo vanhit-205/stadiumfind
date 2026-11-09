@@ -44,6 +44,21 @@ interface BookingApiService {
     suspend fun getMyBookings(): Response<BaseResponse<List<com.example.stadiumfind.features.booking.data.remote.dto.BookingResponseDto>>>
 
     /**
+     * Lấy danh sách các đơn đặt sân tại các sân do Chủ sân quản lý (Dành cho STADIUM_OWNER).
+     */
+    @GET("bookings/owner-bookings")
+    suspend fun getOwnerBookings(): Response<BaseResponse<List<com.example.stadiumfind.features.booking.data.remote.dto.BookingResponseDto>>>
+
+    /**
+     * Cập nhật trạng thái đơn đặt sân (Duyệt: CONFIRMED, Từ chối: CANCELLED).
+     */
+    @retrofit2.http.PATCH("bookings/{id}/status")
+    suspend fun updateBookingStatus(
+        @Path("id") id: Long,
+        @Query("status") status: String
+    ): Response<BaseResponse<com.example.stadiumfind.features.booking.data.remote.dto.BookingResponseDto>>
+
+    /**
      * Lấy chi tiết đơn đặt sân theo ID (Ngày 22 & Ngày 23).
      */
     @GET("bookings/{id}")

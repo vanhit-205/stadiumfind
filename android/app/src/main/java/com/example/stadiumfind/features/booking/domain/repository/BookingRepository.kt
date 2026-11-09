@@ -41,6 +41,16 @@ interface BookingRepository {
     suspend fun getMyBookings(): Resource<List<BookingResult>>
 
     /**
+     * Lấy toàn bộ danh sách đơn đặt sân tại các cụm sân do Chủ sân quản lý (STADIUM_OWNER).
+     */
+    suspend fun getOwnerBookings(): Resource<List<BookingResult>>
+
+    /**
+     * Cập nhật trạng thái đơn đặt sân (Duyệt: CONFIRMED, Từ chối: CANCELLED).
+     */
+    suspend fun updateBookingStatus(bookingId: Long, status: String): Resource<BookingResult>
+
+    /**
      * Xóa toàn bộ vé trong bộ nhớ đệm offline Room DB (dùng khi đăng xuất).
      */
     suspend fun clearCachedBookings()

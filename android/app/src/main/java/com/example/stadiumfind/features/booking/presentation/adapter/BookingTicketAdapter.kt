@@ -57,13 +57,25 @@ class BookingTicketAdapter(
                 ivStadiumThumb.setImageResource(R.drawable.ic_calendar)
             }
 
-            // Định dạng Badge trạng thái
+            // Định dạng Badge trạng thái & Nút thao tác
             when (ticket.status.uppercase()) {
-                "CONFIRMED", "PENDING" -> {
-                    tvStatusBadge.text = if (ticket.status.equals("CONFIRMED", true)) "Đã Xác Nhận" else "Chờ Xác Nhận"
+                "CONFIRMED" -> {
+                    tvStatusBadge.text = "Đã Xác Nhận"
                     tvStatusBadge.setTextColor(Color.parseColor("#66BB6A"))
                     setBadgeBackground(tvStatusBadge, "#1A2E7D32", "#43A047")
                     btnViewQr.visibility = View.VISIBLE
+                    btnViewQr.isEnabled = true
+                    btnViewQr.text = "Mã QR"
+                    btnViewQr.alpha = 1.0f
+                }
+                "PENDING" -> {
+                    tvStatusBadge.text = "Chờ Duyệt"
+                    tvStatusBadge.setTextColor(Color.parseColor("#FFB300"))
+                    setBadgeBackground(tvStatusBadge, "#1AFFB300", "#FFB300")
+                    btnViewQr.visibility = View.VISIBLE
+                    btnViewQr.isEnabled = false
+                    btnViewQr.text = "Chờ duyệt"
+                    btnViewQr.alpha = 0.5f
                 }
                 "COMPLETED" -> {
                     tvStatusBadge.text = "Đã Hoàn Thành"
@@ -81,7 +93,7 @@ class BookingTicketAdapter(
                     tvStatusBadge.text = ticket.status
                     tvStatusBadge.setTextColor(Color.parseColor("#66BB6A"))
                     setBadgeBackground(tvStatusBadge, "#1A2E7D32", "#43A047")
-                    btnViewQr.visibility = View.VISIBLE
+                    btnViewQr.visibility = View.GONE
                 }
             }
 

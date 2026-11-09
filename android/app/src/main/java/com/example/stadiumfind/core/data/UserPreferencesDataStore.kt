@@ -29,6 +29,7 @@ class UserPreferencesDataStore @Inject constructor(
         private val KEY_USER_ID = longPreferencesKey("user_id")
         private val KEY_USERNAME = stringPreferencesKey("username")
         private val KEY_EMAIL = stringPreferencesKey("email")
+        private val KEY_ROLE = stringPreferencesKey("role")
         private val KEY_AVATAR_URL = stringPreferencesKey("avatar_url")
     }
 
@@ -42,6 +43,8 @@ class UserPreferencesDataStore @Inject constructor(
 
     val username: Flow<String?> = context.dataStore.data.map { it[KEY_USERNAME] }
 
+    val role: Flow<String?> = context.dataStore.data.map { it[KEY_ROLE] }
+
     val isLoggedIn: Flow<Boolean> = context.dataStore.data.map {
         !it[KEY_ACCESS_TOKEN].isNullOrEmpty()
     }
@@ -54,7 +57,8 @@ class UserPreferencesDataStore @Inject constructor(
         userId: Long?,
         username: String?,
         email: String?,
-        avatarUrl: String?
+        role: String? = null,
+        avatarUrl: String? = null
     ) {
         context.dataStore.edit { prefs ->
             prefs[KEY_ACCESS_TOKEN] = accessToken
@@ -62,6 +66,7 @@ class UserPreferencesDataStore @Inject constructor(
             if (userId != null) prefs[KEY_USER_ID] = userId
             if (username != null) prefs[KEY_USERNAME] = username
             if (email != null) prefs[KEY_EMAIL] = email
+            if (role != null) prefs[KEY_ROLE] = role
             if (avatarUrl != null) prefs[KEY_AVATAR_URL] = avatarUrl
         }
     }

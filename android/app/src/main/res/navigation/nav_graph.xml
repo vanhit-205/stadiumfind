@@ -42,6 +42,12 @@
             app:exitAnim="@anim/fade_out" />
     </fragment>
 
+    <fragment
+        android:id="@+id/ownerBookingsFragment"
+        android:name="com.example.stadiumfind.features.booking.presentation.owner.OwnerBookingsFragment"
+        android:label="Duyệt đơn đặt sân"
+        tools:layout="@layout/fragment_owner_bookings" />
+
     <!-- ===== MAIN (Bottom Nav) FLOW ===== -->
     <fragment
         android:id="@+id/homeFragment"

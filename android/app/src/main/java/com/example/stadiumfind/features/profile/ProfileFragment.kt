@@ -158,7 +158,7 @@ class ProfileFragment : Fragment() {
             .setMessage("Bạn có chắc chắn muốn đăng xuất khỏi tài khoản không?")
             .setPositiveButton("Đăng xuất") { _, _ ->
                 viewModel.logout {
-                    findNavController().navigate(R.id.action_global_loginFragment)
+                    (requireActivity() as? com.example.stadiumfind.MainActivity)?.refreshNavigation()
                 }
             }
             .setNegativeButton("Hủy", null)
