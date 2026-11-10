@@ -118,6 +118,15 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    @Transactional
+    public void updateFcmToken(String username, String fcmToken) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+        user.setFcmToken(fcmToken);
+        userRepository.save(user);
+    }
+
     private UserResponse mapToResponse(User user) {
         long totalBookings = bookingRepository.countByUserId(user.getId());
         return UserResponse.builder()

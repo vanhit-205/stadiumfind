@@ -57,3 +57,10 @@ Thumbs.db
 
 Task.md
 task.md
+
+#########################################
+# Firebase Secrets
+#########################################
+serviceAccountKey.json
+google-services.json
+

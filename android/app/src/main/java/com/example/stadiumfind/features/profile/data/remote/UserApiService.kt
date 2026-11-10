@@ -1,11 +1,13 @@
 package com.example.stadiumfind.features.profile.data.remote
 
 import com.example.stadiumfind.core.network.BaseResponse
+import com.example.stadiumfind.features.profile.data.remote.dto.FcmTokenRequestDto
 import com.example.stadiumfind.features.profile.data.remote.dto.UserProfileDto
 import com.example.stadiumfind.features.profile.data.remote.dto.UserUpdateRequestDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.PUT
 
 interface UserApiService {
@@ -17,4 +19,9 @@ interface UserApiService {
     suspend fun updateProfile(
         @Body request: UserUpdateRequestDto
     ): Response<BaseResponse<UserProfileDto>>
+
+    @POST("users/fcm-token")
+    suspend fun updateFcmToken(
+        @Body request: FcmTokenRequestDto
+    ): Response<BaseResponse<Unit>>
 }

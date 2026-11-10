@@ -138,12 +138,21 @@ class ManageMatchBottomSheet : BottomSheetDialogFragment() {
         private const val ARG_MAX_PARTICIPANTS = "max_participants"
 
         fun newInstance(post: MatchPost): ManageMatchBottomSheet {
+            return newInstance(post.id, post.title, post.currentParticipants, post.maxParticipants)
+        }
+
+        fun newInstance(
+            matchPostId: Long,
+            title: String = "Kèo đấu",
+            currentParticipants: Int = 0,
+            maxParticipants: Int = 10
+        ): ManageMatchBottomSheet {
             val fragment = ManageMatchBottomSheet()
             val bundle = Bundle().apply {
-                putLong(ARG_ID, post.id)
-                putString(ARG_TITLE, post.title)
-                putInt(ARG_CURRENT_PARTICIPANTS, post.currentParticipants)
-                putInt(ARG_MAX_PARTICIPANTS, post.maxParticipants)
+                putLong(ARG_ID, matchPostId)
+                putString(ARG_TITLE, title)
+                putInt(ARG_CURRENT_PARTICIPANTS, currentParticipants)
+                putInt(ARG_MAX_PARTICIPANTS, maxParticipants)
             }
             fragment.arguments = bundle
             return fragment

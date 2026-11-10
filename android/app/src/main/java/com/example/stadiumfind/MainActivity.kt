@@ -8,7 +8,10 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.stadiumfind.core.data.UserPreferencesDataStore
+import com.example.stadiumfind.core.util.FcmHelper
 import com.example.stadiumfind.databinding.ActivityMainBinding
+import com.example.stadiumfind.features.match.presentation.manage.ManageMatchBottomSheet
+import com.example.stadiumfind.features.profile.domain.usecase.UpdateFcmTokenUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -23,6 +26,9 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var userPreferences: UserPreferencesDataStore
 
+    @Inject
+    lateinit var updateFcmTokenUseCase: UpdateFcmTokenUseCase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,6 +39,34 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupNavigation()
+
+        // Xin quyền nhận thông báo trên Android 13+
+        FcmHelper.checkAndRequestNotificationPermission(this)
+
+        // Đồng bộ token lên server nếu đã đăng nhập
+        FcmHelper.syncFcmTokenToServer(userPreferences, updateFcmTokenUseCase)
+
+        // Xử lý mở màn hình quản lý kèo nếu app được mở từ thông báo FCM
+        handleNotificationIntent(intent)
+    }
+
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleNotificationIntent(intent)
+    }
+
+    private fun handleNotificationIntent(intent: android.content.Intent?) {
+        val matchPostIdStr = intent?.getStringExtra("matchPostId")
+        if (!matchPostIdStr.isNullOrBlank()) {
+            val matchPostId = matchPostIdStr.toLongOrNull() ?: return
+            // Xóa matchPostId để tránh mở lại khi recreate activity
+            intent.removeExtra("matchPostId")
+
+            // Mở trực tiếp ManageMatchBottomSheet để chủ kèo xem danh sách ứng viên và bấm duyệt/từ chối
+            val bottomSheet = ManageMatchBottomSheet.newInstance(matchPostId = matchPostId)
+            bottomSheet.show(supportFragmentManager, ManageMatchBottomSheet.TAG)
+        }
     }
 
     /**
@@ -40,6 +74,7 @@ class MainActivity : AppCompatActivity() {
      */
     fun refreshNavigation() {
         setupNavigation()
+        FcmHelper.syncFcmTokenToServer(userPreferences, updateFcmTokenUseCase)
     }
 
     private fun setupNavigation() {

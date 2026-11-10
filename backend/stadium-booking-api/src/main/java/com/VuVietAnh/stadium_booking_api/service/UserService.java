@@ -17,4 +17,5 @@ public interface UserService {
     UserResponse updateUser(Long id, UserUpdateRequest request);
     void changePassword(Long id, UserChangePasswordRequest request);
     void toggleUserStatus(Long id);
+    void updateFcmToken(String username, String fcmToken);
 }

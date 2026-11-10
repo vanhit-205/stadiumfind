@@ -1,5 +1,6 @@
 package com.VuVietAnh.stadium_booking_api.controller;
 
+import com.VuVietAnh.stadium_booking_api.dto.request.FcmTokenRequest;
 import com.VuVietAnh.stadium_booking_api.dto.request.UserChangePasswordRequest;
 import com.VuVietAnh.stadium_booking_api.dto.request.UserUpdateRequest;
 import com.VuVietAnh.stadium_booking_api.dto.response.ApiResponse;
@@ -65,5 +66,17 @@ public class UserController {
         }
         userService.changePassword(userDetails.getUser().getId(), request);
         return ResponseEntity.ok(ApiResponse.ok("Password changed successfully", null));
+    }
+
+    @PostMapping("/fcm-token")
+    public ResponseEntity<ApiResponse<Void>> updateFcmToken(
+            @Valid @RequestBody FcmTokenRequest request,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        if (userDetails == null) {
+            throw new UnauthorizedException("User not authenticated");
+        }
+        userService.updateFcmToken(userDetails.getUsername(), request.getFcmToken());
+        return ResponseEntity.ok(ApiResponse.ok("FCM token updated successfully", null));
     }
 }

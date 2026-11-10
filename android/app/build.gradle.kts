@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -10,7 +11,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.fontend"
+        applicationId = "com.example.stadiumfind"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -92,6 +93,10 @@ dependencies {
 
     // ZXing (Tạo mã QR)
     implementation(libs.zxing.core)
+
+    // Firebase (BOM + Cloud Messaging)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging)
 }
 
 // Tự động chạy adb reverse mỗi khi bấm Run/Build app
@@ -113,4 +118,3 @@ tasks.register<AdbReverseTask>("adbReverse") {
 tasks.named("preBuild") {
     dependsOn("adbReverse")
 }
-

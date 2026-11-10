@@ -4,6 +4,7 @@ import com.example.stadiumfind.core.data.UserPreferencesDataStore
 import com.example.stadiumfind.core.network.Resource
 import com.example.stadiumfind.core.network.safeApiCall
 import com.example.stadiumfind.features.profile.data.remote.UserApiService
+import com.example.stadiumfind.features.profile.data.remote.dto.FcmTokenRequestDto
 import com.example.stadiumfind.features.profile.data.remote.dto.UserUpdateRequestDto
 import com.example.stadiumfind.features.profile.domain.model.UserProfile
 import com.example.stadiumfind.features.profile.domain.repository.UserRepository
@@ -55,6 +56,17 @@ class UserRepositoryImpl @Inject constructor(
         }
         return when (result) {
             is Resource.Success -> Resource.Success(result.data.toDomain())
+            is Resource.Error -> Resource.Error(result.message, result.code)
+            is Resource.Loading -> Resource.Loading
+        }
+    }
+
+    override suspend fun updateFcmToken(fcmToken: String): Resource<Unit> {
+        val result = safeApiCall {
+            apiService.updateFcmToken(FcmTokenRequestDto(fcmToken))
+        }
+        return when (result) {
+            is Resource.Success -> Resource.Success(Unit)
             is Resource.Error -> Resource.Error(result.message, result.code)
             is Resource.Loading -> Resource.Loading
         }

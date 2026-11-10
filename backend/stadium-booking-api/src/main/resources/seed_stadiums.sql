@@ -12,7 +12,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 INSERT INTO users (id, username, email, password, full_name, phone_number, role, is_active, created_at, updated_at)
 VALUES 
 (1001, 'owner_hanoi', 'owner.hanoi@stadiumfind.vn', '$2a$10$eACCYoNOHEqgkVE8aIWT8eS876CDQ/4.x4sU5cKzW5Vw5.5K0jB5q', 'Nguyễn Văn An (Chủ sân HN)', '0912345678', 'STADIUM_OWNER', b'1', NOW(), NOW()),
-(1002, 'owner_hcm', 'owner.hcm@stadiumfind.vn', '$2a$10$eACCYoNOHEqgkVE8aIWT8eS876CDQ/4.x4sU5cKzW5Vw5.5K0jB5q', 'Trần Thị Bình (Chủ sân HCM)', '0987654321', 'STADIUM_OWNER', b'1', NOW(), NOW())
+(1002, 'owner_hcm', 'owner.hcm@stadiumfind.vn', '$2a$10$eACCYoNOHEqgkVE8aIWT8eS876CDQ/4.x4sU5cKzW5Vw5.5K0jB5q', 'Trần Thị Bình (Chủ sân HCM)', '0987654321', 'STADIUM_OWNER', b'1', NOW(), NOW()),
+(1003, 'user1', 'user1@stadiumfind.vn', '$2a$10$eACCYoNOHEqgkVE8aIWT8eS876CDQ/4.x4sU5cKzW5Vw5.5K0jB5q', 'Người Dùng 1', '0934567891', 'USER', b'1', NOW(), NOW())
 ON DUPLICATE KEY UPDATE full_name = VALUES(full_name), role = VALUES(role), is_active = VALUES(is_active);
 
 -- 2. Tạo 18 Cụm Sân Bóng (Stadiums) tại Hà Nội, Đà Nẵng, TP.HCM

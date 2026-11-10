@@ -15,6 +15,7 @@ import com.VuVietAnh.stadium_booking_api.exception.ResourceNotFoundException;
 import com.VuVietAnh.stadium_booking_api.repository.MatchParticipantRepository;
 import com.VuVietAnh.stadium_booking_api.repository.MatchPostRepository;
 import com.VuVietAnh.stadium_booking_api.repository.UserRepository;
+import com.VuVietAnh.stadium_booking_api.service.FcmService;
 import com.VuVietAnh.stadium_booking_api.service.MatchParticipantService;
 import com.VuVietAnh.stadium_booking_api.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class MatchParticipantServiceImpl implements MatchParticipantService {
     private final MatchPostRepository matchPostRepository;
     private final UserRepository userRepository;
     private final NotificationService notificationService;
+    private final FcmService fcmService;
 
     @Override
     @Transactional
@@ -156,14 +158,31 @@ public class MatchParticipantServiceImpl implements MatchParticipantService {
      */
     private void sendJoinRequestNotificationToCreator(MatchPost matchPost, User requester) {
         try {
+            String title = "Yêu cầu tham gia kèo mới";
+            String content = requester.getFullName() + " muốn tham gia kèo \"" + matchPost.getTitle() + "\". Hãy vào xem và duyệt!";
+
             NotificationCreateRequest notification = NotificationCreateRequest.builder()
                     .userId(matchPost.getCreator().getId())
-                    .title("Yêu cầu tham gia kèo mới")
-                    .content(requester.getFullName() + " muốn tham gia kèo \"" + matchPost.getTitle() + "\". Hãy vào xem và duyệt!")
+                    .title(title)
+                    .content(content)
                     .type(NotificationType.MATCH_JOIN_REQUEST)
                     .referenceId(matchPost.getId())
                     .build();
             notificationService.createNotification(notification);
+
+            // Bắn push notification qua Firebase FCM đến thiết bị của chủ bài đăng
+            User creator = matchPost.getCreator();
+            if (creator != null && creator.getFcmToken() != null && !creator.getFcmToken().isBlank()) {
+                fcmService.sendPushNotification(
+                        creator.getFcmToken(),
+                        title,
+                        content,
+                        java.util.Map.of(
+                                "matchPostId", String.valueOf(matchPost.getId()),
+                                "type", NotificationType.MATCH_JOIN_REQUEST.name()
+                        )
+                );
+            }
         } catch (Exception e) {
             // Không để lỗi notification làm gián đoạn luồng chính
             log.error("Failed to send join request notification to creator: {}", e.getMessage(), e);
@@ -200,6 +219,20 @@ public class MatchParticipantServiceImpl implements MatchParticipantService {
                     .referenceId(matchPost.getId())
                     .build();
             notificationService.createNotification(notification);
+
+            // Bắn push notification cho người tham gia về kết quả duyệt
+            User participantUser = participant.getUser();
+            if (participantUser != null && participantUser.getFcmToken() != null && !participantUser.getFcmToken().isBlank()) {
+                fcmService.sendPushNotification(
+                        participantUser.getFcmToken(),
+                        title,
+                        content,
+                        java.util.Map.of(
+                                "matchPostId", String.valueOf(matchPost.getId()),
+                                "type", newStatus.name()
+                        )
+                );
+            }
         } catch (Exception e) {
             // Không để lỗi notification làm gián đoạn luồng chính
             log.error("Failed to send status change notification to participant: {}", e.getMessage(), e);
